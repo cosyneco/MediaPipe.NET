@@ -1,0 +1,42 @@
+name: Test
+on:
+  workflow_call:
+    inputs:
+      name:
+        required: true
+        type: string
+      path:
+        required: true
+        type: string
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Lint
+        uses: github/super-linter@v4
+        env:
+          SUPPRESS_POSSUM: true
+          VALIDATE_CSHARP: true
+          VALIDATE_EDITORCONFIG: true
+          VALIDATE_ALL_CODEBASE: false
+
+      - name: Test
+        run: dotnet test sbtw-desktop.slnf --logger "trx;LogFileName=${{ inputs.name }}.trx"
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{ inputs.name }}
+          path: ${{ github.workspace }}/${{ inputs.path }}/TestResults/TestResults-${{ inputs.name }}.trx
+

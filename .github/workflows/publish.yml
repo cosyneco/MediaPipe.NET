@@ -1,0 +1,38 @@
+name: Publish
+on:
+  workflow_call:
+    inputs:
+      runner:
+        required: true
+        type: string
+      runtime:
+        required: true
+        type: string
+      path:
+        required: true
+        type: string
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ${{ inputs.runner }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Build
+        run: |
+          dotnet publish ${{ inputs.path }} --nologo -c Release -o ./output -r ${{ inputs.runtime }} --self-contained true -p:Version=${{ github.ref_name }}
+          7z a -tzip ${{ inputs.runtime }}.zip output/*
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.ref_name }}-${{ inputs.runtime }}
+          path: ${{ github.workspace }}/${{ inputs.runtime }}.zip
+          retention-days: 1
