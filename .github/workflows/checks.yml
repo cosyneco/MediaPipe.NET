@@ -1,9 +1,5 @@
 name: Style Check
-on:
-  push:
-    branches_ignore: [master, main]
-  pull_request:
-    branches: [master, main]
+on: [ push, pull_request ]
 
 jobs:
   check:
