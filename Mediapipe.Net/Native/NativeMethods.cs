@@ -4,6 +4,10 @@
 
 namespace Mediapipe.Net.Native
 {
+    // TODO: (message to future self) Beware of CharSet.Unicode!
+    // If tests fail because of odd string issues, try to marshal strings according to
+    // https://docs.microsoft.com/en-us/dotnet/standard/native-interop/type-marshaling.
+
     /// <summary>
     /// Contains all the directly bound native methods from Mediapipe.
     /// </summary>
