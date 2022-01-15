@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup Label="Package References">
+    <PackageReference Include="Google.Protobuf" Version="3.19.3" />
+  </ItemGroup>
+
 </Project>
