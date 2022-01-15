@@ -4,9 +4,10 @@
 
 using System;
 
-namespace Mediapipe.Net.Core;
-
-public class MediapipeException : Exception
+namespace Mediapipe.Net.Core
 {
-    public MediapipeException(string message) : base(message) { }
+    public class MediapipeException : Exception
+    {
+        public MediapipeException(string message) : base(message) { }
+    }
 }

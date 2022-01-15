@@ -4,27 +4,28 @@
 
 using Mediapipe.Net.Core;
 
-namespace Mediapipe.Net.Native;
-
-public static class MpReturnCodeExtension
+namespace Mediapipe.Net.Native
 {
-    public static void Assert(this MpReturnCode code)
+    public static class MpReturnCodeExtension
     {
-        switch (code)
+        public static void Assert(this MpReturnCode code)
         {
-            case MpReturnCode.Success:
-                return;
-            case MpReturnCode.Aborted:
-                throw new MediapipeException("MediaPipe Aborted, refer glog files for more details");
-            case MpReturnCode.StandardError:
-                throw new MediapipeNetException("Exception is thrown in Unmanaged Code");
-            case MpReturnCode.UnknownError:
-                throw new MediapipeNetException("Unknown exception is thrown in Unmanaged Code");
-            case MpReturnCode.Unset:
-                // Bug
-                throw new MediapipeNetException("Failed to call a native function, but the reason is unknown");
-            default:
-                throw new MediapipeNetException("Failed to call a native function, but the reason is undefined");
+            switch (code)
+            {
+                case MpReturnCode.Success:
+                    return;
+                case MpReturnCode.Aborted:
+                    throw new MediapipeException("MediaPipe Aborted, refer glog files for more details");
+                case MpReturnCode.StandardError:
+                    throw new MediapipeNetException("Exception is thrown in Unmanaged Code");
+                case MpReturnCode.UnknownError:
+                    throw new MediapipeNetException("Unknown exception is thrown in Unmanaged Code");
+                case MpReturnCode.Unset:
+                    // Bug
+                    throw new MediapipeNetException("Failed to call a native function, but the reason is unknown");
+                default:
+                    throw new MediapipeNetException("Failed to call a native function, but the reason is undefined");
+            }
         }
     }
 }

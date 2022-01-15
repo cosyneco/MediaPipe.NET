@@ -7,70 +7,71 @@ using System.Runtime.InteropServices;
 using Mediapipe.Net.Native;
 using static Mediapipe.Net.Native.MpReturnCodeExtension;
 
-namespace Mediapipe.Net.Core;
-
-public abstract class MpResourceHandle : Disposable, IMpResourceHandle
+namespace Mediapipe.Net.Core
 {
-    protected IntPtr Ptr;
-
-    protected MpResourceHandle(bool isOwner = true) : this(IntPtr.Zero, isOwner) { }
-
-    protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
+    public abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        Ptr = ptr;
-    }
+        protected IntPtr Ptr;
 
-    #region IMpResourceHandle
-    public IntPtr MpPtr
-    {
-        get
+        protected MpResourceHandle(bool isOwner = true) : this(IntPtr.Zero, isOwner) { }
+
+        protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
-            ThrowIfDisposed();
-            return Ptr;
+            Ptr = ptr;
         }
-    }
 
-    public void ReleaseMpResource()
-    {
-        if (OwnsResource())
-            DeleteMpPtr();
+        #region IMpResourceHandle
+        public IntPtr MpPtr
+        {
+            get
+            {
+                ThrowIfDisposed();
+                return Ptr;
+            }
+        }
 
-        TransferOwnership();
-    }
+        public void ReleaseMpResource()
+        {
+            if (OwnsResource())
+                DeleteMpPtr();
 
-    public bool OwnsResource() => IsOwner && Ptr != IntPtr.Zero;
-    #endregion
+            TransferOwnership();
+        }
 
-    protected override void DisposeUnmanaged()
-    {
-        if (OwnsResource())
-            DeleteMpPtr();
+        public bool OwnsResource() => IsOwner && Ptr != IntPtr.Zero;
+        #endregion
 
-        ReleaseMpPtr();
-        base.DisposeUnmanaged();
-    }
+        protected override void DisposeUnmanaged()
+        {
+            if (OwnsResource())
+                DeleteMpPtr();
 
-    /// <summary>
-    /// Forgets the pointer address.
-    /// After calling this method, <see ref="OwnsResource" /> will return false.
-    /// </summary>
-    protected void ReleaseMpPtr() => Ptr = IntPtr.Zero;
+            ReleaseMpPtr();
+            base.DisposeUnmanaged();
+        }
 
-    /// <summary>
-    /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.
-    /// </summary>
-    /// <remarks>In most cases, this method should not be called directly.</remarks>
-    protected abstract void DeleteMpPtr();
+        /// <summary>
+        /// Forgets the pointer address.
+        /// After calling this method, <see ref="OwnsResource" /> will return false.
+        /// </summary>
+        protected void ReleaseMpPtr() => Ptr = IntPtr.Zero;
 
-    protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out IntPtr strPtr);
-    protected string? MarshalStringFromNative(StringOutFunc func)
-    {
-        func(MpPtr, out IntPtr strPtr).Assert();
-        GC.KeepAlive(this);
+        /// <summary>
+        /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.
+        /// </summary>
+        /// <remarks>In most cases, this method should not be called directly.</remarks>
+        protected abstract void DeleteMpPtr();
 
-        string? str = Marshal.PtrToStringAnsi(strPtr);
-        UnsafeNativeMethods.delete_array__PKc(strPtr);
+        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out IntPtr strPtr);
+        protected string? MarshalStringFromNative(StringOutFunc func)
+        {
+            func(MpPtr, out IntPtr strPtr).Assert();
+            GC.KeepAlive(this);
 
-        return str;
+            string? str = Marshal.PtrToStringAnsi(strPtr);
+            UnsafeNativeMethods.delete_array__PKc(strPtr);
+
+            return str;
+        }
     }
 }

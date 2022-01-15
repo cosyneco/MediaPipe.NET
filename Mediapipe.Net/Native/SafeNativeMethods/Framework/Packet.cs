@@ -6,17 +6,18 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
-namespace Mediapipe.Net.Native;
-
-internal partial class SafeNativeMethods : NativeMethods
+namespace Mediapipe.Net.Native
 {
-    [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-    [return: MarshalAs(UnmanagedType.I1)]
-    public static extern bool mp_Packet__IsEmpty(IntPtr packet);
+    internal partial class SafeNativeMethods : NativeMethods
+    {
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool mp_Packet__IsEmpty(IntPtr packet);
 
-    [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-    public static extern void mp_SidePacket__clear(IntPtr sidePacket);
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern void mp_SidePacket__clear(IntPtr sidePacket);
 
-    [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-    public static extern int mp_SidePacket__size(IntPtr sidePacket);
+        [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern int mp_SidePacket__size(IntPtr sidePacket);
+    }
 }

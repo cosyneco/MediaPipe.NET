@@ -4,15 +4,16 @@
 
 using System;
 
-namespace Mediapipe.Net.Core;
-
-public abstract class SharedPtrHandle : MpResourceHandle
+namespace Mediapipe.Net.Core
 {
-    protected SharedPtrHandle(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+    public abstract class SharedPtrHandle : MpResourceHandle
+    {
+        protected SharedPtrHandle(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
-    /// <returns>The owning pointer</returns>
-    public abstract IntPtr Get();
+        /// <returns>The owning pointer</returns>
+        public abstract IntPtr Get();
 
-    /// <summary>Release the owning pointer</summary>
-    public abstract void Reset();
+        /// <summary>Release the owning pointer</summary>
+        public abstract void Reset();
+    }
 }

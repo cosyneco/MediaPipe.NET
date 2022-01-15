@@ -7,22 +7,23 @@ using System.Runtime.InteropServices;
 using Google.Protobuf;
 using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.External;
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct SerializedProto
+namespace Mediapipe.Net.External
 {
-    public IntPtr StrPtr;
-    public int Length;
-
-    // TODO: That Dispose() method is looking very sus...
-    // Might wanna investigate if it's better as a child of Disposable.
-    public void Dispose() => UnsafeNativeMethods.delete_array__PKc(StrPtr);
-
-    public T Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct SerializedProto
     {
-        byte[] bytes = new byte[Length];
-        Marshal.Copy(StrPtr, bytes, 0, bytes.Length);
-        return parser.ParseFrom(bytes);
+        public IntPtr StrPtr;
+        public int Length;
+
+        // TODO: That Dispose() method is looking very sus...
+        // Might wanna investigate if it's better as a child of Disposable.
+        public void Dispose() => UnsafeNativeMethods.delete_array__PKc(StrPtr);
+
+        public T Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
+        {
+            byte[] bytes = new byte[Length];
+            Marshal.Copy(StrPtr, bytes, 0, bytes.Length);
+            return parser.ParseFrom(bytes);
+        }
     }
 }
