@@ -18,7 +18,7 @@ file_header_template = Copyright (c) homuler and Vignette\nThis file is part of 
 dotnet_style_namespace_match_folder = true
 
 # Namespace declarations
-csharp_style_namespace_declarations = block_scoped
+csharp_style_namespace_declarations = block_scoped:warning
 
 # Require File Header
 dotnet_diagnostic.IDE0073.severity = error
