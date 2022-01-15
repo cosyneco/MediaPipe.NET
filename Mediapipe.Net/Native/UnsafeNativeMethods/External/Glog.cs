@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System.Runtime.InteropServices;
+using Mediapipe.Net.External;
 
 namespace Mediapipe.Net.Native
 {
@@ -41,8 +42,7 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
         public static extern void glog_LOG_FATAL__PKc(string str);
 
-        // TODO: replace 'int' with 'Glog.Severity'
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void google_FlushLogFiles(int severity);
+        public static extern void google_FlushLogFiles(Glog.Severity severity);
     }
 }
