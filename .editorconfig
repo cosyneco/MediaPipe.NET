@@ -47,7 +47,7 @@ csharp_prefer_braces = when_multiline:warning
 dotnet_naming_symbols.general_symbols.applicable_kinds = class,struct,enum,delegate
 dotnet_naming_symbols.general_symbols.applicable_accessibilities = *
 
-dotnet_naming_style.general_style.capitalization = pascal_case:warning
+dotnet_naming_style.general_style.capitalization = pascal_case
 
 dotnet_naming_rule.general.symbols = general_symbols
 dotnet_naming_rule.general.style = general_style
