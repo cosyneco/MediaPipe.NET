@@ -12,12 +12,13 @@ indent_size = 2
 
 [*.cs]
 indent_size = 4
+file_header_template = Copyright (c) homuler and Vignette\nThis file is part of MediaPipe.NET.\nMediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 # Namespace match folder
 dotnet_style_namespace_match_folder = true
 
 # Namespace declarations
-csharp_style_namespace_declarations = block_scoped
+csharp_style_namespace_declarations = block_scoped:warning
 
 # Require File Header
 dotnet_diagnostic.IDE0073.severity = error
@@ -27,13 +28,13 @@ dotnet_diagnostic.IDE0005.severity = error
 
 # Language Style Rules
 csharp_style_var_for_built_in_types = false
-csharp_style_expression_bodied_methods =false:silent
-csharp_style_expression_bodied_operators =false:silent
+csharp_style_expression_bodied_methods = false:silent
+csharp_style_expression_bodied_operators = false:silent
 csharp_style_expression_bodied_properties = when_on_single_line:warning
-csharp_style_expression_bodied_indexers =true:silent
-csharp_style_expression_bodied_properties =false:silent
-csharp_style_expression_bodied_lambdas =true:silent
-csharp_style_expression_bodied_local_functions =true:silent
+csharp_style_expression_bodied_indexers = true:silent
+csharp_style_expression_bodied_properties = false:silent
+csharp_style_expression_bodied_lambdas = true:silent
+csharp_style_expression_bodied_local_functions = true:silent
 csharp_style_prefer_switch_expression = false:warning
 csharp_style_prefer_pattern_matching = false:warning
 csharp_style_implicit_object_creation_when_type_is_apparent = false:warning
@@ -160,4 +161,4 @@ csharp_preserve_single_line_blocks = true
 csharp_using_directive_placement = outside_namespace
 
 dotnet_diagnostic.IDE0055.severity = warning
-csharp_style_expression_bodied_accessors=true:silent
+csharp_style_expression_bodied_accessors = true:silent
