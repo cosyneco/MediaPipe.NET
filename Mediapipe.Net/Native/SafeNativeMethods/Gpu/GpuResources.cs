@@ -5,15 +5,15 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
     internal partial class SafeNativeMethods : NativeMethods
     {
-        // #if IOS
+        [SupportedOSPlatform("IOS")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GpuResources__ios_gpu_data(IntPtr gpuResources);
-        // #endif
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_SharedGpuResources__get(IntPtr gpuResources);

@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Native;
 
@@ -41,20 +42,21 @@ namespace Mediapipe.Net.Gpu
 
         public IntPtr SharedPtr => sharedPtrHandle == null ? IntPtr.Zero : sharedPtrHandle.MpPtr;
 
-        // #if LINUX || ANDROID
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         public IntPtr EglDisplay => SafeNativeMethods.mp_GlContext__egl_display(MpPtr);
 
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         public IntPtr EglConfig => SafeNativeMethods.mp_GlContext__egl_config(MpPtr);
 
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         public IntPtr EglContext => SafeNativeMethods.mp_GlContext__egl_context(MpPtr);
-        // #endif
 
-        // #if OSX
         // NOTE: (from homuler) On macOS, native libs cannot be built with GPU enabled, so it cannot be used actually.
+        [SupportedOSPlatform("OSX")]
         public IntPtr NsglContext => SafeNativeMethods.mp_GlContext__nsgl_context(MpPtr);
-        // #elif IOS
+
+        [SupportedOSPlatform("IOS")]
         public IntPtr EaglContext => SafeNativeMethods.mp_GlContext__eagl_context(MpPtr);
-        // #endif
 
         public bool IsCurrent() => SafeNativeMethods.mp_GlContext__IsCurrent(MpPtr);
 

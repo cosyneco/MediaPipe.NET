@@ -5,6 +5,7 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
@@ -14,27 +15,29 @@ namespace Mediapipe.Net.Native
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_SharedGlContext__get(IntPtr sharedGlContext);
 
-        // #if LINUX || ANDROID
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__egl_display(IntPtr glContext);
 
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__egl_config(IntPtr glContext);
 
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__egl_context(IntPtr glContext);
-        // #endif
 
-        // #if IOS
+        [SupportedOSPlatform("IOS")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__eagl_context(IntPtr glContext);
-        // #elif OSX
+
+        [SupportedOSPlatform("OSX")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__nsgl_context(IntPtr glContext);
 
+        [SupportedOSPlatform("OSX")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GlContext__nsgl_pixel_format(IntPtr glContext);
-        // #endif
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.I1)]

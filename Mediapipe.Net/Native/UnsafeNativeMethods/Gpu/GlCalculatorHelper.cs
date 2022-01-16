@@ -4,6 +4,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Native
@@ -33,11 +34,10 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rgb(
             IntPtr glCalculatorHelper, IntPtr gpuBuffer, out IntPtr glTexture);
 
-        // #if IOS
+        [SupportedOSPlatform("IOS")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rgb_i(
             IntPtr glCalculatorHelper, IntPtr gpuBuffer, int plane, out IntPtr glTexture);
-        // #endif
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateDestinationTexture__i_i_ui(

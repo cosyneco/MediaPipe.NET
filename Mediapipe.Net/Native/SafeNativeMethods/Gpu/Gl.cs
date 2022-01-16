@@ -5,14 +5,14 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
     internal partial class SafeNativeMethods : NativeMethods
     {
-        // #if LINUX || ANDROID
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY)]
         public static extern IntPtr eglGetCurrentContext();
-        // #endif
     }
 }

@@ -5,16 +5,16 @@
 using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Native
 {
     internal partial class SafeNativeMethods : NativeMethods
     {
-        // #if LINUX || ANDROID
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GpuBuffer__GetGlTextureBufferSharedPtr(IntPtr gpuBuffer);
-        // #endif
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern int mp_GpuBuffer__width(IntPtr gpuBuffer);

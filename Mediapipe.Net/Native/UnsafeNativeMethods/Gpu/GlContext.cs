@@ -4,6 +4,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
@@ -30,12 +31,10 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_GlContext_Create__ui_b(
             uint shareContext, [MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
 
-        // #if IOS
-        // TODO: iOS support?
+        [SupportedOSPlatform("IOS")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlContext_Create__Pes_b(
             IntPtr sharegroup, [MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
-        // #endif
         #endregion
 
         #region GlSyncToken

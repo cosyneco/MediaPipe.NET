@@ -4,16 +4,15 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
     internal partial class UnsafeNativeMethods : NativeMethods
     {
-        // #if LINUX || ANDROID
-        // TODO: What preprocessing directive for this?
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GpuBuffer__PSgtb(IntPtr glTextureBuffer, out IntPtr gpuBuffer);
-        // #endif
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp_GpuBuffer__delete(IntPtr gpuBuffer);
