@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Native
 {
     internal partial class SafeNativeMethods : NativeMethods
     {
-        // #if UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX || UNITY_ANDROID
+        // #if LINUX || ANDROID
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GpuBuffer__GetGlTextureBufferSharedPtr(IntPtr gpuBuffer);
         // #endif

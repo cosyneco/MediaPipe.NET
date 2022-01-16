@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Native
 {
     internal partial class SafeNativeMethods : NativeMethods
     {
-        // #if UNITY_IOS
+        // #if IOS
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern IntPtr mp_GpuResources__ios_gpu_data(IntPtr gpuResources);
         // #endif
