@@ -5,8 +5,8 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Mediapipe.Net.Native;
 using Google.Protobuf;
+using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.External
 {
