@@ -24,7 +24,7 @@ csharp_style_namespace_declarations = block_scoped:warning
 dotnet_diagnostic.IDE0073.severity = error
 
 # Unused usings
-dotnet_diagnostic.IDE0005.severity = error
+dotnet_diagnostic.IDE0005.severity = warning
 
 # Language Style Rules
 csharp_style_var_for_built_in_types = false
