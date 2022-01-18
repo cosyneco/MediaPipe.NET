@@ -5,6 +5,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Mediapipe.Net.External;
+using Mediapipe.Net.Framework;
 
 namespace Mediapipe.Net.Native
 {
@@ -32,12 +33,9 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_CalculatorGraph__Config(IntPtr graph, out SerializedProto serializedProto);
 
-        // TODO: Make it be a member of CalculatorGraph
-        public delegate IntPtr NativePacketCallback(IntPtr graphPtr, IntPtr packetPtr);
-
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
         public static extern MpReturnCode mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(IntPtr graph, string streamName,
-            [MarshalAs(UnmanagedType.FunctionPtr)] NativePacketCallback packetCallback,
+            [MarshalAs(UnmanagedType.FunctionPtr)] CalculatorGraph.NativePacketCallback packetCallback,
             [MarshalAs(UnmanagedType.I1)] bool observeTimestampBounds, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
