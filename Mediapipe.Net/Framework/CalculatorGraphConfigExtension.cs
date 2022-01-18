@@ -2,10 +2,10 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Google.Protobuf;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Native;
-using Google.Protobuf;
 
 namespace Mediapipe.Net.Framework
 {
