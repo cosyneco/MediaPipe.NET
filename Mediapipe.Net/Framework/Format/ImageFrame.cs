@@ -31,19 +31,22 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        // NOTE: This byte* was a NativeArray<byte> from Unity. See if it adapts.
+        // NOTE: This byte* was a NativeArray<byte> from Unity.
+        // It will naturally translate to C++'s uint8*.
+        // The signature on the native side is:
+        //
+        // MP_CAPI(MpReturnCode) mp_ImageFrame__ui_i_i_i_Pui8_PF(
+        //     mediapipe::ImageFormat::Format format,
+        //     int width, int height, int width_step, uint8* pixel_data,
+        //     Deleter* deleter, mediapipe::ImageFrame** image_frame_out);
         unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData)
         {
-            unsafe
-            {
-                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
-                  format, width, height, widthStep,
-                  (IntPtr)pixelData,
-                  releasePixelData,
-                  out var ptr
-                ).Assert();
-                Ptr = ptr;
-            }
+            UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
+                format, width, height, widthStep,
+                (IntPtr)pixelData,
+                releasePixelData,
+                out var ptr).Assert();
+            Ptr = ptr;
         }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
