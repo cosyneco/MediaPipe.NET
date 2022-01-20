@@ -9,7 +9,8 @@ namespace Mediapipe.Net.Native
 {
     internal partial class UnsafeNativeMethods : NativeMethods
     {
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+#pragma warning disable CA2101
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern MpReturnCode google_InitGoogleLogging__PKc(string name);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
@@ -24,25 +25,26 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void glog_FLAGS_minloglevel(int level);
 
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern void glog_FLAGS_log_dir(string dir);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void glog_FLAGS_v(int v);
 
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern void glog_LOG_INFO__PKc(string str);
 
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern void glog_LOG_WARNING__PKc(string str);
 
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern void glog_LOG_ERROR__PKc(string str);
 
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern void glog_LOG_FATAL__PKc(string str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void google_FlushLogFiles(Glog.Severity severity);
+#pragma warning restore CA2101
     }
 }
