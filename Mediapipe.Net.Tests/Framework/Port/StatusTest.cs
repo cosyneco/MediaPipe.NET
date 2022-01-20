@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
 {
     public class StatusTest
     {
-        #region #Code
+        #region Code
         [Test]
         public void Code_ShouldReturnStatusCode_When_StatusIsOk()
         {
@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #IsDisposed
+        #region IsDisposed
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -44,7 +44,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #RawCode
+        #region RawCode
         [Test]
         public void RawCode_ShouldReturnRawCode_When_StatusIsOk()
         {
@@ -60,7 +60,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #Ok
+        #region Ok
         [Test]
         public void Ok_ShouldReturnTrue_When_StatusIsOk()
         {
@@ -76,7 +76,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #AssertOk
+        #region AssertOk
         [Test]
         public void AssertOk_ShouldNotThrow_When_StatusIsOk()
         {
@@ -95,7 +95,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #ToString
+        #region ToString
         [Test]
         public void ToString_ShouldReturnMessage_When_StatusIsOk()
         {

@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
 {
     public class StatusOrGpuResourcesTest
     {
-        #region #status
+        #region Status
         [Test, GpuOnly]
         public void Status_ShouldReturnOk_When_StatusIsOk()
         {
@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #isDisposed
+        #region IsDisposed
         [Test, GpuOnly]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -37,7 +37,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #Value
+        #region Value
         [Test, GpuOnly]
         public void Value_ShouldReturnGpuResources_When_StatusIsOk()
         {

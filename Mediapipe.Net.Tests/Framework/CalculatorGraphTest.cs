@@ -48,7 +48,7 @@ output_stream: ""out""
         }
         #endregion
 
-        #region #IsDisposed
+        #region IsDisposed
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -66,7 +66,7 @@ output_stream: ""out""
         }
         #endregion
 
-        #region #Initialize
+        #region Initialize
         [Test]
         public void Initialize_ShouldReturnOk_When_CalledWithConfig_And_ConfigIsNotSet()
         {
@@ -116,7 +116,7 @@ output_stream: ""out""
         }
         #endregion
 
-        #region lifecycle
+        #region Lifecycle
         [Test]
         public void LifecycleMethods_ShouldControlGraphLifeCycle()
         {

@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
 {
     public class StatusOrImageFrameTest
     {
-        #region #status
+        #region Status
         [Test]
         public void Status_ShouldReturnOk_When_StatusIsOk()
         {
@@ -22,7 +22,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #isDisposed
+        #region IsDisposed
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -40,7 +40,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        #region #Value
+        #region Value
         [Test]
         public void Value_ShouldReturnImageFrame_When_StatusIsOk()
         {

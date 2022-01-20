@@ -9,7 +9,7 @@ namespace Mediapipe.Net.Tests.Framework
 {
     public class TimestampTest
     {
-        #region #IsDisposed
+        #region IsDisposed
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -27,7 +27,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #Value
+        #region Value
         [Test]
         public void Value_ShouldReturnValue()
         {
@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #Seconds
+        #region Seconds
         [Test]
         public void Seconds_ShouldReturnValueInSeconds()
         {
@@ -45,7 +45,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #Microseconds
+        #region Microseconds
         [Test]
         public void Microseconds_ShouldReturnValueInMicroseconds()
         {
@@ -54,7 +54,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #IsSpecialValue
+        #region IsSpecialValue
         [Test]
         public void IsSpecialValue_ShouldReturnFalse_When_ValueIsInRange()
         {
@@ -77,7 +77,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #IsRangeValue
+        #region IsRangeValue
         [Test]
         public void IsRangeValue_ShouldReturnTrue_When_ValueIsInRange()
         {
@@ -114,7 +114,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #IsAllowedInStream
+        #region IsAllowedInStream
         [Test]
         public void IsAllowedInStream_ShouldReturnTrue_When_ValueIsInRange()
         {
@@ -137,7 +137,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #DebugString
+        #region DebugString
         [Test]
         public void DebugString_ShouldReturnDebugString()
         {
@@ -153,7 +153,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #NextAllowedInStream
+        #region NextAllowedInStream
         [Test]
         public void NextAllowedInStream_ShouldReturnNextTimestamp_When_ValueIsInRange()
         {
@@ -171,7 +171,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #PreviousAllowedInStream
+        #region PreviousAllowedInStream
         [Test]
         public void PreviousAllowedInStream_ShouldReturnPreviousTimestamp_When_ValueIsInRange()
         {
@@ -189,7 +189,7 @@ namespace Mediapipe.Net.Tests.Framework
         }
         #endregion
 
-        #region #FromSeconds
+        #region FromSeconds
         [Test]
         public void FromSeconds_ShouldReturnTimestamp()
         {
