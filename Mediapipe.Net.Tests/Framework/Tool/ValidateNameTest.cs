@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
 {
     public class ValidateNameTest
     {
-        #region .ValidateName
+        #region ValidateName
         [TestCase("humphrey")]
         [TestCase("humphrey_bogart")]
         [TestCase("humphrey_bogart_1899")]
@@ -48,7 +48,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         }
         #endregion
 
-        #region .ValidateNumber
+        #region ValidateNumber
         [TestCase("0")]
         [TestCase("10")]
         [TestCase("1234567890")]
@@ -67,7 +67,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         }
         #endregion
 
-        #region .ValidateTag
+        #region ValidateTag
         [TestCase("MALE")]
         [TestCase("MALE_ACTOR")]
         [TestCase("ACTOR_1899")]
@@ -102,7 +102,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         }
         #endregion
 
-        #region .ParseTagAndName
+        #region ParseTagAndName
         [TestCase("MALE:humphrey", "MALE", "humphrey")]
         [TestCase("ACTOR:humphrey_bogart", "ACTOR", "humphrey_bogart")]
         [TestCase("ACTOR_1899:humphrey_1899", "ACTOR_1899", "humphrey_1899")]
@@ -143,7 +143,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         }
         #endregion
 
-        #region .ParseTagIndexName
+        #region ParseTagIndexName
         [TestCase("MALE:humphrey", "MALE", 0, "humphrey")]
         [TestCase("ACTOR:humphrey_bogart", "ACTOR", 0, "humphrey_bogart")]
         [TestCase("ACTOR_1899:humphrey_1899", "ACTOR_1899", 0, "humphrey_1899")]
@@ -222,7 +222,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         }
         #endregion
 
-        #region .ParseTagIndex
+        #region ParseTagIndex
         [TestCase("", "", 0)]
         [TestCase("VIDEO:0", "VIDEO", 0)]
         [TestCase("VIDEO:1", "VIDEO", 1)]

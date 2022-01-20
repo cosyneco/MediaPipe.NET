@@ -92,7 +92,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
         #endregion
 
-        #region #isDisposed
+        #region IsDisposed
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
@@ -110,7 +110,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
         #endregion
 
-        #region #SetToZero
+        #region SetToZero
         [Test]
         public void SetToZero_ShouldSetZeroToAllBytes()
         {
@@ -123,7 +123,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
         #endregion
 
-        #region #SetAlignmentPaddingAreas
+        #region SetAlignmentPaddingAreas
         [Test]
         public void SetAlignmentPaddingAreas_ShouldNotThrow()
         {
