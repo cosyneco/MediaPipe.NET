@@ -37,7 +37,7 @@ namespace Mediapipe.Net.Tests.Gpu
         #endregion
 
         #region IsCurrent
-        [Test]
+        [Test, GpuOnly]
         public void IsCurrent_ShouldReturnFalse_When_CalledOutOfGlContext()
         {
             var glContext = getGlContext();
