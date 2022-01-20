@@ -30,9 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
@@ -43,6 +40,9 @@ jobs:
 
       - name: Test MediaPipe.NET
         run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Upload test artifact
         if: ${{ always() }}
