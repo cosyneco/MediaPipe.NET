@@ -39,10 +39,10 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Build MediaPipe.NET
-        run: dotnet build -c Debug ${{ env.PROJECT_NAME }} -r ${{ matrix.os.runtime }}
+        run: dotnet build -c Debug ${{ env.PROJECT_NAME }} -r ${{ matrix.os.runtime }} --self-contained
 
       - name: Test MediaPipe.NET
-        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
+        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
 
       - name: Upload test artifact
         if: ${{ always() }}
