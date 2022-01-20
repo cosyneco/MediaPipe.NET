@@ -2,12 +2,12 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Port;
 using NUnit.Framework;
-using System;
 
 namespace Mediapipe.Net.Tests.Framework.Packet
 {
