@@ -2,31 +2,33 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System.IO;
 using System.Collections.Generic;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Protobuf;
+using Mediapipe.Net.Core;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class FaceMeshCpuCalculator : ICpuCalculator<List<NormalizedLandmarkList>>
+    public class FaceMeshCpuCalculator : Disposable, ICpuCalculator<List<NormalizedLandmarkList>>
     {
         private const string input_stream = "input_video";
         private const string output_stream0 = "output_video";
         private const string output_stream1 = "multi_face_landmarks";
 
-        private const string graphPath = "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt";
+        private const string graph_path = "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt";
 
-        private CalculatorGraph graph;
+        private readonly CalculatorGraph graph;
 
-        private OutputStreamPoller<ImageFrame> framePoller;
+        private readonly OutputStreamPoller<ImageFrame> framePoller;
 
-        private OutputStreamPoller<List<NormalizedLandmarkList>> landmarksPoller;
+        private readonly OutputStreamPoller<List<NormalizedLandmarkList>> landmarksPoller;
 
         public FaceMeshCpuCalculator()
         {
-            graph = new CalculatorGraph(System.IO.File.ReadAllText(graphPath));
+            graph = new CalculatorGraph(File.ReadAllText(graph_path));
             framePoller = graph.AddOutputStreamPoller<ImageFrame>(output_stream0).Value();
             landmarksPoller = graph.AddOutputStreamPoller<List<NormalizedLandmarkList>>(output_stream1).Value();
         }
@@ -51,7 +53,7 @@ namespace Mediapipe.Net.Calculators
 
         public long CurrentFrame { get; private set; } = 0;
 
-        public void Dispose()
+        protected override void DisposeManaged()
         {
             framePoller.Dispose();
             landmarksPoller.Dispose();

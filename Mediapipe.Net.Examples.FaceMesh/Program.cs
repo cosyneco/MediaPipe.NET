@@ -2,17 +2,11 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using CommandLine;
 using Mediapipe.Net.Calculators;
-using Mediapipe.Net.Examples.FaceMesh;
 using Mediapipe.Net.External;
-using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.Packet;
-using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
-using Mediapipe.Net.Gpu;
 using SeeShark;
 using SeeShark.FFmpeg;
 
@@ -31,7 +25,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
             //get and parse arguments
             var parsed = Parser.Default.ParseArguments<Options>(args).Value;
 
-            SeeShark.FFmpeg.FFmpegManager.SetupFFmpeg("/usr/lib");
+            FFmpegManager.SetupFFmpeg("/usr/lib");
 
             //get a camera device
             CameraManager manager = new CameraManager();
@@ -52,7 +46,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
             //dispose the camera on program exit
             Console.CancelKeyPress += (sender, eventArgs) => camera.Dispose();
 
-            camera.OnFrame += OnFrame;
+            camera.OnFrame += onFrame;
 
 
             Glog.Initialize("stuff");
@@ -65,16 +59,16 @@ namespace Mediapipe.Net.Examples.FaceMesh
             Console.ReadLine();
         }
 
-        private unsafe static void OnFrame(object? sender, FrameEventArgs e)
+        private unsafe static void onFrame(object? sender, FrameEventArgs e)
         {
+            if (calculator == null)
+                return;
+
             var frame = e.Frame;
             if (converter == null)
-            {
                 converter = new FrameConverter(frame, PixelFormat.Rgba);
-            }
 
-            //dont use a frame if it's not new
-
+            // Don't use a frame if it's not new
             if (e.Status != DecodeStatus.NewFrame)
                 return;
 
@@ -87,7 +81,8 @@ namespace Mediapipe.Net.Examples.FaceMesh
                     rawDataPtr);
             }
 
-            ImageFrame img = calculator.Perform(imgframe, out var result);
+            ImageFrame img = calculator.Perform(imgframe, out List<NormalizedLandmarkList> result);
+            Console.WriteLine($"Got Landmarks (N={result.Count})");
         }
     }
 }
