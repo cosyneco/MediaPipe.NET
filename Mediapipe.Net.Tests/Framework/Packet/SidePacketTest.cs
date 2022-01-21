@@ -51,16 +51,14 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         [Test]
         public void Emplace_ShouldIgnoreValue_When_KeyExists()
         {
-            using (var sidePacket = new SidePacket())
-            {
-                var oldValuePacket = new FloatPacket(1.0f);
-                sidePacket.Emplace("value", oldValuePacket);
-                Assert.AreEqual(sidePacket.At<FloatPacket>("value")?.Get(), 1.0f);
+            using var sidePacket = new SidePacket();
+            var oldValuePacket = new FloatPacket(1.0f);
+            sidePacket.Emplace("value", oldValuePacket);
+            Assert.AreEqual(sidePacket.At<FloatPacket>("value")?.Get(), 1.0f);
 
-                var newValuePacket = new FloatPacket(2.0f);
-                sidePacket.Emplace("value", newValuePacket);
-                Assert.AreEqual(sidePacket.At<FloatPacket>("value")?.Get(), 1.0f);
-            }
+            var newValuePacket = new FloatPacket(2.0f);
+            sidePacket.Emplace("value", newValuePacket);
+            Assert.AreEqual(sidePacket.At<FloatPacket>("value")?.Get(), 1.0f);
         }
         #endregion
 

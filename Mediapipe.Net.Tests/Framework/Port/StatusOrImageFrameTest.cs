@@ -54,7 +54,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         }
         #endregion
 
-        private StatusOrImageFrame initializeSubject()
+        private static StatusOrImageFrame initializeSubject()
         {
             var imageFrame = new ImageFrame(ImageFormat.Sbgra, 10, 10);
             var packet = new ImageFramePacket(imageFrame, new Timestamp(1));
