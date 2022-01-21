@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Calculators
         private const string output_stream0 = "output_video";
         private const string output_stream1 = "pose_landmarks";
 
-        private const string graphPath = "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
+        private const string graph_path = "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
 
         private CalculatorGraph graph;
 
@@ -27,7 +27,7 @@ namespace Mediapipe.Net.Calculators
 
         public BlazePoseGpuCalculator()
         {
-            graph = new CalculatorGraph(System.IO.File.ReadAllText(graphPath));
+            graph = new CalculatorGraph(System.IO.File.ReadAllText(graph_path));
             framePoller = graph.AddOutputStreamPoller<GpuBuffer>(output_stream0).Value();
             graph.ObserveOutputStream<NormalizedLandmarkListPacket, NormalizedLandmarkList>(output_stream1, (packet) =>
             {
