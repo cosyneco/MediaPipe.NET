@@ -2,12 +2,14 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
@@ -24,18 +26,21 @@ namespace Mediapipe.Net.Calculators
 
         private readonly OutputStreamPoller<ImageFrame> framePoller;
 
-        private readonly OutputStreamPoller<List<NormalizedLandmarkList>> landmarksPoller;
-
         public FaceMeshCpuCalculator()
         {
             graph = new CalculatorGraph(File.ReadAllText(graph_path));
             framePoller = graph.AddOutputStreamPoller<ImageFrame>(output_stream0).Value();
-            landmarksPoller = graph.AddOutputStreamPoller<List<NormalizedLandmarkList>>(output_stream1).Value();
+            graph.ObserveOutputStream<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>(output_stream1, (packet) =>
+            {
+                List<NormalizedLandmarkList> landmarks = packet.Get();
+                OnResult?.Invoke(this, landmarks);
+                return Status.Ok();
+            }, out var callbackHandle).AssertOk();
         }
 
         public void Run() => graph.StartRun().AssertOk();
 
-        public ImageFrame Perform(ImageFrame frame, out List<NormalizedLandmarkList> result)
+        public ImageFrame Send(ImageFrame frame)
         {
             using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame++));
             graph.AddPacketToInputStream(input_stream, packet).AssertOk();
@@ -44,19 +49,16 @@ namespace Mediapipe.Net.Calculators
             framePoller.Next(outPacket);
             ImageFrame outFrame = outPacket.Get();
 
-            NormalizedLandmarkListVectorPacket landmarksPacket = new NormalizedLandmarkListVectorPacket();
-            landmarksPoller.Next(landmarksPacket);
-            result = landmarksPacket.Get();
-
             return outFrame;
         }
+
+        public event EventHandler<List<NormalizedLandmarkList>>? OnResult;
 
         public long CurrentFrame { get; private set; } = 0;
 
         protected override void DisposeManaged()
         {
             framePoller.Dispose();
-            landmarksPoller.Dispose();
             graph.Dispose();
         }
     }

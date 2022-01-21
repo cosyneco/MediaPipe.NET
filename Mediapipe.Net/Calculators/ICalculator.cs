@@ -9,7 +9,9 @@ namespace Mediapipe.Net.Calculators
     public interface ICalculator<U, T> : IDisposable
     {
         public void Run();
-        public U Perform(U frame, out T result);
+        public U Send(U frame);
+
+        public event EventHandler<T> OnResult;
 
         public long CurrentFrame { get; }
     }

@@ -2,10 +2,12 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Gpu;
 
@@ -23,18 +25,21 @@ namespace Mediapipe.Net.Calculators
 
         private OutputStreamPoller<GpuBuffer> framePoller;
 
-        private OutputStreamPoller<List<NormalizedLandmarkList>> landmarksPoller;
-
         public FaceMeshGpuCalculator()
         {
             graph = new CalculatorGraph(System.IO.File.ReadAllText(graphPath));
             framePoller = graph.AddOutputStreamPoller<GpuBuffer>(output_stream0).Value();
-            landmarksPoller = graph.AddOutputStreamPoller<List<NormalizedLandmarkList>>(output_stream1).Value();
+            graph.ObserveOutputStream<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>(output_stream1, (packet) =>
+            {
+                List<NormalizedLandmarkList> landmarks = packet.Get();
+                OnResult?.Invoke(this, landmarks);
+                return Status.Ok();
+            }, out var callbackHandle).AssertOk();
         }
 
         public void Run() => graph.StartRun();
 
-        public GpuBuffer Perform(GpuBuffer frame, out List<NormalizedLandmarkList> result)
+        public GpuBuffer Send(GpuBuffer frame)
         {
             GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
 
@@ -44,19 +49,16 @@ namespace Mediapipe.Net.Calculators
             framePoller.Next(packet);
             GpuBuffer outBuffer = outPacket.Get();
 
-            NormalizedLandmarkListVectorPacket landmarksPacket = new NormalizedLandmarkListVectorPacket();
-            landmarksPoller.Next(landmarksPacket);
-            result = landmarksPacket.Get();
-
             return outBuffer;
         }
+
+        public event EventHandler<List<NormalizedLandmarkList>>? OnResult;
 
         public long CurrentFrame { get; private set; } = 0;
 
         public void Dispose()
         {
             framePoller.Dispose();
-            landmarksPoller.Dispose();
             graph.Dispose();
         }
     }

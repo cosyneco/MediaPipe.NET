@@ -52,6 +52,8 @@ namespace Mediapipe.Net.Examples.FaceMesh
             Glog.Initialize("stuff");
             calculator = new FaceMeshCpuCalculator();
 
+            calculator.OnResult += handleLandmarks;
+
             calculator.Run();
 
             camera.StartCapture();
@@ -59,7 +61,12 @@ namespace Mediapipe.Net.Examples.FaceMesh
             Console.ReadLine();
         }
 
-        private unsafe static void onFrame(object? sender, FrameEventArgs e)
+        private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> e)
+        {
+            Console.WriteLine("Got landmarks");
+        }
+
+        private static unsafe void onFrame(object? sender, FrameEventArgs e)
         {
             if (calculator == null)
                 return;
@@ -81,8 +88,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
                     rawDataPtr);
             }
 
-            ImageFrame img = calculator.Perform(imgframe, out List<NormalizedLandmarkList> result);
-            Console.WriteLine($"Got Landmarks (N={result.Count})");
+            ImageFrame img = calculator.Send(imgframe);
         }
     }
 }
