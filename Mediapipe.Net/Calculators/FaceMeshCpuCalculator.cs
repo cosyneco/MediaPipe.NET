@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Calculators
         private const string output_stream0 = "output_video";
         private const string output_stream1 = "multi_face_landmarks";
 
-
+        private const string graphPath = "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt";
 
         private CalculatorGraph graph;
 
@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Calculators
 
         public FaceMeshCpuCalculator()
         {
-            graph = new CalculatorGraph();
+            graph = new CalculatorGraph(System.IO.File.ReadAllText(graphPath));
             framePoller = graph.AddOutputStreamPoller<ImageFrame>(output_stream0).Value();
             landmarksPoller = graph.AddOutputStreamPoller<List<NormalizedLandmarkList>>(output_stream1).Value();
         }
