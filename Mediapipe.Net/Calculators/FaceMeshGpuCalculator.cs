@@ -41,7 +41,7 @@ namespace Mediapipe.Net.Calculators
 
         public GpuBuffer Send(GpuBuffer frame)
         {
-            GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
+            using GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
 
             graph.AddPacketToInputStream(input_stream, packet).AssertOk();
 

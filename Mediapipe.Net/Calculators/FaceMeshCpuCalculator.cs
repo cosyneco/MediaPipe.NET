@@ -45,7 +45,7 @@ namespace Mediapipe.Net.Calculators
             using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame++));
             graph.AddPacketToInputStream(input_stream, packet).AssertOk();
 
-            using ImageFramePacket outPacket = new ImageFramePacket();
+            ImageFramePacket outPacket = new ImageFramePacket();
             framePoller.Next(outPacket);
             ImageFrame outFrame = outPacket.Get();
 
