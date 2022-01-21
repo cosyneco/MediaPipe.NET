@@ -45,7 +45,7 @@ jobs:
 
       - name: Test MediaPipe.NET (*nix)
         if: ${{ matrix.os.name != 'Windows' }}
-        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
+        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=${{ env.TEST_PROJECT_NAME }}/TestResults-${{ matrix.os.name }}.trx"
 
       - name: Setup tmate session
         if: ${{ failure() }}
@@ -56,4 +56,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: TestResults-${{ matrix.os.name }}
-          path: ${{ env.TEST_PROJECT_NAME }}/TestResults/*.trx
+          path: ${{ env.TEST_PROJECT_NAME }}/TestResults-*.trx
