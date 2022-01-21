@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Calculators
 
         public GpuBuffer Perform(GpuBuffer frame, out List<NormalizedLandmarkList> result)
         {
-            GpuBufferPacket packet = new GpuBufferPacket(frame);
+            GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
 
             graph.AddPacketToInputStream(input_stream, packet).AssertOk();
 
@@ -50,6 +50,8 @@ namespace Mediapipe.Net.Calculators
 
             return outBuffer;
         }
+
+        public long CurrentFrame { get; private set; } = 0;
 
         public void Dispose()
         {

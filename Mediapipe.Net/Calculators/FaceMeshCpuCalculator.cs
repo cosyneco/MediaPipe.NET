@@ -35,12 +35,11 @@ namespace Mediapipe.Net.Calculators
 
         public ImageFrame Perform(ImageFrame frame, out List<NormalizedLandmarkList> result)
         {
-            ImageFramePacket packet = new ImageFramePacket(frame);
-
+            using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame++));
             graph.AddPacketToInputStream(input_stream, packet).AssertOk();
 
-            ImageFramePacket outPacket = new ImageFramePacket();
-            framePoller.Next(packet);
+            using ImageFramePacket outPacket = new ImageFramePacket();
+            framePoller.Next(outPacket);
             ImageFrame outFrame = outPacket.Get();
 
             NormalizedLandmarkListVectorPacket landmarksPacket = new NormalizedLandmarkListVectorPacket();
@@ -49,6 +48,8 @@ namespace Mediapipe.Net.Calculators
 
             return outFrame;
         }
+
+        public long CurrentFrame { get; private set; } = 0;
 
         public void Dispose()
         {
