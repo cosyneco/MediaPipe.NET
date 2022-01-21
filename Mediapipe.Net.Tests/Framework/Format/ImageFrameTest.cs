@@ -83,7 +83,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
             }
         }
 
-        [Test]
+        [Test, SignalAbort]
         public void Ctor_ShouldThrowMediaPipeException_When_CalledWithInvalidArgument()
         {
 #pragma warning disable IDE0058
@@ -143,7 +143,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.IsEmpty(normalBuffer.Where((x, i) => x != largeBuffer[i]));
         }
 
-        [Test]
+        [Test, SignalAbort]
         public void CopyToByteBuffer_ShouldThrowException_When_BufferSizeIsTooSmall()
         {
             using var imageFrame = new ImageFrame(ImageFormat.Gray8, 10, 10);
@@ -162,7 +162,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.IsEmpty(normalBuffer.Where((x, i) => x != largeBuffer[i]));
         }
 
-        [Test]
+        [Test, SignalAbort]
         public void CopyToUshortBuffer_ShouldThrowException_When_BufferSizeIsTooSmall()
         {
             using var imageFrame = new ImageFrame(ImageFormat.Gray16, 10, 10);
@@ -181,7 +181,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.IsEmpty(normalBuffer.Where((x, i) => Math.Abs(x - largeBuffer[i]) > 1e-9));
         }
 
-        [Test]
+        [Test, SignalAbort]
         public void CopyToFloatBuffer_ShouldThrowException_When_BufferSizeIsTooSmall()
         {
             using var imageFrame = new ImageFrame(ImageFormat.Vec32f1, 10, 10);
