@@ -38,7 +38,13 @@ jobs:
       - name: Build MediaPipe.NET
         run: dotnet build -c Debug ${{ env.PROJECT_NAME }} -r ${{ matrix.os.runtime }} --self-contained
 
-      - name: Test MediaPipe.NET
+      # Ignore SignalAbort tests on Windows
+      - name: Test MediaPipe.NET (Windows)
+        if: ${{ matrix.os.name == 'Windows' }}
+        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly&TestCategory!=SignalAbort" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
+
+      - name: Test MediaPipe.NET (*nix)
+        if: ${{ matrix.os.name != 'Windows' }}
         run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
 
       - name: Setup tmate session
