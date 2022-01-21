@@ -5,37 +5,26 @@
             "label": "build",
             "command": "dotnet",
             "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/Mediapipe.Net.Tests/Mediapipe.Net.Tests.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "publish",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "publish",
-                "${workspaceFolder}/Mediapipe.Net.Tests/Mediapipe.Net.Tests.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "watch",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "watch",
-                "run",
-                "${workspaceFolder}/Mediapipe.Net.Tests/Mediapipe.Net.Tests.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
+            "linux": {
+                "args": [
+                    "build",
+                    "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
+                    "/property:GenerateFullPaths=true",
+                    "/consoleloggerparameters:NoSummary",
+                    "--runtime",
+                    "linux-x64"
+                ]
+            },
+            "windows": {
+                "args": [
+                    "build",
+                    "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
+                    "/property:GenerateFullPaths=true",
+                    "/consoleloggerparameters:NoSummary",
+                    "--runtime",
+                    "win-x64"
+                ]
+            },
             "problemMatcher": "$msCompile"
         }
     ]
