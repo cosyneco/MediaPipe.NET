@@ -9,14 +9,8 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin/Debug/net6.0/linux-x64/Mediapipe.Net.Examples.FaceMesh.dll",
+            "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin/Debug/net6.0/Mediapipe.Net.Examples.FaceMesh.dll",
             // If you have changed target frameworks, make sure to update the program path.
-            "linux": {
-                "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin/Debug/net6.0/linux-x64/Mediapipe.Net.Examples.FaceMesh.dll",
-            },
-            "windows": {
-                "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin/Debug/net6.0/win-x64/Mediapipe.Net.Examples.FaceMesh.dll",
-            },
             "cwd": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",

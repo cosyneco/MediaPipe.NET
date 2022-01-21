@@ -5,26 +5,12 @@
             "label": "build",
             "command": "dotnet",
             "type": "process",
-            "linux": {
-                "args": [
-                    "build",
-                    "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
-                    "/property:GenerateFullPaths=true",
-                    "/consoleloggerparameters:NoSummary",
-                    "--runtime",
-                    "linux-x64"
-                ]
-            },
-            "windows": {
-                "args": [
-                    "build",
-                    "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
-                    "/property:GenerateFullPaths=true",
-                    "/consoleloggerparameters:NoSummary",
-                    "--runtime",
-                    "win-x64"
-                ]
-            },
+            "args": [
+                "build",
+                "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
             "problemMatcher": "$msCompile"
         }
     ]
