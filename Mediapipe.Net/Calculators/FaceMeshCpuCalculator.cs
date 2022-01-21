@@ -2,13 +2,13 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Protobuf;
-using Mediapipe.Net.Core;
 
 namespace Mediapipe.Net.Calculators
 {
