@@ -1,20 +1,23 @@
 name: Report
 on:
-  workflow_call:
-    inputs:
-      name:
-        required: true
-        type: string
+  workflow_run:
+    workflows: [ 'Test' ]
+    branches:
+      - '*'
+    types:
+      - completed
 
 jobs:
   report:
     name: Report
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion != 'cancelled' }}
     steps:
       - name: Report
-        uses: dorny/test-reporter@v1.4.2
+        uses: dorny/test-reporter@v1
         with:
-          artifact: TestResults-${{ inputs.name }}
-          name: Test Results
+          artifact: /TestResults-(.*)/
+          name: Test Results ($1)
           path: "*.trx"
           reporter: dotnet-trx
+          fail-on-error: false

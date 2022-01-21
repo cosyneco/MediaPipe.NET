@@ -62,7 +62,11 @@ namespace Mediapipe.Net.Gpu
                 return tmpStatus.MpPtr;
             };
 
-            var nativeGlStatusFuncHandle = GCHandle.Alloc(nativeGlStatusFunc, GCHandleType.Pinned);
+            // Was previously `GCHandleType.Pinned`. It had to be changed because
+            // the `NativeGlStatusFunction` delegate type is non-blittable.
+            // Using `GCHandleType.Normal` should be fine as it seems that all we
+            // need to do is to make sure that the delegate doesn't get garbage-collected.
+            var nativeGlStatusFuncHandle = GCHandle.Alloc(nativeGlStatusFunc, GCHandleType.Normal);
             var status = RunInGlContext(nativeGlStatusFunc);
             nativeGlStatusFuncHandle.Free();
 

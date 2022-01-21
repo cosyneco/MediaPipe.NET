@@ -9,8 +9,10 @@ namespace Mediapipe.Net.Native
 {
     internal partial class UnsafeNativeMethods : NativeMethods
     {
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+#pragma warning disable CA2101
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool mp_api__ConvertFromCalculatorGraphConfigTextFormat(string configText, out SerializedProto serializedProto);
+#pragma warning restore CA2101
     }
 }

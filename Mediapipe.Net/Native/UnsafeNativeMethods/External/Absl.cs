@@ -9,7 +9,8 @@ namespace Mediapipe.Net.Native
 {
     internal partial class UnsafeNativeMethods : NativeMethods
     {
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Unicode)]
+#pragma warning disable CA2101
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern MpReturnCode absl_Status__i_PKc(int code, string message, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
@@ -17,5 +18,6 @@ namespace Mediapipe.Net.Native
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode absl_Status__ToString(IntPtr status, out IntPtr str);
+#pragma warning restore CA2101
     }
 }

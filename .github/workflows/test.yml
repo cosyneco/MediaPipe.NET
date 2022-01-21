@@ -1,42 +1,59 @@
 name: Test
 on:
-  workflow_call:
-    inputs:
-      name:
-        required: true
-        type: string
-      path:
-        required: true
-        type: string
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
+
+env:
+  PROJECT_NAME: Mediapipe.Net
+  TEST_PROJECT_NAME: Mediapipe.Net.Tests
 
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - { name: Windows, runner: windows-latest, runtime: win-x64 }
+          # - { name: MacOS, runner: macos-latest, runtime: osx-x64 }
+          - { name: Linux, runner: ubuntu-latest, runtime: linux-x64 }
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install .NET
+      - name: Setup .NET 6
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
 
-      - name: Lint
-        uses: github/super-linter@v4
-        env:
-          SUPPRESS_POSSUM: true
-          VALIDATE_CSHARP: true
-          VALIDATE_EDITORCONFIG: true
-          VALIDATE_ALL_CODEBASE: false
+      - name: Build MediaPipe.NET
+        run: dotnet build -c Debug ${{ env.PROJECT_NAME }} -r ${{ matrix.os.runtime }} --self-contained
 
-      - name: Test
-        run: dotnet test sbtw-desktop.slnf --logger "trx;LogFileName=${{ inputs.name }}.trx"
+      # Ignore SignalAbort tests on Windows
+      - name: Test MediaPipe.NET (Windows)
+        if: ${{ matrix.os.name == 'Windows' }}
+        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly&TestCategory!=SignalAbort" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
 
-      - name: Upload Results
-        uses: actions/upload-artifact@v2
+      - name: Test MediaPipe.NET (*nix)
+        if: ${{ matrix.os.name != 'Windows' }}
+        run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+
+      - name: Upload test artifact
         if: ${{ always() }}
+        uses: actions/upload-artifact@v2
         with:
-          name: ${{ inputs.name }}
-          path: ${{ github.workspace }}/${{ inputs.path }}/TestResults/TestResults-${{ inputs.name }}.trx
-
+          name: TestResults-${{ matrix.os.name }}
+          path: ${{ matrix.os.runtime }}/*.trx
