@@ -4,9 +4,10 @@
 
 using Mediapipe.Net.Framework.Format;
 
-namespace Mediapipe.Net.Calculators;
-
-public interface ICpuCalculator<T> : ICalculator<ImageFrame, T>
+namespace Mediapipe.Net.Calculators
 {
+    public interface ICpuCalculator<T> : ICalculator<ImageFrame, T>
+    {
 
+    }
 }

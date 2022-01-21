@@ -4,10 +4,11 @@
 
 using System;
 
-namespace Mediapipe.Net.Calculators;
-
-public interface ICalculator<U, T> : IDisposable
+namespace Mediapipe.Net.Calculators
 {
-    public void Run();
-    public U Perform(U frame, out T result);
+    public interface ICalculator<U, T> : IDisposable
+    {
+        public void Run();
+        public U Perform(U frame, out T result);
+    }
 }

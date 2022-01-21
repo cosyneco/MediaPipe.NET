@@ -4,9 +4,10 @@
 
 using Mediapipe.Net.Gpu;
 
-namespace Mediapipe.Net.Calculators;
-
-public interface IGpuCalculator<T> : ICalculator<GpuBuffer, T>
+namespace Mediapipe.Net.Calculators
 {
+    public interface IGpuCalculator<T> : ICalculator<GpuBuffer, T>
+    {
 
+    }
 }
