@@ -63,7 +63,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
 
         private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> e)
         {
-            Console.WriteLine("Got landmarks");
+            Console.WriteLine($"Got landmarks at frame {calculator?.CurrentFrame}");
         }
 
         private static unsafe void onFrame(object? sender, FrameEventArgs e)
