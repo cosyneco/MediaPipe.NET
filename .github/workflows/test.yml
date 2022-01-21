@@ -24,7 +24,7 @@ jobs:
       matrix:
         os:
           - { name: Windows, runner: windows-latest, runtime: win-x64 }
-          - { name: MacOS, runner: macos-latest, runtime: osx-x64 }
+          # - { name: MacOS, runner: macos-latest, runtime: osx-x64 }
           - { name: Linux, runner: ubuntu-latest, runtime: linux-x64 }
     steps:
       - name: Checkout
@@ -34,10 +34,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.x'
-
-      - name: Setup FFmpeg (MacOS)
-        if: ${{ matrix.os.name == 'MacOS' }}
-        run: brew install ffmpeg
 
       - name: Build MediaPipe.NET
         run: dotnet build -c Debug ${{ env.PROJECT_NAME }} -r ${{ matrix.os.runtime }} --self-contained
