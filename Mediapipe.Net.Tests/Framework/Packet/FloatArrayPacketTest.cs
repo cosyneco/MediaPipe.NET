@@ -93,7 +93,11 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         {
             float[] array = { 0.01f };
             using var packet = new FloatArrayPacket(array);
-            Assert.AreEqual(packet.DebugTypeName(), "float []");
+
+            Assert.AreEqual(packet.DebugTypeName(),
+                OperatingSystem.IsWindows()
+                    ? "float [0]"
+                    : "float []");
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
@@ -119,7 +120,11 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         public void DebugTypeName_ShouldReturnFloat_When_ValueIsSet()
         {
             using var packet = new ImageFramePacket(new ImageFrame());
-            Assert.AreEqual(packet.DebugTypeName(), "mediapipe::ImageFrame");
+
+            Assert.AreEqual(packet.DebugTypeName(),
+                OperatingSystem.IsWindows()
+                    ? "class mediapipe::ImageFrame"
+                    : "mediapipe::ImageFrame");
         }
         #endregion
     }
