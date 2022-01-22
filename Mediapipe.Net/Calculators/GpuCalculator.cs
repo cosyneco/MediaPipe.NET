@@ -28,7 +28,7 @@ namespace Mediapipe.Net.Calculators
         private readonly GlCalculatorHelper gpuHelper;
         private readonly OutputStreamPoller<GpuBuffer> framePoller;
 
-        [SupportedOSPlatform("linux"), SupportedOSPlatform("android")]
+        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         protected GpuCalculator()
         {
             graph = new CalculatorGraph(File.ReadAllText(GraphPath));
