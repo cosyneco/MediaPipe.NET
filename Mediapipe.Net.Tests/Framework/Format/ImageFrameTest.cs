@@ -22,7 +22,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.AreEqual(imageFrame.Width, 0);
             Assert.AreEqual(imageFrame.Height, 0);
             // As these are now properties, i had to ToString() them so that they are run.
-            Assert.Throws<FormatException>(() => imageFrame.ChannelSize.ToString() );
+            Assert.Throws<FormatException>(() => imageFrame.ChannelSize.ToString());
             Assert.Throws<FormatException>(() => imageFrame.NumberOfChannels.ToString());
             Assert.Throws<FormatException>(() => imageFrame.ByteDepth.ToString());
             Assert.AreEqual(imageFrame.WidthStep, 0);
