@@ -24,6 +24,6 @@ namespace Mediapipe.Net.Core
         /// </summary>
         void TransferOwnership();
 
-        bool OwnsResource();
+        bool OwnsResource { get; }
     }
 }
