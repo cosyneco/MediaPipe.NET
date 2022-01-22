@@ -91,7 +91,7 @@ namespace Mediapipe.Net.Calculators
             }).AssertOk();
 
             if (outFrame == null)
-                throw new MediapipeNetException("The output image frame is still null after the GL context run, for some reason.");
+                throw new MediapipeNetException("!! FATAL - Frame is null on current GL context run!");
 
             return outFrame;
         }
