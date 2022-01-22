@@ -3,13 +3,14 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using Mediapipe.Net.Framework.Format;
 
 namespace Mediapipe.Net.Calculators
 {
-    public interface ICalculator<U, T> : IDisposable
+    public interface ICalculator<T> : IDisposable
     {
         public void Run();
-        public U Send(U frame);
+        public ImageFrame Send(ImageFrame frame);
 
         public event EventHandler<T> OnResult;
 

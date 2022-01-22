@@ -6,7 +6,7 @@ using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Calculators
 {
-    public interface IGpuCalculator<T> : ICalculator<GpuBuffer, T>
+    public interface IGpuCalculator<T> : ICalculator<T>
     {
 
     }
