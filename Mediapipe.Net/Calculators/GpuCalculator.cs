@@ -52,7 +52,7 @@ namespace Mediapipe.Net.Calculators
             }
         }
 
-        public void Run() => graph?.StartRun().AssertOk();
+        public void Run() => graph.StartRun().AssertOk();
 
         public ImageFrame Send(ImageFrame frame)
         {
