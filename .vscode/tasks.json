@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/Mediapipe.Net.Examples.FaceMesh.csproj",
+                "${workspaceFolder}/MediaPipe.NET.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
