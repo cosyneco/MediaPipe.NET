@@ -10,9 +10,9 @@ using osuTK;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
 {
-    public class TestSceneSpinningBox : OsuFrameworkVisualTestsTestScene
+    public class TestSceneFaceMeshCpu : OsuFrameworkVisualTestsTestScene
     {
-        public TestSceneSpinningBox()
+        public TestSceneFaceMeshCpu()
         {
             Add(new Container
             {
@@ -24,11 +24,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex(@"272727"),
                     },
-                    new SpinningBox
-                    {
-                        Anchor = Anchor.Centre,
-                        Size = new Vector2(200, 200),
-                    },
+                    new MediapipeDrawable()
                 }
             });
         }

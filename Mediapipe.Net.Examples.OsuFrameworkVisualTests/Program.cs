@@ -4,6 +4,7 @@
 
 using osu.Framework;
 using osu.Framework.Platform;
+using SeeShark.FFmpeg;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
@@ -11,6 +12,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
     {
         public static void Main()
         {
+            FFmpegManager.SetupFFmpeg("/usr/lib");
             using GameHost host = Host.GetSuitableHost("visual-tests");
             using var game = new OsuFrameworkVisualTestsTestBrowser();
             host.Run(game);
