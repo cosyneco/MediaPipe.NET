@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Framework
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_Timestamp__delete(Ptr);
 
         #region IEquatable<Timestamp>
-        public bool Equals(Timestamp? other) => other != null && Microseconds() == other.Microseconds();
+        public bool Equals(Timestamp? other) => other != null && Microseconds == other.Microseconds;
 
         public override bool Equals(object? obj)
         {
@@ -36,22 +36,22 @@ namespace Mediapipe.Net.Framework
         public static bool operator !=(Timestamp? x, Timestamp? y)
             => x is null || y is null ? !Equals(x, y) : !x.Equals(y);
 
-        public override int GetHashCode() => Microseconds().GetHashCode();
+        public override int GetHashCode() => Microseconds.GetHashCode();
         #endregion
 
-        public long Value() => SafeNativeMethods.mp_Timestamp__Value(MpPtr);
+        public long Value => SafeNativeMethods.mp_Timestamp__Value(MpPtr);
 
-        public double Seconds() => SafeNativeMethods.mp_Timestamp__Seconds(MpPtr);
+        public double Seconds => SafeNativeMethods.mp_Timestamp__Seconds(MpPtr);
 
-        public long Microseconds() => SafeNativeMethods.mp_Timestamp__Microseconds(MpPtr);
+        public long Microseconds => SafeNativeMethods.mp_Timestamp__Microseconds(MpPtr);
 
-        public bool IsSpecialValue() => SafeNativeMethods.mp_Timestamp__IsSpecialValue(MpPtr);
+        public bool IsSpecialValue => SafeNativeMethods.mp_Timestamp__IsSpecialValue(MpPtr);
 
-        public bool IsRangeValue() => SafeNativeMethods.mp_Timestamp__IsRangeValue(MpPtr);
+        public bool IsRangeValue => SafeNativeMethods.mp_Timestamp__IsRangeValue(MpPtr);
 
-        public bool IsAllowedInStream() => SafeNativeMethods.mp_Timestamp__IsAllowedInStream(MpPtr);
+        public bool IsAllowedInStream => SafeNativeMethods.mp_Timestamp__IsAllowedInStream(MpPtr);
 
-        public string? DebugString() => MarshalStringFromNative(UnsafeNativeMethods.mp_Timestamp__DebugString);
+        public string? DebugString => MarshalStringFromNative(UnsafeNativeMethods.mp_Timestamp__DebugString);
 
         public Timestamp NextAllowedInStream()
         {

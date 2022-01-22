@@ -18,19 +18,20 @@ namespace Mediapipe.Net.Tests.Framework.Format
         {
             using var imageFrame = new ImageFrame();
 #pragma warning disable IDE0058
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Unknown);
-            Assert.AreEqual(imageFrame.Width(), 0);
-            Assert.AreEqual(imageFrame.Height(), 0);
-            Assert.Throws<FormatException>(() => { imageFrame.ChannelSize(); });
-            Assert.Throws<FormatException>(() => { imageFrame.NumberOfChannels(); });
-            Assert.Throws<FormatException>(() => { imageFrame.ByteDepth(); });
-            Assert.AreEqual(imageFrame.WidthStep(), 0);
-            Assert.AreEqual(imageFrame.PixelDataSize(), 0);
-            Assert.Throws<FormatException>(() => { imageFrame.PixelDataSizeStoredContiguously(); });
-            Assert.True(imageFrame.IsEmpty());
-            Assert.False(imageFrame.IsContiguous());
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Unknown);
+            Assert.AreEqual(imageFrame.Width, 0);
+            Assert.AreEqual(imageFrame.Height, 0);
+            // As these are now properties, i had to ToString() them so that they are run.
+            Assert.Throws<FormatException>(() => imageFrame.ChannelSize.ToString());
+            Assert.Throws<FormatException>(() => imageFrame.NumberOfChannels.ToString());
+            Assert.Throws<FormatException>(() => imageFrame.ByteDepth.ToString());
+            Assert.AreEqual(imageFrame.WidthStep, 0);
+            Assert.AreEqual(imageFrame.PixelDataSize, 0);
+            Assert.Throws<FormatException>(() => imageFrame.PixelDataSizeStoredContiguously.ToString());
+            Assert.True(imageFrame.IsEmpty);
+            Assert.False(imageFrame.IsContiguous);
             Assert.False(imageFrame.IsAligned(16));
-            Assert.AreEqual(imageFrame.MutablePixelData(), IntPtr.Zero);
+            Assert.AreEqual(imageFrame.MutablePixelData, IntPtr.Zero);
 #pragma warning restore IDE0058
         }
 
@@ -38,28 +39,28 @@ namespace Mediapipe.Net.Tests.Framework.Format
         public void Ctor_ShouldInstantiateImageFrame_When_CalledWithFormat()
         {
             using var imageFrame = new ImageFrame(ImageFormat.Sbgra, 640, 480);
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Sbgra);
-            Assert.AreEqual(imageFrame.Width(), 640);
-            Assert.AreEqual(imageFrame.Height(), 480);
-            Assert.AreEqual(imageFrame.ChannelSize(), 1);
-            Assert.AreEqual(imageFrame.NumberOfChannels(), 4);
-            Assert.AreEqual(imageFrame.ByteDepth(), 1);
-            Assert.AreEqual(imageFrame.WidthStep(), 640 * 4);
-            Assert.AreEqual(imageFrame.PixelDataSize(), 640 * 480 * 4);
-            Assert.AreEqual(imageFrame.PixelDataSizeStoredContiguously(), 640 * 480 * 4);
-            Assert.False(imageFrame.IsEmpty());
-            Assert.True(imageFrame.IsContiguous());
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Sbgra);
+            Assert.AreEqual(imageFrame.Width, 640);
+            Assert.AreEqual(imageFrame.Height, 480);
+            Assert.AreEqual(imageFrame.ChannelSize, 1);
+            Assert.AreEqual(imageFrame.NumberOfChannels, 4);
+            Assert.AreEqual(imageFrame.ByteDepth, 1);
+            Assert.AreEqual(imageFrame.WidthStep, 640 * 4);
+            Assert.AreEqual(imageFrame.PixelDataSize, 640 * 480 * 4);
+            Assert.AreEqual(imageFrame.PixelDataSizeStoredContiguously, 640 * 480 * 4);
+            Assert.False(imageFrame.IsEmpty);
+            Assert.True(imageFrame.IsContiguous);
             Assert.True(imageFrame.IsAligned(16));
-            Assert.AreNotEqual(imageFrame.MutablePixelData(), IntPtr.Zero);
+            Assert.AreNotEqual(imageFrame.MutablePixelData, IntPtr.Zero);
         }
 
         [Test]
         public void Ctor_ShouldInstantiateImageFrame_When_CalledWithFormatAndAlignmentBoundary()
         {
             using var imageFrame = new ImageFrame(ImageFormat.Gray8, 100, 100, 8);
-            Assert.AreEqual(imageFrame.Width(), 100);
-            Assert.AreEqual(imageFrame.NumberOfChannels(), 1);
-            Assert.AreEqual(imageFrame.WidthStep(), 104);
+            Assert.AreEqual(imageFrame.Width, 100);
+            Assert.AreEqual(imageFrame.NumberOfChannels, 1);
+            Assert.AreEqual(imageFrame.WidthStep, 104);
         }
 
         [Test]
@@ -74,9 +75,9 @@ namespace Mediapipe.Net.Tests.Framework.Format
             fixed (byte* pixelData = dupBytes)
             {
                 using var imageFrame = new ImageFrame(ImageFormat.Sbgra, 4, 2, 16, pixelData);
-                Assert.AreEqual(imageFrame.Width(), 4);
-                Assert.AreEqual(imageFrame.Height(), 2);
-                Assert.False(imageFrame.IsEmpty());
+                Assert.AreEqual(imageFrame.Width, 4);
+                Assert.AreEqual(imageFrame.Height, 2);
+                Assert.False(imageFrame.IsEmpty);
 
                 var bytes = imageFrame.CopyToByteBuffer(32);
                 Assert.IsEmpty(bytes.Where((x, i) => x != srcBytes[i]));

@@ -69,7 +69,7 @@ namespace Mediapipe.Net.Gpu
 
         public int Height() => SafeNativeMethods.mp_GlTextureBuffer__height(MpPtr);
 
-        public GpuBufferFormat Format() => SafeNativeMethods.mp_GlTextureBuffer__format(MpPtr);
+        public GpuBufferFormat Format => SafeNativeMethods.mp_GlTextureBuffer__format(MpPtr);
 
         public void WaitUntilComplete() => UnsafeNativeMethods.mp_GlTextureBuffer__WaitUntilComplete(MpPtr).Assert();
 

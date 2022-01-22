@@ -39,14 +39,16 @@ namespace Mediapipe.Net.Gpu
 
         public void WaitOnGpu() => UnsafeNativeMethods.mp_GlSyncPoint__WaitOnGpu(MpPtr).Assert();
 
-        public bool IsReady()
+        public bool IsReady
         {
-            UnsafeNativeMethods.mp_GlSyncPoint__IsReady(MpPtr, out var value).Assert();
+            get
+            {
+                UnsafeNativeMethods.mp_GlSyncPoint__IsReady(MpPtr, out var value).Assert();
 
-            GC.KeepAlive(this);
-            return value;
+                GC.KeepAlive(this);
+                return value;
+            }
         }
-
         public GlContext GetContext()
         {
             UnsafeNativeMethods.mp_GlSyncPoint__GetContext(MpPtr, out var sharedGlContextPtr).Assert();

@@ -76,7 +76,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         public void ValidateAsProtoMessageLite_ShouldReturnInvalidArgument_When_ValueIsBool()
         {
             using var packet = new BoolPacket(true);
-            Assert.AreEqual(packet.ValidateAsProtoMessageLite().Code(), Status.StatusCode.InvalidArgument);
+            Assert.AreEqual(packet.ValidateAsProtoMessageLite().Code, Status.StatusCode.InvalidArgument);
         }
         #endregion
     }

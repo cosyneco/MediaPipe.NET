@@ -15,14 +15,14 @@ namespace Mediapipe.Net.Tests.Framework.Port
         public void Code_ShouldReturnStatusCode_When_StatusIsOk()
         {
             using var status = Status.Ok();
-            Assert.AreEqual(status.Code(), Status.StatusCode.Ok);
+            Assert.AreEqual(status.Code, Status.StatusCode.Ok);
         }
 
         [Test]
         public void Code_ShouldReturnStatusCode_When_StatusIsFailedPrecondition()
         {
             using var status = Status.FailedPrecondition();
-            Assert.AreEqual(status.Code(), Status.StatusCode.FailedPrecondition);
+            Assert.AreEqual(status.Code, Status.StatusCode.FailedPrecondition);
         }
         #endregion
 
@@ -49,14 +49,14 @@ namespace Mediapipe.Net.Tests.Framework.Port
         public void RawCode_ShouldReturnRawCode_When_StatusIsOk()
         {
             using var status = Status.Ok();
-            Assert.AreEqual(status.RawCode(), 0);
+            Assert.AreEqual(status.RawCode, 0);
         }
 
         [Test]
         public void RawCode_ShouldReturnRawCode_When_StatusIsFailedPrecondition()
         {
             using var status = Status.FailedPrecondition();
-            Assert.AreEqual(status.RawCode(), 9);
+            Assert.AreEqual(status.RawCode, 9);
         }
         #endregion
 

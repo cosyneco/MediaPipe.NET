@@ -57,9 +57,9 @@ namespace Mediapipe.Net.Framework.Format
             // Do nothing (pixelData is moved)
         }
 
-        public bool IsEmpty() => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr);
+        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr);
 
-        public bool IsContiguous() => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr);
+        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr);
 
         public bool IsAligned(uint alignmentBoundary)
         {
@@ -69,48 +69,60 @@ namespace Mediapipe.Net.Framework.Format
             return value;
         }
 
-        public ImageFormat Format() => SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
+        public ImageFormat Format => SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
 
-        public int Width() => SafeNativeMethods.mp_ImageFrame__Width(MpPtr);
+        public int Width => SafeNativeMethods.mp_ImageFrame__Width(MpPtr);
 
-        public int Height() => SafeNativeMethods.mp_ImageFrame__Height(MpPtr);
+        public int Height => SafeNativeMethods.mp_ImageFrame__Height(MpPtr);
 
-        public int ChannelSize()
+        public int ChannelSize
         {
-            var code = SafeNativeMethods.mp_ImageFrame__ChannelSize(MpPtr, out var value);
+            get
+            {
+                var code = SafeNativeMethods.mp_ImageFrame__ChannelSize(MpPtr, out var value);
 
-            GC.KeepAlive(this);
-            return valueOrFormatException(code, value);
+                GC.KeepAlive(this);
+                return valueOrFormatException(code, value);
+            }
         }
 
-        public int NumberOfChannels()
+        public int NumberOfChannels
         {
-            var code = SafeNativeMethods.mp_ImageFrame__NumberOfChannels(MpPtr, out var value);
+            get
+            {
+                var code = SafeNativeMethods.mp_ImageFrame__NumberOfChannels(MpPtr, out var value);
 
-            GC.KeepAlive(this);
-            return valueOrFormatException(code, value);
+                GC.KeepAlive(this);
+                return valueOrFormatException(code, value);
+            }
         }
 
-        public int ByteDepth()
+        public int ByteDepth
         {
-            var code = SafeNativeMethods.mp_ImageFrame__ByteDepth(MpPtr, out var value);
+            get
+            {
+                var code = SafeNativeMethods.mp_ImageFrame__ByteDepth(MpPtr, out var value);
 
-            GC.KeepAlive(this);
-            return valueOrFormatException(code, value);
+                GC.KeepAlive(this);
+                return valueOrFormatException(code, value);
+            }
         }
 
-        public int WidthStep() => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
+        public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
 
-        public IntPtr MutablePixelData() => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        public IntPtr MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
 
-        public int PixelDataSize() => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
+        public int PixelDataSize => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
 
-        public int PixelDataSizeStoredContiguously()
+        public int PixelDataSizeStoredContiguously
         {
-            var code = SafeNativeMethods.mp_ImageFrame__PixelDataSizeStoredContiguously(MpPtr, out var value);
+            get
+            {
+                var code = SafeNativeMethods.mp_ImageFrame__PixelDataSizeStoredContiguously(MpPtr, out var value);
 
-            GC.KeepAlive(this);
-            return valueOrFormatException(code, value);
+                GC.KeepAlive(this);
+                return valueOrFormatException(code, value);
+            }
         }
 
         public void SetToZero()
@@ -148,19 +160,19 @@ namespace Mediapipe.Net.Framework.Format
         /// </param>
         public byte[] GetChannel(int channelNumber, bool flipVertically, byte[] colors)
         {
-            var format = Format();
+            var format = Format;
 
             switch (format)
             {
                 case ImageFormat.Srgb:
                     if (channelNumber < 0 || channelNumber > 3)
                         throw new ArgumentException($"There are only 3 channels, but No. {channelNumber} is specified");
-                    readChannel(MutablePixelData(), channelNumber, 3, Width(), Height(), WidthStep(), flipVertically, colors);
+                    readChannel(MutablePixelData, channelNumber, 3, Width, Height, WidthStep, flipVertically, colors);
                     return colors;
                 case ImageFormat.Srgba:
                     if (channelNumber < 0 || channelNumber > 4)
                         throw new ArgumentException($"There are only 4 channels, but No. {channelNumber} is specified");
-                    readChannel(MutablePixelData(), channelNumber, 4, Width(), Height(), WidthStep(), flipVertically, colors);
+                    readChannel(MutablePixelData, channelNumber, 4, Width, Height, WidthStep, flipVertically, colors);
                     return colors;
                 default:
                     throw new NotImplementedException($"Currently only SRGB and SRGBA format are supported: {format}");
@@ -176,7 +188,7 @@ namespace Mediapipe.Net.Framework.Format
         ///   For example, if the format is RGB, 0 means R channel, 1 means G channel, and 2 means B channel.
         /// </param>
         public byte[] GetChannel(int channelNumber, bool flipVertically)
-            => GetChannel(channelNumber, flipVertically, new byte[Width() * Height()]);
+            => GetChannel(channelNumber, flipVertically, new byte[Width * Height]);
 
         private delegate MpReturnCode CopyToBufferHandler(IntPtr ptr, IntPtr buffer, int bufferSize);
 
@@ -205,7 +217,7 @@ namespace Mediapipe.Net.Framework.Format
             }
             catch (MediapipeException)
             {
-                throw new FormatException($"Invalid image format: {Format()}");
+                throw new FormatException($"Invalid image format: {Format}");
             }
         }
 

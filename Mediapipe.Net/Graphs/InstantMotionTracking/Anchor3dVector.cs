@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.Graphs.InstantMotionTracking
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct Anchor3dVector
+    internal struct Anchor3dVector : IDisposable
     {
         public IntPtr Data;
         public int Size;

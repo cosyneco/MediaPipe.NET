@@ -32,18 +32,18 @@ namespace Mediapipe.Net.Core
 
         public void ReleaseMpResource()
         {
-            if (OwnsResource())
+            if (OwnsResource)
                 DeleteMpPtr();
 
             TransferOwnership();
         }
 
-        public bool OwnsResource() => IsOwner && Ptr != IntPtr.Zero;
+        public bool OwnsResource => IsOwner && Ptr != IntPtr.Zero;
         #endregion
 
         protected override void DisposeUnmanaged()
         {
-            if (OwnsResource())
+            if (OwnsResource)
                 DeleteMpPtr();
 
             ReleaseMpPtr();

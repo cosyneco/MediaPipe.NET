@@ -32,7 +32,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Value_ShouldReturnValue()
         {
             using var timestamp = new Timestamp(10);
-            Assert.AreEqual(timestamp.Value(), 10);
+            Assert.AreEqual(timestamp.Value, 10);
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Seconds_ShouldReturnValueInSeconds()
         {
             using var timestamp = new Timestamp(1_000_000);
-            Assert.AreEqual(timestamp.Seconds(), 1d, 1e-9);
+            Assert.AreEqual(timestamp.Seconds, 1d, 1e-9);
         }
         #endregion
 
@@ -50,7 +50,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Microseconds_ShouldReturnValueInMicroseconds()
         {
             using var timestamp = new Timestamp(1_000_000);
-            Assert.AreEqual(timestamp.Microseconds(), 1_000_000);
+            Assert.AreEqual(timestamp.Microseconds, 1_000_000);
         }
         #endregion
 
@@ -59,21 +59,21 @@ namespace Mediapipe.Net.Tests.Framework
         public void IsSpecialValue_ShouldReturnFalse_When_ValueIsInRange()
         {
             using var timestamp = new Timestamp(1);
-            Assert.False(timestamp.IsSpecialValue());
+            Assert.False(timestamp.IsSpecialValue);
         }
 
         [Test]
         public void IsSpecialValue_ShouldReturnTrue_When_TimestampIsUnset()
         {
             using var timestamp = Timestamp.Unset();
-            Assert.True(timestamp.IsSpecialValue());
+            Assert.True(timestamp.IsSpecialValue);
         }
 
         [Test]
         public void IsSpecialValue_ShouldReturnTrue_When_TimestampIsUnstarted()
         {
             using var timestamp = Timestamp.Unstarted();
-            Assert.True(timestamp.IsSpecialValue());
+            Assert.True(timestamp.IsSpecialValue);
         }
         #endregion
 
@@ -82,35 +82,35 @@ namespace Mediapipe.Net.Tests.Framework
         public void IsRangeValue_ShouldReturnTrue_When_ValueIsInRange()
         {
             using var timestamp = new Timestamp(1);
-            Assert.True(timestamp.IsRangeValue());
+            Assert.True(timestamp.IsRangeValue);
         }
 
         [Test]
         public void IsRangeValue_ShouldReturnFalse_When_TimestampIsPreStream()
         {
             using var timestamp = Timestamp.PreStream();
-            Assert.False(timestamp.IsRangeValue());
+            Assert.False(timestamp.IsRangeValue);
         }
 
         [Test]
         public void IsRangeValue_ShouldReturnFalse_When_TimestampIsPostStream()
         {
             using var timestamp = Timestamp.PostStream();
-            Assert.False(timestamp.IsRangeValue());
+            Assert.False(timestamp.IsRangeValue);
         }
 
         [Test]
         public void IsRangeValue_ShouldReturnTrue_When_TimestampIsMin()
         {
             using var timestamp = Timestamp.Min();
-            Assert.True(timestamp.IsRangeValue());
+            Assert.True(timestamp.IsRangeValue);
         }
 
         [Test]
         public void IsRangeValue_ShouldReturnTrue_When_TimestampIsMax()
         {
             using var timestamp = Timestamp.Max();
-            Assert.True(timestamp.IsRangeValue());
+            Assert.True(timestamp.IsRangeValue);
         }
         #endregion
 
@@ -119,21 +119,21 @@ namespace Mediapipe.Net.Tests.Framework
         public void IsAllowedInStream_ShouldReturnTrue_When_ValueIsInRange()
         {
             using var timestamp = new Timestamp(1);
-            Assert.True(timestamp.IsAllowedInStream());
+            Assert.True(timestamp.IsAllowedInStream);
         }
 
         [Test]
         public void IsAllowedInStream_ShouldReturnFalse_When_TimestampIsOneOverPostStream()
         {
             using var timestamp = Timestamp.OneOverPostStream();
-            Assert.False(timestamp.IsAllowedInStream());
+            Assert.False(timestamp.IsAllowedInStream);
         }
 
         [Test]
         public void IsAllowedInStream_ShouldReturnFalse_When_TimestampIsDone()
         {
             using var timestamp = Timestamp.Done();
-            Assert.False(timestamp.IsAllowedInStream());
+            Assert.False(timestamp.IsAllowedInStream);
         }
         #endregion
 
@@ -142,14 +142,14 @@ namespace Mediapipe.Net.Tests.Framework
         public void DebugString_ShouldReturnDebugString()
         {
             using var timestamp = new Timestamp(1);
-            Assert.AreEqual(timestamp.DebugString(), "1");
+            Assert.AreEqual(timestamp.DebugString, "1");
         }
 
         [Test]
         public void DebugString_ShouldReturnDebugString_When_TimestampIsUnset()
         {
             using var timestamp = Timestamp.Unset();
-            Assert.AreEqual(timestamp.DebugString(), "Timestamp::Unset()");
+            Assert.AreEqual(timestamp.DebugString, "Timestamp::Unset()");
         }
         #endregion
 
@@ -159,7 +159,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = new Timestamp(1);
             using var nextTimestamp = timestamp.NextAllowedInStream();
-            Assert.AreEqual(nextTimestamp.Microseconds(), 2);
+            Assert.AreEqual(nextTimestamp.Microseconds, 2);
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = new Timestamp(1);
             using var nextTimestamp = timestamp.PreviousAllowedInStream();
-            Assert.AreEqual(nextTimestamp.Microseconds(), 0);
+            Assert.AreEqual(nextTimestamp.Microseconds, 0);
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void FromSeconds_ShouldReturnTimestamp()
         {
             using var timestamp = Timestamp.FromSeconds(1d);
-            Assert.AreEqual(timestamp.Microseconds(), 1_000_000);
+            Assert.AreEqual(timestamp.Microseconds, 1_000_000);
         }
         #endregion
     }
