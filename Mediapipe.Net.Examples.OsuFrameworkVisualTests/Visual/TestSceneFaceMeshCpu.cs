@@ -24,7 +24,12 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex(@"272727"),
                     },
-                    new MediapipeDrawable()
+                    new MediapipeDrawable
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Size = new Vector2(640, 360),
+                    }
                 }
             });
         }
