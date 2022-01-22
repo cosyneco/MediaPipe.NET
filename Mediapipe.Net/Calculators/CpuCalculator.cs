@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
@@ -23,6 +24,7 @@ namespace Mediapipe.Net.Calculators
 
         private readonly CalculatorGraph graph;
         private readonly OutputStreamPoller<ImageFrame> framePoller;
+        private readonly GCHandle observeStreamHandle;
 
         public event EventHandler<T>? OnResult;
 
@@ -41,7 +43,7 @@ namespace Mediapipe.Net.Calculators
                     T secondaryOutput = packet.Get();
                     OnResult?.Invoke(this, secondaryOutput);
                     return Status.Ok();
-                }, out var callbackHandle).AssertOk();
+                }, out observeStreamHandle).AssertOk();
             }
         }
 
@@ -63,8 +65,12 @@ namespace Mediapipe.Net.Calculators
 
         protected override void DisposeManaged()
         {
-            framePoller.Dispose();
+            graph.CloseInputStream(input_video_stream);
+            graph.WaitUntilDone();
             graph.Dispose();
+
+            observeStreamHandle.Free();
+            framePoller.Dispose();
         }
     }
 }

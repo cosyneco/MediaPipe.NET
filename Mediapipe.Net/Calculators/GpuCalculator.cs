@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
@@ -27,6 +28,7 @@ namespace Mediapipe.Net.Calculators
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
         private readonly OutputStreamPoller<GpuBuffer> framePoller;
+        private readonly GCHandle observeStreamHandle;
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         protected GpuCalculator()
@@ -50,7 +52,7 @@ namespace Mediapipe.Net.Calculators
                     T secondaryOutput = packet.Get();
                     OnResult?.Invoke(this, secondaryOutput);
                     return Status.Ok();
-                }, out var callbackHandle).AssertOk();
+                }, out observeStreamHandle).AssertOk();
             }
         }
 
@@ -101,10 +103,14 @@ namespace Mediapipe.Net.Calculators
 
         protected override void DisposeManaged()
         {
+            graph.CloseInputStream(input_video_stream);
+            graph.WaitUntilDone();
             graph.Dispose();
+
             gpuResources.Dispose();
             gpuHelper.Dispose();
             framePoller.Dispose();
+            observeStreamHandle.Free();
         }
     }
 }
