@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Calculators
     {
         private const string input_stream = "input_video";
         private const string output_stream0 = "output_video";
-        private const string output_stream1 = "hand_landmarks";
+        private const string output_stream1 = "landmarks";
 
         private const string graph_path = "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live.pbtxt";
 
