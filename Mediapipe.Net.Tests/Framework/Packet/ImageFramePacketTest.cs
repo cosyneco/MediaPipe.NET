@@ -39,7 +39,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Unknown);
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Unknown);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Unknown);
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Unknown);
             Assert.AreEqual(packet.Timestamp(), timestamp);
         }
         #endregion
@@ -94,9 +94,9 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         {
             using var packet = new ImageFramePacket(new ImageFrame(ImageFormat.Sbgra, 10, 10));
             using var imageFrame = packet.Get();
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Sbgra);
-            Assert.AreEqual(imageFrame.Width(), 10);
-            Assert.AreEqual(imageFrame.Height(), 10);
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Sbgra);
+            Assert.AreEqual(imageFrame.Width, 10);
+            Assert.AreEqual(imageFrame.Height, 10);
         }
         #endregion
 
@@ -109,9 +109,9 @@ namespace Mediapipe.Net.Tests.Framework.Packet
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format(), ImageFormat.Sbgra);
-            Assert.AreEqual(imageFrame.Width(), 10);
-            Assert.AreEqual(imageFrame.Height(), 10);
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Sbgra);
+            Assert.AreEqual(imageFrame.Width, 10);
+            Assert.AreEqual(imageFrame.Height, 10);
         }
         #endregion
 
