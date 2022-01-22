@@ -1,10 +1,9 @@
-﻿// Copyright (c) homuler and Vignette
+// Copyright (c) homuler and Vignette
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using CommandLine;
 using Mediapipe.Net.Calculators;
-using Mediapipe.Net.Examples.FaceMeshGpu;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;

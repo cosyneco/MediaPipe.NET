@@ -9,71 +9,73 @@ using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 
-namespace Mediapipe.Net.Calculators;
-
-public abstract class GpuCalculator<T> : IGpuCalculator<T>
+namespace Mediapipe.Net.Calculators
 {
-    protected const string InputStream = "input_video";
-    protected const string OutputStream0 = "output_video";
-
-    protected abstract string OutputStream1 { get; }
-
-    protected GpuResources Resources;
-
-    protected GlCalculatorHelper? CalculatorHelper;
-
-    protected CalculatorGraph? Graph;
-
-    protected OutputStreamPoller<GpuBuffer>? FramePoller;
-
-    public GpuCalculator()
+    public abstract class GpuCalculator<T> : IGpuCalculator<T>
     {
-        Resources = GpuResources.Create().Value();
-        CalculatorHelper = new GlCalculatorHelper();
+        protected const string InputStream = "input_video";
+        protected const string OutputStream0 = "output_video";
 
-        CalculatorHelper.InitializeForTest(Resources);
-    }
+        protected abstract string OutputStream1 { get; }
 
-    protected void InitializeGraph()
-    {
-        FramePoller = Graph.AddOutputStreamPoller<GpuBuffer>(OutputStream0).Value();
-        Graph.ObserveOutputStream<Packet<T>, T>(OutputStream1, (packet) =>
+        protected GpuResources Resources;
+
+        protected GlCalculatorHelper? CalculatorHelper;
+
+        protected CalculatorGraph? Graph;
+
+        protected OutputStreamPoller<GpuBuffer>? FramePoller;
+
+        public GpuCalculator()
         {
-            T landmarks = packet.Get();
-            OnResult?.Invoke(this, landmarks);
-            return Status.Ok();
-        }, out var callbackHandle).AssertOk();
-    }
+            Resources = GpuResources.Create().Value();
+            CalculatorHelper = new GlCalculatorHelper();
 
-    public void Run() => Graph?.StartRun().AssertOk();
+            CalculatorHelper.InitializeForTest(Resources);
+        }
 
-    public ImageFrame Send(ImageFrame frame)
-    {
-        CalculatorHelper.RunInGlContext(delegate
+        protected void InitializeGraph()
         {
-            var texture = CalculatorHelper?.CreateSourceTexture(frame);
-            var gpuFrame = texture?.GetGpuBufferFrame();
-            var outputFrame =
-        });
-        using GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
+            FramePoller = Graph.AddOutputStreamPoller<GpuBuffer>(OutputStream0).Value();
+            Graph.ObserveOutputStream<Packet<T>, T>(OutputStream1, (packet) =>
+            {
+                T landmarks = packet.Get();
+                OnResult?.Invoke(this, landmarks);
+                return Status.Ok();
+            }, out var callbackHandle).AssertOk();
+        }
 
-        Graph.AddPacketToInputStream(InputStream, packet).AssertOk();
+        public void Run() => Graph?.StartRun().AssertOk();
 
-        GpuBufferPacket outPacket = new GpuBufferPacket();
-        FramePoller.Next(packet);
-        GpuBuffer outBuffer = outPacket.Get();
+        public ImageFrame Send(ImageFrame frame)
+        {
+            CalculatorHelper.RunInGlContext(delegate
+            {
+                var texture = CalculatorHelper?.CreateSourceTexture(frame);
+                var gpuFrame = texture?.GetGpuBufferFrame();
+                var outputFrame =
+    
+            });
+            using GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
 
-        return outBuffer;
-    }
+            Graph.AddPacketToInputStream(InputStream, packet).AssertOk();
 
-    public virtual event EventHandler<T>? OnResult;
-    public long CurrentFrame { get; private set; }
+            GpuBufferPacket outPacket = new GpuBufferPacket();
+            FramePoller.Next(packet);
+            GpuBuffer outBuffer = outPacket.Get();
 
-    public void Dispose()
-    {
-        Resources.Dispose();
-        Graph?.Dispose();
-        CalculatorHelper?.Dispose();
-        FramePoller?.Dispose();
+            return outBuffer;
+        }
+
+        public virtual event EventHandler<T>? OnResult;
+        public long CurrentFrame { get; private set; }
+
+        public void Dispose()
+        {
+            Resources.Dispose();
+            Graph?.Dispose();
+            CalculatorHelper?.Dispose();
+            FramePoller?.Dispose();
+        }
     }
 }
