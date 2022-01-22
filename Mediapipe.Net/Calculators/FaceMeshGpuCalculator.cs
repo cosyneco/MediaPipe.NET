@@ -3,20 +3,14 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System.Collections.Generic;
-using Mediapipe.Net.Framework;
+using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class FaceMeshGpuCalculator : GpuCalculator<List<NormalizedLandmarkList>>
+    public class FaceMeshGpuCalculator : GpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
     {
-        protected override string OutputStream1 { get; } = "multi_face_landmarks";
-
-        private const string graph_path = "mediapipe/graphs/face_mesh/face_mesh_desktop_live_gpu.pbtxt";
-
-        public FaceMeshGpuCalculator()
-        {
-            Graph = new CalculatorGraph(System.IO.File.ReadAllText(graph_path));
-        }
+        protected override string GraphPath => "mediapipe/graphs/face_mesh/face_mesh_desktop_live_gpu.pbtxt";
+        protected override string? SecondaryOutputStream => "multi_face_landmarks";
     }
 }

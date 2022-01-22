@@ -3,6 +3,8 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.IO;
+using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
@@ -11,71 +13,96 @@ using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Calculators
 {
-    public abstract class GpuCalculator<T> : IGpuCalculator<T>
+    public abstract class GpuCalculator<TPacket, T> : Disposable, ICalculator<T>
+        where TPacket : Packet<T>
     {
-        protected const string InputStream = "input_video";
-        protected const string OutputStream0 = "output_video";
+        private const string input_video_stream = "input_video";
+        private const string output_video_stream = "output_video";
 
-        protected abstract string OutputStream1 { get; }
+        protected abstract string GraphPath { get; }
+        protected abstract string? SecondaryOutputStream { get; }
 
-        protected GpuResources Resources;
+        private readonly CalculatorGraph graph;
+        private readonly GpuResources gpuResources;
+        private readonly GlCalculatorHelper gpuHelper;
+        private readonly OutputStreamPoller<GpuBuffer> framePoller;
 
-        protected GlCalculatorHelper? CalculatorHelper;
-
-        protected CalculatorGraph? Graph;
-
-        protected OutputStreamPoller<GpuBuffer>? FramePoller;
-
-        public GpuCalculator()
+        protected GpuCalculator()
         {
-            Resources = GpuResources.Create().Value();
-            CalculatorHelper = new GlCalculatorHelper();
+            graph = new CalculatorGraph(File.ReadAllText(GraphPath));
 
-            CalculatorHelper.InitializeForTest(Resources);
-        }
+            gpuResources = GpuResources.Create().Value();
+            graph.SetGpuResources(gpuResources);
+            gpuHelper = new GlCalculatorHelper();
+            gpuHelper.InitializeForTest(graph.GetGpuResources());
 
-        protected void InitializeGraph()
-        {
-            FramePoller = Graph.AddOutputStreamPoller<GpuBuffer>(OutputStream0).Value();
-            Graph.ObserveOutputStream<Packet<T>, T>(OutputStream1, (packet) =>
+            framePoller = graph.AddOutputStreamPoller<GpuBuffer>(output_video_stream).Value();
+
+            if (SecondaryOutputStream != null)
             {
-                T landmarks = packet.Get();
-                OnResult?.Invoke(this, landmarks);
-                return Status.Ok();
-            }, out var callbackHandle).AssertOk();
+                graph.ObserveOutputStream<TPacket, T>(SecondaryOutputStream, (packet) =>
+                {
+                    if (packet == null)
+                        return Status.Ok();
+
+                    T secondaryOutput = packet.Get();
+                    OnResult?.Invoke(this, secondaryOutput);
+                    return Status.Ok();
+                }, out var callbackHandle).AssertOk();
+            }
         }
 
-        public void Run() => Graph?.StartRun().AssertOk();
+        public void Run() => graph?.StartRun().AssertOk();
 
         public ImageFrame Send(ImageFrame frame)
         {
-            CalculatorHelper.RunInGlContext(delegate
+            gpuHelper.RunInGlContext(() =>
             {
-                var texture = CalculatorHelper?.CreateSourceTexture(frame);
-                var gpuFrame = texture?.GetGpuBufferFrame();
-                var outputFrame =
-    
-            });
-            using GpuBufferPacket packet = new GpuBufferPacket(frame, new Timestamp(CurrentFrame++));
+                GlTexture texture = gpuHelper.CreateSourceTexture(frame);
+                GpuBuffer gpuBuffer = texture.GetGpuBufferFrame();
+                Gl.Flush();
+                texture.Release();
 
-            Graph.AddPacketToInputStream(InputStream, packet).AssertOk();
+                var packet = new GpuBufferPacket(gpuBuffer, new Timestamp(CurrentFrame++));
+                graph.AddPacketToInputStream(input_video_stream, packet);
+
+                return Status.Ok();
+            }).AssertOk();
 
             GpuBufferPacket outPacket = new GpuBufferPacket();
-            FramePoller.Next(packet);
-            GpuBuffer outBuffer = outPacket.Get();
+            framePoller.Next(outPacket);
 
-            return outBuffer;
+            ImageFrame? outFrame = null;
+
+            gpuHelper.RunInGlContext(() =>
+            {
+                GpuBuffer outBuffer = outPacket.Get();
+                GlTexture texture = gpuHelper.CreateSourceTexture(outBuffer);
+                outFrame = new ImageFrame(outBuffer.Format().ImageFormatFor(), outBuffer.Width(), outBuffer.Height(), ImageFrame.GlDefaultAlignmentBoundary);
+                gpuHelper.BindFramebuffer(texture);
+                GlTextureInfo info = outBuffer.Format().GlTextureInfoFor(0);
+                Gl.ReadPixels(0, 0, texture.Width, texture.Height, info.GlFormat, info.GlType, outFrame.MutablePixelData());
+                Gl.Flush();
+                texture.Release();
+
+                return Status.Ok();
+            }).AssertOk();
+
+            if (outFrame == null)
+                throw new MediapipeNetException("The output image frame is still null after the GL context run, for some reason.");
+
+            return outFrame;
         }
 
-        public virtual event EventHandler<T>? OnResult;
+        public event EventHandler<T>? OnResult;
         public long CurrentFrame { get; private set; }
 
-        public void Dispose()
+        protected override void DisposeManaged()
         {
-            Resources.Dispose();
-            Graph?.Dispose();
-            CalculatorHelper?.Dispose();
-            FramePoller?.Dispose();
+            graph.Dispose();
+            gpuResources.Dispose();
+            gpuHelper.Dispose();
+            framePoller.Dispose();
         }
     }
 }
