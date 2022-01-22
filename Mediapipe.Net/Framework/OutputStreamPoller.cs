@@ -30,12 +30,15 @@ namespace Mediapipe.Net.Framework
 
         public void SetMaxQueueSize(int queueSize) => UnsafeNativeMethods.mp_OutputStreamPoller__SetMaxQueueSize(MpPtr, queueSize).Assert();
 
-        public int QueueSize()
+        public int QueueSize
         {
-            UnsafeNativeMethods.mp_OutputStreamPoller__QueueSize(MpPtr, out var result).Assert();
+            get
+            {
+                UnsafeNativeMethods.mp_OutputStreamPoller__QueueSize(MpPtr, out var result).Assert();
 
-            GC.KeepAlive(this);
-            return result;
+                GC.KeepAlive(this);
+                return result;
+            }
         }
     }
 }
