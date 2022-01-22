@@ -20,8 +20,8 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         {
             using var packet = new ImageFramePacket();
             using var statusOrImageFrame = packet.Consume();
-            Assert.AreEqual(packet.ValidateAsType().Code(), Status.StatusCode.Internal);
-            Assert.AreEqual(statusOrImageFrame.Status.Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(packet.ValidateAsType().Code, Status.StatusCode.Internal);
+            Assert.AreEqual(statusOrImageFrame.Status.Code, Status.StatusCode.Internal);
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
         }
 

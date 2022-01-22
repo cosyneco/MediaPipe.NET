@@ -86,7 +86,7 @@ output_stream: ""out""
         {
             using var graph = new CalculatorGraph(valid_config_text);
             using var status = graph.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text));
-            Assert.AreEqual(status.Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(status.Code, Status.StatusCode.Internal);
         }
 
         [Test]
@@ -112,7 +112,7 @@ output_stream: ""out""
             var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
 
             using var status = graph.Initialize(config, sidePacket);
-            Assert.AreEqual(status.Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(status.Code, Status.StatusCode.Internal);
         }
         #endregion
 
@@ -137,7 +137,7 @@ output_stream: ""out""
             using var graph = new CalculatorGraph(valid_config_text);
             Assert.True(graph.StartRun().Ok());
             graph.Cancel();
-            Assert.AreEqual(graph.WaitUntilDone().Code(), Status.StatusCode.Cancelled);
+            Assert.AreEqual(graph.WaitUntilDone().Code, Status.StatusCode.Cancelled);
         }
         #endregion
     }

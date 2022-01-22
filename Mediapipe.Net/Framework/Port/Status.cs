@@ -52,15 +52,18 @@ namespace Mediapipe.Net.Framework.Port
             return (bool)ok;
         }
 
-        public StatusCode Code() => (StatusCode)RawCode();
+        public StatusCode Code => (StatusCode)RawCode;
 
-        public int RawCode()
+        public int RawCode
         {
-            if (rawCode is int valueOfRawCode)
-                return valueOfRawCode;
+            get
+            {
+                if (rawCode is int valueOfRawCode)
+                    return valueOfRawCode;
 
-            rawCode = SafeNativeMethods.absl_Status__raw_code(MpPtr);
-            return (int)rawCode;
+                rawCode = SafeNativeMethods.absl_Status__raw_code(MpPtr);
+                return (int)rawCode;
+            }
         }
 
         public override string? ToString() => MarshalStringFromNative(UnsafeNativeMethods.absl_Status__ToString);

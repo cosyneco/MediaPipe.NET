@@ -69,7 +69,7 @@ namespace Mediapipe.Net.Tests.Gpu
             glCalculatorHelper.InitializeForTest(GpuResources.Create().Value());
 
             var status = glCalculatorHelper.RunInGlContext(() => { return Status.Build(Status.StatusCode.Internal, "error"); });
-            Assert.AreEqual(status.Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(status.Code, Status.StatusCode.Internal);
         }
 
         [Test, GpuOnly]
@@ -82,7 +82,7 @@ namespace Mediapipe.Net.Tests.Gpu
             GlCalculatorHelper.GlStatusFunction glStatusFunction = () => { throw new InvalidProgramException(); };
 #pragma warning restore IDE0039
             var status = glCalculatorHelper.RunInGlContext(glStatusFunction);
-            Assert.AreEqual(status.Code(), Status.StatusCode.FailedPrecondition);
+            Assert.AreEqual(status.Code, Status.StatusCode.FailedPrecondition);
         }
         #endregion
 
@@ -125,7 +125,7 @@ namespace Mediapipe.Net.Tests.Gpu
                 }
                 return Status.Ok();
             });
-            Assert.AreEqual(status.Code(), Status.StatusCode.FailedPrecondition);
+            Assert.AreEqual(status.Code, Status.StatusCode.FailedPrecondition);
 
             status.Dispose();
         }

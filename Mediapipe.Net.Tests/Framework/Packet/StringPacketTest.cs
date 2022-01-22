@@ -20,7 +20,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
         {
             using var packet = new StringPacket();
 #pragma warning disable IDE0058
-            Assert.AreEqual(packet.ValidateAsType().Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(packet.ValidateAsType().Code, Status.StatusCode.Internal);
             Assert.Throws<MediapipeException>(() => { packet.Get(); });
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
 

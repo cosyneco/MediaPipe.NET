@@ -20,7 +20,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
             using var packet = new FloatArrayPacket();
 #pragma warning disable IDE0058
             packet.Length = 0;
-            Assert.AreEqual(packet.ValidateAsType().Code(), Status.StatusCode.Internal);
+            Assert.AreEqual(packet.ValidateAsType().Code, Status.StatusCode.Internal);
             Assert.Throws<MediapipeException>(() => { packet.Get(); });
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
 #pragma warning restore IDE0058

@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         {
             using var statusOrImageFrame = initializeSubject();
             Assert.True(statusOrImageFrame.Ok());
-            Assert.AreEqual(statusOrImageFrame.Status.Code(), Status.StatusCode.Ok);
+            Assert.AreEqual(statusOrImageFrame.Status.Code, Status.StatusCode.Ok);
         }
         #endregion
 
