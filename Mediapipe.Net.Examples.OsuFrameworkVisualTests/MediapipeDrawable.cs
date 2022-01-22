@@ -2,8 +2,6 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
-using System.IO;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.Framework.Format;
 using osu.Framework.Graphics;
@@ -14,82 +12,83 @@ using SeeShark;
 using SeeShark.FFmpeg;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests;
-
-public class MediapipeDrawable : CompositeDrawable
+namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
-    private Camera camera;
-    private FrameConverter converter;
-    private FaceMeshCpuCalculator calculator;
-
-    private Sprite sprite;
-    private Texture texture;
-
-    public MediapipeDrawable(int cameraIndex = 0)
+    public class MediapipeDrawable : CompositeDrawable
     {
-        var manager = new CameraManager();
-        camera = manager.GetCamera(cameraIndex);
+        private readonly Camera camera;
+        private FrameConverter converter;
+        private readonly FaceMeshCpuCalculator calculator;
 
-        manager.Dispose();
+        private readonly Sprite sprite;
+        private Texture texture;
 
-        camera.OnFrame += CameraOnOnFrame;
-        calculator = new FaceMeshCpuCalculator();
-
-        AddInternal(sprite = new Sprite
+        public MediapipeDrawable(int cameraIndex = 0)
         {
-            RelativeSizeAxes = Axes.Both,
-            FillMode = FillMode.Fit,
-            Anchor = Anchor.Centre,
-            Origin = Anchor.Centre,
-            FillAspectRatio = 1
-        });
-        Start();
-    }
+            var manager = new CameraManager();
+            camera = manager.GetCamera(cameraIndex);
 
-    public void Start()
-    {
-        calculator.Run();
-        camera.StartCapture();
-    }
+            manager.Dispose();
 
-    private unsafe void CameraOnOnFrame(object? sender, FrameEventArgs e)
-    {
-        if (calculator == null)
-            return;
+            camera.OnFrame += onFrame;
+            calculator = new FaceMeshCpuCalculator();
 
-        var frame = e.Frame;
-        if (converter == null)
-            converter = new FrameConverter(frame, PixelFormat.Rgba);
-
-        // Don't use a frame if it's not new
-        if (e.Status != DecodeStatus.NewFrame)
-            return;
-
-        Frame cFrame = converter.Convert(frame);
-
-        ImageFrame imgframe;
-        fixed (byte* rawDataPtr = cFrame.RawData)
-        {
-            imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
-                rawDataPtr);
+            AddInternal(sprite = new Sprite
+            {
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fit,
+                Anchor = Anchor.Centre,
+                Origin = Anchor.Centre,
+                FillAspectRatio = 1
+            });
+            Start();
         }
 
-        ImageFrame img = calculator.Send(imgframe);
-        byte[] data = img.CopyToByteBuffer(img.Height * img.WidthStep);
-        img.Dispose();
-        var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(data, cFrame.Width, cFrame.Height);
+        public void Start()
+        {
+            calculator.Run();
+            camera.StartCapture();
+        }
 
-        texture ??= new Texture(cFrame.Width, cFrame.Height);
-        texture.SetData(new TextureUpload(pixelData));
-        sprite.FillAspectRatio = (float)cFrame.Width / cFrame.Height;
-        sprite.Texture = texture;
-    }
+        private unsafe void onFrame(object? sender, FrameEventArgs e)
+        {
+            if (calculator == null)
+                return;
 
-    public new void Dispose()
-    {
-        camera.Dispose();
-        calculator.Dispose();
-        sprite.Dispose();
-        base.Dispose();
+            var frame = e.Frame;
+            if (converter == null)
+                converter = new FrameConverter(frame, PixelFormat.Rgba);
+
+            // Don't use a frame if it's not new
+            if (e.Status != DecodeStatus.NewFrame)
+                return;
+
+            Frame cFrame = converter.Convert(frame);
+
+            ImageFrame imgframe;
+            fixed (byte* rawDataPtr = cFrame.RawData)
+            {
+                imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
+                    rawDataPtr);
+            }
+
+            ImageFrame img = calculator.Send(imgframe);
+            byte[] data = img.CopyToByteBuffer(img.Height * img.WidthStep);
+            img.Dispose();
+            var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(data, cFrame.Width, cFrame.Height);
+
+            texture ??= new Texture(cFrame.Width, cFrame.Height);
+            texture.SetData(new TextureUpload(pixelData));
+            sprite.FillAspectRatio = (float)cFrame.Width / cFrame.Height;
+            sprite.Texture = texture;
+        }
+
+        public new void Dispose()
+        {
+            camera.Dispose();
+            calculator.Dispose();
+            sprite.Dispose();
+            base.Dispose();
+        }
     }
 }
