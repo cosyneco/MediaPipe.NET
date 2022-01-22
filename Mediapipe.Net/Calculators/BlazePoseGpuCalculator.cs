@@ -7,9 +7,9 @@ using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class BlazePoseCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public class BlazePoseGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath => "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt";
+        protected override string GraphPath => "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
         protected override string? SecondaryOutputStream => "pose_landmarks";
     }
 }

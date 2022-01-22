@@ -7,9 +7,9 @@ using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class HandCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public class HandGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath => "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_cpu.pbtxt";
+        protected override string GraphPath => "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_gpu.pbtxt";
         protected override string? SecondaryOutputStream => "hand_landmarks";
     }
 }
