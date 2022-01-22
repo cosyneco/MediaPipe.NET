@@ -27,10 +27,10 @@ namespace Mediapipe.Net.Gpu
         public GlTextureBuffer GetGlTextureBuffer()
             => new GlTextureBuffer(SafeNativeMethods.mp_GpuBuffer__GetGlTextureBufferSharedPtr(MpPtr), false);
 
-        public GpuBufferFormat Format() => SafeNativeMethods.mp_GpuBuffer__format(MpPtr);
+        public GpuBufferFormat Format => SafeNativeMethods.mp_GpuBuffer__format(MpPtr);
 
-        public int Width() => SafeNativeMethods.mp_GpuBuffer__width(MpPtr);
+        public int Width => SafeNativeMethods.mp_GpuBuffer__width(MpPtr);
 
-        public int Height() => SafeNativeMethods.mp_GpuBuffer__height(MpPtr);
+        public int Height => SafeNativeMethods.mp_GpuBuffer__height(MpPtr);
     }
 }
