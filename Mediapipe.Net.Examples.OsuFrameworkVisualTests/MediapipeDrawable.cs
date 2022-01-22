@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.Framework.Format;
 using osu.Framework.Graphics;
@@ -17,11 +18,11 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
     public class MediapipeDrawable : CompositeDrawable
     {
         private readonly Camera camera;
-        private FrameConverter converter;
+        private FrameConverter? converter;
         private readonly FaceMeshCpuCalculator calculator;
 
         private readonly Sprite sprite;
-        private Texture texture;
+        private Texture? texture;
 
         public MediapipeDrawable(int cameraIndex = 0)
         {
@@ -65,17 +66,16 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 
             Frame cFrame = converter.Convert(frame);
 
-            ImageFrame imgframe;
+            ImageFrame imgFrame;
             fixed (byte* rawDataPtr = cFrame.RawData)
             {
-                imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
+                imgFrame = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
                     rawDataPtr);
             }
 
-            ImageFrame img = calculator.Send(imgframe);
-            byte[] data = img.CopyToByteBuffer(img.Height * img.WidthStep);
-            img.Dispose();
-            var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(data, cFrame.Width, cFrame.Height);
+            using ImageFrame outImgFrame = calculator.Send(imgFrame);
+            var span = new ReadOnlySpan<byte>((byte*)outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
+            var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);
 
             texture ??= new Texture(cFrame.Width, cFrame.Height);
             texture.SetData(new TextureUpload(pixelData));
@@ -85,9 +85,9 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 
         public new void Dispose()
         {
+            camera.StopCapture();
             camera.Dispose();
             calculator.Dispose();
-            sprite.Dispose();
             base.Dispose();
         }
     }
