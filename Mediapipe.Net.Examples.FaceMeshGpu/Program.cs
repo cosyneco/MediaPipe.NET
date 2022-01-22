@@ -7,7 +7,6 @@ using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
-using Mediapipe.Net.Gpu;
 using SeeShark;
 using SeeShark.FFmpeg;
 
@@ -20,10 +19,6 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
         private static FrameConverter? converter;
 
         private static FaceMeshGpuCalculator? calculator;
-
-        private static GpuResources? resources;
-
-        private static GlCalculatorHelper? helper;
 
         public static void Main(string[] args)
         {
@@ -55,14 +50,8 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
 
 
             Glog.Initialize("stuff");
-
-            resources = GpuResources.Create().Value();
-
-            helper = new GlCalculatorHelper();
-
-            helper.InitializeForTest(resources);
-
             calculator = new FaceMeshGpuCalculator();
+
             calculator.OnResult += handleLandmarks;
 
             calculator.Run();
@@ -98,6 +87,8 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                 imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
                     rawDataPtr);
             }
+
+            ImageFrame img = calculator.Send(imgframe);
         }
     }
 }
