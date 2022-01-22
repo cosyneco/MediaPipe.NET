@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
@@ -27,6 +28,7 @@ namespace Mediapipe.Net.Calculators
         private readonly GlCalculatorHelper gpuHelper;
         private readonly OutputStreamPoller<GpuBuffer> framePoller;
 
+        [SupportedOSPlatform("linux"), SupportedOSPlatform("android")]
         protected GpuCalculator()
         {
             graph = new CalculatorGraph(File.ReadAllText(GraphPath));
