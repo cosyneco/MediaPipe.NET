@@ -34,7 +34,8 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                Size = new Vector2(640, 360),
+                Size = new Vector2(1280, 720),
+                FillMode = FillMode.Fit
             };
             dependencies?.Cache(mediapipeDrawable);
         }
