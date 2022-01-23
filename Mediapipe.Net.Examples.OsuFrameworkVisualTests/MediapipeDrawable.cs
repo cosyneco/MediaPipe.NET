@@ -33,6 +33,9 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             Camera.OnFrame += onFrame;
             calculator = new FaceMeshCpuCalculator();
 
+            Masking = true;
+            CornerRadius = 10;
+
             AddInternal(sprite = new Sprite
             {
                 Anchor = Anchor.Centre,
