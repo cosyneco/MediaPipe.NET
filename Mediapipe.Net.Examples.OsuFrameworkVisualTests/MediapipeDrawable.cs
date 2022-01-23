@@ -54,9 +54,6 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 
         private unsafe void onFrame(object? sender, FrameEventArgs e)
         {
-            if (calculator == null)
-                return;
-
             var frame = e.Frame;
             if (converter == null)
                 converter = new FrameConverter(frame, PixelFormat.Rgba);
