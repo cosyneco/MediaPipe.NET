@@ -14,7 +14,7 @@ namespace Mediapipe.Net.Calculators
         public ImageFrame Send(ImageFrame frame);
 
         public event EventHandler<T> OnResult;
-        
+
         public long CurrentFrame { get; }
     }
 }
