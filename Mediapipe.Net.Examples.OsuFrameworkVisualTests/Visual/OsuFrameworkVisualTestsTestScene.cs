@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
 
         private class OsuFrameworkVisualTestsTestSceneTestRunner : OsuFrameworkVisualTestsGameBase, ITestSceneTestRunner
         {
-            private TestSceneTestRunner.TestRunner runner;
+            private TestSceneTestRunner.TestRunner? runner;
 
             protected override void LoadAsyncComplete()
             {
@@ -20,7 +20,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
                 Add(runner = new TestSceneTestRunner.TestRunner());
             }
 
-            public void RunTestBlocking(TestScene test) => runner.RunTestBlocking(test);
+            public void RunTestBlocking(TestScene test) => runner?.RunTestBlocking(test);
         }
     }
 }

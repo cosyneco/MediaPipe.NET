@@ -17,7 +17,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
     public class MediapipeDrawable : CompositeDrawable
     {
-        private readonly Camera camera;
+        public readonly Camera Camera;
         private FrameConverter? converter;
         private readonly FaceMeshCpuCalculator calculator;
 
@@ -27,28 +27,26 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         public MediapipeDrawable(int cameraIndex = 0)
         {
             var manager = new CameraManager();
-            camera = manager.GetCamera(cameraIndex);
-
+            Camera = manager.GetCamera(cameraIndex);
             manager.Dispose();
 
-            camera.OnFrame += onFrame;
+            Camera.OnFrame += onFrame;
             calculator = new FaceMeshCpuCalculator();
 
             AddInternal(sprite = new Sprite
             {
-                RelativeSizeAxes = Axes.Both,
-                FillMode = FillMode.Fit,
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,
-                FillAspectRatio = 1
+                RelativeSizeAxes = Axes.Both,
+                FillMode = FillMode.Fit,
+                FillAspectRatio = 1,
             });
-            Start();
         }
 
         public void Start()
         {
             calculator.Run();
-            camera.StartCapture();
+            Camera.StartCapture();
         }
 
         private unsafe void onFrame(object? sender, FrameEventArgs e)
@@ -85,8 +83,12 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 
         public new void Dispose()
         {
-            camera.StopCapture();
-            camera.Dispose();
+            if (IsDisposed)
+                return;
+
+            Camera.StopCapture();
+            Camera.Dispose();
+            converter?.Dispose();
             calculator.Dispose();
             base.Dispose();
         }

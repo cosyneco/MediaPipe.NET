@@ -22,6 +22,21 @@
             "stopAtEntry": false
         },
         {
+            "name": "Run Visual Tests (CPU, console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Mediapipe.Net.Examples.OsuFrameworkVisualTests/bin/Debug/net6.0/Mediapipe.Net.Examples.OsuFrameworkVisualTests.dll",
+            "linux": {
+                "env": {
+                    "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR": "0"
+                }
+            },
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"

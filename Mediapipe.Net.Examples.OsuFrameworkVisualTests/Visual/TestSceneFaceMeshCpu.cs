@@ -2,17 +2,18 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using osu.Framework.Allocation;
 using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
-using osuTK;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
 {
     public class TestSceneFaceMeshCpu : OsuFrameworkVisualTestsTestScene
     {
-        public TestSceneFaceMeshCpu()
+        [BackgroundDependencyLoader]
+        private void load(MediapipeDrawable mediapipeDrawable)
         {
             Add(new Container
             {
@@ -24,14 +25,10 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex(@"272727"),
                     },
-                    new MediapipeDrawable
-                    {
-                        Anchor = Anchor.Centre,
-                        Origin = Anchor.Centre,
-                        Size = new Vector2(640, 360),
-                    }
-                }
+                    mediapipeDrawable,
+                },
             });
+            mediapipeDrawable.Start();
         }
     }
 }
