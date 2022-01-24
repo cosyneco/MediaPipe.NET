@@ -13,7 +13,7 @@ using Mediapipe.Net.Gpu;
 namespace Mediapipe.Net.Calculators
 {
     /// <summary>
-    /// This class is the base for any GPU calculator.
+    /// The base for any GPU calculator.
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>

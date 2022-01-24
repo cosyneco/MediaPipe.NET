@@ -9,7 +9,7 @@ using Mediapipe.Net.Framework.Packet;
 namespace Mediapipe.Net.Calculators
 {
     /// <summary>
-    /// This class is the base for any CPU calculator.
+    /// The base for any CPU calculator.
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>

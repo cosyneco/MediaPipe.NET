@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Calculators
     /// <typeparam name="TI">The type of
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public abstract class Calculator<TPacket, T> : Disposable, ICalculator<T>
+    public abstract class Calculator<TPacket, T> : Disposable
         where TPacket : Packet<T>
     {
         protected const string INPUT_VIDEO_STREAM = "input_video";
@@ -66,7 +66,7 @@ namespace Mediapipe.Net.Calculators
         protected abstract ImageFrame SendFrame(ImageFrame frame);
 
         /// <summary>
-        /// Sends an <see cref="ImageFrame"/> to MediaPipe to process.
+        /// Sends an <see cref="ImageFrame"/> for the calculator to process.
         /// </summary>
         /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed after being sent, MediaPipe will crash.</remarks>
         /// <param name="frame">The frame that MediaPipe should process.</param>
