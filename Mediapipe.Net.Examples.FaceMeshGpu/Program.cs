@@ -19,55 +19,44 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
     public static class Program
     {
         private static Camera? camera;
-
         private static FrameConverter? converter;
-
         private static FaceMeshGpuCalculator? calculator;
 
         public static void Main(string[] args)
         {
-            //get and parse arguments
-            var parsed = Parser.Default.ParseArguments<Options>(args).Value;
-
+            // Get and parse command line arguments
+            Options parsed = Parser.Default.ParseArguments<Options>(args).Value;
             FFmpegManager.SetupFFmpeg("/usr/lib");
+            Glog.Initialize("stuff");
 
-            //get a camera device
-            CameraManager manager = new CameraManager();
-            try
+            // Get a camera device
+            using (CameraManager manager = new CameraManager())
             {
-                camera = manager.GetCamera(parsed.CameraIndex);
-                Console.WriteLine($"Using camera \"{camera.Info.Name}\", {camera.Info.Path}");
+                try
+                {
+                    camera = manager.GetCamera(parsed.CameraIndex);
+                    Console.WriteLine($"Using camera {camera.Info}");
+                }
+                catch (Exception)
+                {
+                    Console.Error.WriteLine($"No camera exists at index {parsed.CameraIndex}.");
+                    return;
+                }
             }
-            catch (Exception)
-            {
-                Console.Error.WriteLine($"No camera exists at index {parsed.CameraIndex}.");
-                return;
-            }
-
-            //dispose the camera manager as we won't need it
-            manager.Dispose();
-
-            //dispose the camera on program exit
-            Console.CancelKeyPress += (sender, eventArgs) => camera.Dispose();
-
             camera.OnFrame += onFrame;
 
-
-            Glog.Initialize("stuff");
             calculator = new FaceMeshGpuCalculator();
-
             calculator.OnResult += handleLandmarks;
-
             calculator.Run();
-
             camera.StartCapture();
 
+            Console.CancelKeyPress += (sender, eventArgs) => exit();
             Console.ReadLine();
         }
 
-        private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> e)
+        private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> landmarks)
         {
-            Console.WriteLine($"Got landmarks at frame {calculator?.CurrentFrame}");
+            Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
         }
 
         private static unsafe void onFrame(object? sender, FrameEventArgs e)
@@ -76,8 +65,7 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                 return;
 
             var frame = e.Frame;
-            if (converter == null)
-                converter = new FrameConverter(frame, PixelFormat.Rgba);
+            converter ??= new FrameConverter(frame, PixelFormat.Rgba);
 
             // Don't use a frame if it's not new
             if (e.Status != DecodeStatus.NewFrame)
@@ -93,6 +81,15 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             }
             using ImageFrame img = calculator.Send(imgframe);
             imgframe.Dispose();
+        }
+
+        // Dispose everything on exit
+        private static void exit()
+        {
+            Console.WriteLine("Exiting...");
+            camera?.Dispose();
+            converter?.Dispose();
+            calculator?.Dispose();
         }
     }
 }
