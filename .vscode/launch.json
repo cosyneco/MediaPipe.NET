@@ -2,18 +2,37 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // Use IntelliSense to find out which attributes exist for C# debugging
-            // Use hover for the description of the existing attributes
-            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (console)",
+            "name": "Run FaceMesh Example (CPU, console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Mediapipe.Net.Tests/bin/Debug/net6.0/Mediapipe.Net.Tests.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/Mediapipe.Net.Tests",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMesh/bin/Debug/net6.0/Mediapipe.Net.Examples.FaceMesh.dll",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Run FaceMesh Example (GPU, console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Mediapipe.Net.Examples.FaceMeshGpu/bin/Debug/net6.0/Mediapipe.Net.Examples.FaceMeshGpu.dll",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Run Visual Tests (CPU, console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Mediapipe.Net.Examples.OsuFrameworkVisualTests/bin/Debug/net6.0/Mediapipe.Net.Examples.OsuFrameworkVisualTests.dll",
+            "linux": {
+                "env": {
+                    "SDL_VIDEO_X11_NET_WM_BYPASS_COMPOSITOR": "0"
+                }
+            },
+            "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false
         },
