@@ -34,7 +34,7 @@ namespace Mediapipe.Net.Calculators
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
         private readonly OutputStreamPoller<GpuBuffer> framePoller;
-        private readonly GCHandle observeStreamHandle;
+        private GCHandle observeStreamHandle;
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         protected GpuCalculator()
