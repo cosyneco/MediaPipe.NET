@@ -15,6 +15,12 @@ using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Calculators
 {
+    /// <summary>
+    /// This abstract class is the base for any GPU calculator.
+    /// </summary>
+    /// <typeparam name="TPacket">The type of packet the calculator returns the landmarks in.</typeparam>
+    /// <typeparam name="T">The type of landmarks output.</typeparam>
+    [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
     public abstract class GpuCalculator<TPacket, T> : Disposable, ICalculator<T>
         where TPacket : Packet<T>
     {
