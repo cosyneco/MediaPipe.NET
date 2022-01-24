@@ -47,10 +47,6 @@ jobs:
         if: ${{ matrix.os.name != 'Windows' }}
         run: dotnet test -c Debug ${{ env.TEST_PROJECT_NAME }} -r ${{ matrix.os.runtime }} --filter "TestCategory!=GpuOnly" --logger "trx;LogFileName=TestResults-${{ matrix.os.name }}.trx"
 
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
-
       - name: Upload test artifact
         if: ${{ always() }}
         uses: actions/upload-artifact@v2
