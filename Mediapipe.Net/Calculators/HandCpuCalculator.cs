@@ -9,17 +9,7 @@ namespace Mediapipe.Net.Calculators
 {
     public class HandCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath { get; } = "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_cpu.pbtxt";
-        protected override string SecondaryOutputStream => "hand_landmarks";
-
-        public HandCpuCalculator()
-        {
-
-        }
-
-        public HandCpuCalculator(string graphPath)
-        {
-            GraphPath = graphPath;
-        }
+        protected override string GraphPath { get; set; } = "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_cpu.pbtxt";
+        protected override string? SecondaryOutputStream => "hand_landmarks";
     }
 }

@@ -9,18 +9,7 @@ namespace Mediapipe.Net.Calculators
 {
     public class BlazePoseCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath { get; } = "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt";
-
-        protected override string SecondaryOutputStream => "pose_landmarks";
-
-        public BlazePoseCpuCalculator()
-        {
-
-        }
-
-        public BlazePoseCpuCalculator(string graphPath)
-        {
-            GraphPath = graphPath;
-        }
+        protected override string GraphPath { get; set; } = "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt";
+        protected override string? SecondaryOutputStream => "pose_landmarks";
     }
 }
