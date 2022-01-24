@@ -31,6 +31,9 @@ namespace Mediapipe.Net.Calculators
         protected readonly CalculatorGraph Graph;
         private GCHandle observeStreamHandle;
 
+        /// <summary>
+        /// Triggered every time the calculator returns a secondary output.
+        /// </summary>
         public event EventHandler<T>? OnResult;
 
         protected Calculator(string graphPath, string? secondaryOutputStream = null)
@@ -54,10 +57,20 @@ namespace Mediapipe.Net.Calculators
             }
         }
 
+        /// <summary>
+        /// Starts the calculator.
+        /// </summary>
+        /// <remarks>You need to call this method before sending frames to it.</remarks>
         public void Run() => Graph.StartRun().AssertOk();
 
         protected abstract ImageFrame SendFrame(ImageFrame frame);
 
+        /// <summary>
+        /// Sends an <see cref="ImageFrame"/> to MediaPipe to process.
+        /// </summary>
+        /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed after being sent, MediaPipe will crash.</remarks>
+        /// <param name="frame">The frame that MediaPipe should process.</param>
+        /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
         public ImageFrame Send(ImageFrame frame)
         {
             ImageFrame outFrame = SendFrame(frame);
@@ -65,6 +78,9 @@ namespace Mediapipe.Net.Calculators
             return outFrame;
         }
 
+        /// <summary>
+        /// The number of the current processed frame.
+        /// </summary>
         public long CurrentFrame { get; private set; } = 0;
 
         protected override void DisposeManaged()
