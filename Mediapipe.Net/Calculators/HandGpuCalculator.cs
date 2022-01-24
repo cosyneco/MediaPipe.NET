@@ -9,7 +9,7 @@ using Mediapipe.Net.Framework.Protobuf;
 namespace Mediapipe.Net.Calculators
 {
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public class HandGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public sealed class HandGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
         public HandGpuCalculator() : base(
             graphPath: "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_gpu.pbtxt",

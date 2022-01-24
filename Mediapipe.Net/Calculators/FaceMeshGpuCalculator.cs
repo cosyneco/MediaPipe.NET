@@ -10,7 +10,7 @@ using Mediapipe.Net.Framework.Protobuf;
 namespace Mediapipe.Net.Calculators
 {
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public class FaceMeshGpuCalculator : GpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
+    public sealed class FaceMeshGpuCalculator : GpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
     {
         public FaceMeshGpuCalculator() : base(
             graphPath: "mediapipe/graphs/face_mesh/face_mesh_desktop_live_gpu.pbtxt",

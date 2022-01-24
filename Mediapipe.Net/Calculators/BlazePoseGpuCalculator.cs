@@ -9,7 +9,7 @@ using Mediapipe.Net.Framework.Protobuf;
 namespace Mediapipe.Net.Calculators
 {
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public class BlazePoseGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public sealed class BlazePoseGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
         public BlazePoseGpuCalculator() : base(
             graphPath: "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt",

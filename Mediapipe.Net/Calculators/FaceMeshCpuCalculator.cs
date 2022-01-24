@@ -8,7 +8,7 @@ using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class FaceMeshCpuCalculator : CpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
+    public sealed class FaceMeshCpuCalculator : CpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
     {
         public FaceMeshCpuCalculator() : base(
             graphPath: "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt",

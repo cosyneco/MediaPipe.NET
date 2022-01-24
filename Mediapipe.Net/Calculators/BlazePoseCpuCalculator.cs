@@ -7,7 +7,7 @@ using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class BlazePoseCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public sealed class BlazePoseCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
         public BlazePoseCpuCalculator() : base(
             graphPath: "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt",

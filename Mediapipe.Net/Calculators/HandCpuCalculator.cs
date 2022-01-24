@@ -7,7 +7,7 @@ using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
-    public class HandCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
+    public sealed class HandCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
         public HandCpuCalculator() : base(
             graphPath: "mediapipe/graphs/hand_tracking/hand_tracking_desktop_live_cpu.pbtxt",
