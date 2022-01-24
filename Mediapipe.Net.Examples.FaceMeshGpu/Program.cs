@@ -86,11 +86,10 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             ImageFrame imgframe;
             fixed (byte* rawDataPtr = cFrame.RawData)
             {
-                imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
-                    rawDataPtr);
+                imgframe = new ImageFrame(ImageFormat.Srgba,
+                    cFrame.Width, cFrame.Height, cFrame.WidthStep, rawDataPtr);
             }
-
-            ImageFrame img = calculator.Send(imgframe);
+            using ImageFrame img = calculator.Send(imgframe);
         }
     }
 }
