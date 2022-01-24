@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Calculators
     /// <summary>
     /// This interface allows for a simple use of any MediaPipe calculator.
     /// </summary>
-    /// <typeparam name="T">The landmarks return type of the calculator graph.</typeparam>
+    /// <typeparam name="T">The secondary output of the calculator.</typeparam>
     public interface ICalculator<T> : IDisposable
     {
         /// <summary>
@@ -23,11 +23,11 @@ namespace Mediapipe.Net.Calculators
         /// </summary>
         /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed, MediaPipe will crash.</remarks>
         /// <param name="frame">The frame that MediaPipe should process.</param>
-        /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the landmarks drawn.</returns>
+        /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the secondary output drawn.</returns>
         public ImageFrame Send(ImageFrame frame);
 
         /// <summary>
-        /// This event is triggered every time MediaPipe is able to detect landmarks on a given <see cref="ImageFrame"/>.
+        /// This event is triggered every time MediaPipe returns a secondary output.
         /// </summary>
         public event EventHandler<T> OnResult;
 

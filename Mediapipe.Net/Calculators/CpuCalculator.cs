@@ -14,10 +14,10 @@ using Mediapipe.Net.Framework.Port;
 namespace Mediapipe.Net.Calculators
 {
     /// <summary>
-    /// This abstract class is the base for any CPU calculator.
+    /// This class is the base for any CPU calculator.
     /// </summary>
-    /// <typeparam name="TPacket">The type of packet the calculator returns the landmarks in.</typeparam>
-    /// <typeparam name="T">The type of landmarks output.</typeparam>
+    /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
+    /// <typeparam name="T">The type of secondary output.</typeparam>
     public abstract class CpuCalculator<TPacket, T> : Disposable, ICalculator<T>
         where TPacket : Packet<T>
     {
