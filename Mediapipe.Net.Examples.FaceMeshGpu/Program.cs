@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using CommandLine;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
@@ -14,6 +15,7 @@ using SeeShark.FFmpeg;
 
 namespace Mediapipe.Net.Examples.FaceMeshGpu
 {
+    [SupportedOSPlatform("Linux")]
     public static class Program
     {
         private static Camera? camera;
