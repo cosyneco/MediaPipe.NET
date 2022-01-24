@@ -2,14 +2,9 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
-using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packet;
-using Mediapipe.Net.Framework.Port;
 
 namespace Mediapipe.Net.Calculators
 {
@@ -18,49 +13,21 @@ namespace Mediapipe.Net.Calculators
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public abstract class CpuCalculator<TPacket, T> : Disposable, ICalculator<T>
+    public abstract class CpuCalculator<TPacket, T> : Calculator<TPacket, T>
         where TPacket : Packet<T>
     {
-        private const string input_video_stream = "input_video";
-        private const string output_video_stream = "output_video";
-
-        protected readonly string GraphPath;
-        protected readonly string? SecondaryOutputStream;
-
-        private readonly CalculatorGraph graph;
         private readonly OutputStreamPoller<ImageFrame> framePoller;
-        private readonly GCHandle observeStreamHandle;
-
-        public event EventHandler<T>? OnResult;
 
         protected CpuCalculator(string graphPath, string? secondaryOutputStream = null)
+            : base(graphPath, secondaryOutputStream)
         {
-            GraphPath = graphPath;
-            SecondaryOutputStream = secondaryOutputStream;
-
-            graph = new CalculatorGraph(File.ReadAllText(GraphPath));
-            framePoller = graph.AddOutputStreamPoller<ImageFrame>(output_video_stream).Value();
-
-            if (SecondaryOutputStream != null)
-            {
-                graph.ObserveOutputStream<TPacket, T>(SecondaryOutputStream, (packet) =>
-                {
-                    if (packet == null)
-                        return Status.Ok();
-
-                    T secondaryOutput = packet.Get();
-                    OnResult?.Invoke(this, secondaryOutput);
-                    return Status.Ok();
-                }, out observeStreamHandle).AssertOk();
-            }
+            framePoller = Graph.AddOutputStreamPoller<ImageFrame>(OUTPUT_VIDEO_STREAM).Value();
         }
 
-        public void Run() => graph.StartRun().AssertOk();
-
-        public ImageFrame Send(ImageFrame frame)
+        protected override ImageFrame SendFrame(ImageFrame frame)
         {
-            using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame++));
-            graph.AddPacketToInputStream(input_video_stream, packet).AssertOk();
+            using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame));
+            Graph.AddPacketToInputStream(INPUT_VIDEO_STREAM, packet).AssertOk();
 
             ImageFramePacket outPacket = new ImageFramePacket();
             framePoller.Next(outPacket);
@@ -69,15 +36,9 @@ namespace Mediapipe.Net.Calculators
             return outFrame;
         }
 
-        public long CurrentFrame { get; private set; } = 0;
-
         protected override void DisposeManaged()
         {
-            graph.CloseInputStream(input_video_stream);
-            graph.WaitUntilDone();
-            graph.Dispose();
-
-            observeStreamHandle.Free();
+            base.DisposeManaged();
             framePoller.Dispose();
         }
     }

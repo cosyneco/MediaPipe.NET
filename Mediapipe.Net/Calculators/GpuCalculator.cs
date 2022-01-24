@@ -2,9 +2,6 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
-using System.IO;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
@@ -21,54 +18,25 @@ namespace Mediapipe.Net.Calculators
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public abstract class GpuCalculator<TPacket, T> : Disposable, ICalculator<T>
+    public abstract class GpuCalculator<TPacket, T> : Calculator<TPacket, T>
         where TPacket : Packet<T>
     {
-        private const string input_video_stream = "input_video";
-        private const string output_video_stream = "output_video";
-
-        protected readonly string GraphPath;
-        protected readonly string? SecondaryOutputStream;
-
-        private readonly CalculatorGraph graph;
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
         private readonly OutputStreamPoller<GpuBuffer> framePoller;
-        private GCHandle observeStreamHandle;
 
-        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         protected GpuCalculator(string graphPath, string? secondaryOutputStream)
+            : base(graphPath, secondaryOutputStream)
         {
-            GraphPath = graphPath;
-            SecondaryOutputStream = secondaryOutputStream;
-
-
-            graph = new CalculatorGraph(File.ReadAllText(GraphPath));
-
             gpuResources = GpuResources.Create().Value();
-            graph.SetGpuResources(gpuResources);
+            Graph.SetGpuResources(gpuResources);
             gpuHelper = new GlCalculatorHelper();
-            gpuHelper.InitializeForTest(graph.GetGpuResources());
+            gpuHelper.InitializeForTest(Graph.GetGpuResources());
 
-            framePoller = graph.AddOutputStreamPoller<GpuBuffer>(output_video_stream).Value();
-
-            if (SecondaryOutputStream != null)
-            {
-                graph.ObserveOutputStream<TPacket, T>(SecondaryOutputStream, (packet) =>
-                {
-                    if (packet == null)
-                        return Status.Ok();
-
-                    T secondaryOutput = packet.Get();
-                    OnResult?.Invoke(this, secondaryOutput);
-                    return Status.Ok();
-                }, out observeStreamHandle).AssertOk();
-            }
+            framePoller = Graph.AddOutputStreamPoller<GpuBuffer>(OUTPUT_VIDEO_STREAM).Value();
         }
 
-        public void Run() => graph.StartRun().AssertOk();
-
-        public ImageFrame Send(ImageFrame frame)
+        protected override ImageFrame SendFrame(ImageFrame frame)
         {
             gpuHelper.RunInGlContext(() =>
             {
@@ -77,8 +45,8 @@ namespace Mediapipe.Net.Calculators
                 Gl.Flush();
                 texture.Release();
 
-                var packet = new GpuBufferPacket(gpuBuffer, new Timestamp(CurrentFrame++));
-                graph.AddPacketToInputStream(input_video_stream, packet);
+                var packet = new GpuBufferPacket(gpuBuffer, new Timestamp(CurrentFrame));
+                Graph.AddPacketToInputStream(INPUT_VIDEO_STREAM, packet);
 
                 return Status.Ok();
             }).AssertOk();
@@ -108,19 +76,12 @@ namespace Mediapipe.Net.Calculators
             return outFrame;
         }
 
-        public event EventHandler<T>? OnResult;
-        public long CurrentFrame { get; private set; }
-
         protected override void DisposeManaged()
         {
-            graph.CloseInputStream(input_video_stream);
-            graph.WaitUntilDone();
-            graph.Dispose();
-
+            base.DisposeManaged();
             gpuResources.Dispose();
             gpuHelper.Dispose();
             framePoller.Dispose();
-            observeStreamHandle.Free();
         }
     }
 }
