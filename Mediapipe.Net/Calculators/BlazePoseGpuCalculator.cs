@@ -9,7 +9,17 @@ namespace Mediapipe.Net.Calculators
 {
     public class BlazePoseGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath => "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
+        protected override string GraphPath { get; } = "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
         protected override string SecondaryOutputStream => "pose_landmarks";
+
+        public BlazePoseGpuCalculator()
+        {
+
+        }
+
+        public BlazePoseGpuCalculator(string graphPath)
+        {
+            GraphPath = graphPath;
+        }
     }
 }
