@@ -27,7 +27,7 @@ namespace Mediapipe.Net.Calculators
         public ImageFrame Send(ImageFrame frame);
 
         /// <summary>
-        /// This event triggers every time MediaPipe is able to detect landmarks on a given <see cref="ImageFrame"/>.
+        /// This event is triggered every time MediaPipe is able to detect landmarks on a given <see cref="ImageFrame"/>.
         /// </summary>
         public event EventHandler<T> OnResult;
 
