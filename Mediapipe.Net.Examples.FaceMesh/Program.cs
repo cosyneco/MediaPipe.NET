@@ -91,6 +91,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
             }
 
             ImageFrame img = calculator.Send(imgframe);
+            imgframe.Dispose();
         }
     }
 }
