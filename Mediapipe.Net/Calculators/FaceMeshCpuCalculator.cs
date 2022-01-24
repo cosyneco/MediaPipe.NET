@@ -10,7 +10,10 @@ namespace Mediapipe.Net.Calculators
 {
     public class FaceMeshCpuCalculator : CpuCalculator<NormalizedLandmarkListVectorPacket, List<NormalizedLandmarkList>>
     {
-        protected override string GraphPath { get; set; } = "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt";
-        protected override string? SecondaryOutputStream => "multi_face_landmarks";
+        public FaceMeshCpuCalculator() : base(
+            graphPath: "mediapipe/graphs/face_mesh/face_mesh_desktop_live.pbtxt",
+            secondaryOutputStream: "multi_face_landmarks")
+        {
+        }
     }
 }

@@ -2,14 +2,19 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System.Runtime.Versioning;
 using Mediapipe.Net.Framework.Packet;
 using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators
 {
+    [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
     public class BlazePoseGpuCalculator : GpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
-        protected override string GraphPath { get; set; } = "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt";
-        protected override string? SecondaryOutputStream => "pose_landmarks";
+        public BlazePoseGpuCalculator() : base(
+            graphPath: "mediapipe/graphs/pose_tracking/pose_tracking_gpu.pbtxt",
+            secondaryOutputStream: "pose_landmarks")
+        {
+        }
     }
 }

@@ -27,8 +27,8 @@ namespace Mediapipe.Net.Calculators
         private const string input_video_stream = "input_video";
         private const string output_video_stream = "output_video";
 
-        protected abstract string GraphPath { get; set; }
-        protected abstract string? SecondaryOutputStream { get; }
+        protected readonly string GraphPath;
+        protected readonly string? SecondaryOutputStream;
 
         private readonly CalculatorGraph graph;
         private readonly GpuResources gpuResources;
@@ -37,8 +37,12 @@ namespace Mediapipe.Net.Calculators
         private GCHandle observeStreamHandle;
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        protected GpuCalculator()
+        protected GpuCalculator(string graphPath, string? secondaryOutputStream)
         {
+            GraphPath = graphPath;
+            SecondaryOutputStream = secondaryOutputStream;
+
+
             graph = new CalculatorGraph(File.ReadAllText(GraphPath));
 
             gpuResources = GpuResources.Create().Value();
@@ -60,11 +64,6 @@ namespace Mediapipe.Net.Calculators
                     return Status.Ok();
                 }, out observeStreamHandle).AssertOk();
             }
-        }
-
-        protected GpuCalculator(string graphPath) : this()
-        {
-            GraphPath = graphPath;
         }
 
         public void Run() => graph.StartRun().AssertOk();
