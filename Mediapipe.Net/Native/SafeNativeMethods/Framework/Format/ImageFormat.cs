@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Native
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__IsAligned__ui(
-            IntPtr imageFrame, uint alignmentBoundary, [MarshalAs(UnmanagedType.I1)] out bool value);
+            IntPtr imageFrame, uint alignmentBoundary, out bool value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern ImageFormat mp_ImageFrame__Format(IntPtr imageFrame);
