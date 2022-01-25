@@ -7,7 +7,7 @@ using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp__GlTextureInfoForGpuBufferFormat__ui_i_ui(

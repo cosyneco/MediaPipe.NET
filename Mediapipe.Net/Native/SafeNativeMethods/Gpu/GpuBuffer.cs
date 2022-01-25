@@ -10,7 +10,7 @@ using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

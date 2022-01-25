@@ -7,7 +7,7 @@ using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp__SetCustomGlobalResourceProvider__P(

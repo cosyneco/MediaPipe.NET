@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
 #pragma warning disable CA2101
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

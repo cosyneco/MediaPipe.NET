@@ -8,7 +8,7 @@ using Mediapipe.Net.External;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode google_protobuf__SetLogHandler__PF(

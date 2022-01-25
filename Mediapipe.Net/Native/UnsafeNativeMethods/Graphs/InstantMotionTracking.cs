@@ -8,7 +8,7 @@ using Mediapipe.Net.Graphs.InstantMotionTracking;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp__MakeAnchor3dVectorPacket__PA_i(Anchor3d[] value, int size, out void* packet);

@@ -9,7 +9,7 @@ using Mediapipe.Net.Framework.Format;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern bool mp_ImageFrame__IsEmpty(void* imageFrame);

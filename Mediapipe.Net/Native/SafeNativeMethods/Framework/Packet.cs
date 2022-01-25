@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern bool mp_Packet__IsEmpty(void* packet);

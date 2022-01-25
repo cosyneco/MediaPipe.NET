@@ -8,7 +8,7 @@ using System.Runtime.Versioning;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY)]
         public static extern void glFlush();
