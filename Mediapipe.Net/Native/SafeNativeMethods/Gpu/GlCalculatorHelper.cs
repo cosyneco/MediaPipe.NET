@@ -17,7 +17,6 @@ namespace Mediapipe.Net.Native
         public static extern IntPtr mp_GlCalculatorHelper__GetGlContext(IntPtr glCalculatorHelper);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool mp_GlCalculatorHelper__Initialized(IntPtr glCalculatorHelper);
     }
 }

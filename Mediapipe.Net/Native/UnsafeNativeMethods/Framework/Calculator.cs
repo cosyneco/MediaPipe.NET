@@ -11,7 +11,6 @@ namespace Mediapipe.Net.Native
     {
 #pragma warning disable CA2101
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool mp_api__ConvertFromCalculatorGraphConfigTextFormat(string configText, out SerializedProto serializedProto);
 #pragma warning restore CA2101
     }

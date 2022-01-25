@@ -11,7 +11,6 @@ namespace Mediapipe.Net.Native
     internal partial class SafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool mp_Packet__IsEmpty(IntPtr packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
