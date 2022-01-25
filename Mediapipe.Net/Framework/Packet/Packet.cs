@@ -17,7 +17,7 @@ namespace Mediapipe.Net.Framework.Packet
             Ptr = ptr;
         }
 
-        public Packet(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public Packet(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         /// <exception cref="MediaPipeException">Thrown when the value is not set</exception>
         public abstract T Get();

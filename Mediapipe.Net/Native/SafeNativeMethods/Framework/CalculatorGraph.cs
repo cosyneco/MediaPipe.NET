@@ -12,19 +12,19 @@ namespace Mediapipe.Net.Native
     {
 #pragma warning disable CA2101
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_CalculatorGraph__HasError(IntPtr graph);
+        public static extern bool mp_CalculatorGraph__HasError(void* graph);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
-        public static extern bool mp_CalculatorGraph__HasInputStream__PKc(IntPtr graph, string name);
+        public static extern bool mp_CalculatorGraph__HasInputStream__PKc(void* graph, string name);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_CalculatorGraph__GraphInputStreamsClosed(IntPtr graph);
+        public static extern bool mp_CalculatorGraph__GraphInputStreamsClosed(void* graph);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_CalculatorGraph__IsNodeThrottled__i(IntPtr graph, int nodeId);
+        public static extern bool mp_CalculatorGraph__IsNodeThrottled__i(void* graph, int nodeId);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_CalculatorGraph__UnthrottleSources(IntPtr graph);
+        public static extern bool mp_CalculatorGraph__UnthrottleSources(void* graph);
 #pragma warning restore CA2101
     }
 }

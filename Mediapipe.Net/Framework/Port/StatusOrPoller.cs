@@ -9,7 +9,7 @@ namespace Mediapipe.Net.Framework.Port
 {
     public class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
     {
-        public StatusOrPoller(IntPtr ptr) : base(ptr) { }
+        public StatusOrPoller(void* ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_StatusOrPoller__delete(Ptr);
 

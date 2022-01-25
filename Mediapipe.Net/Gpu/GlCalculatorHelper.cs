@@ -14,7 +14,7 @@ namespace Mediapipe.Net.Gpu
 {
     public class GlCalculatorHelper : MpResourceHandle
     {
-        public delegate IntPtr NativeGlStatusFunction();
+        public delegate void* NativeGlStatusFunction();
         public delegate Status GlStatusFunction();
 
         public GlCalculatorHelper() : base()

@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class ClassificationListPacket : Packet<ClassificationList>
     {
         public ClassificationListPacket() : base() { }
-        public ClassificationListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public ClassificationListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override ClassificationList Get()
         {

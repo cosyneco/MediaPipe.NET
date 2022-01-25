@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class LandmarkListPacket : Packet<LandmarkList>
     {
         public LandmarkListPacket() : base() { }
-        public LandmarkListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public LandmarkListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override LandmarkList Get()
         {

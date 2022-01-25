@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class GpuBufferPacket : Packet<GpuBuffer>
     {
         public GpuBufferPacket() : base() { }
-        public GpuBufferPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public GpuBufferPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public GpuBufferPacket(GpuBuffer gpuBuffer) : base()
         {

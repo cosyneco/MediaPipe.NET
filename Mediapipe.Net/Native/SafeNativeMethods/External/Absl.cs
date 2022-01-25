@@ -11,9 +11,9 @@ namespace Mediapipe.Net.Native
     internal partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool absl_Status__ok(IntPtr status);
+        public static extern bool absl_Status__ok(void* status);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int absl_Status__raw_code(IntPtr status);
+        public static extern int absl_Status__raw_code(void* status);
     }
 }

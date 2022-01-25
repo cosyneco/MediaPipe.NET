@@ -11,15 +11,15 @@ namespace Mediapipe.Net.Native
     internal partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GlTexture__width(IntPtr glTexture);
+        public static extern int mp_GlTexture__width(void* glTexture);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GlTexture__height(IntPtr glTexture);
+        public static extern int mp_GlTexture__height(void* glTexture);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern uint mp_GlTexture__target(IntPtr glTexture);
+        public static extern uint mp_GlTexture__target(void* glTexture);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern uint mp_GlTexture__name(IntPtr glTexture);
+        public static extern uint mp_GlTexture__name(void* glTexture);
     }
 }

@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class LandmarkListVectorPacket : Packet<List<LandmarkList>>
     {
         public LandmarkListVectorPacket() : base() { }
-        public LandmarkListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public LandmarkListVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override List<LandmarkList> Get()
         {

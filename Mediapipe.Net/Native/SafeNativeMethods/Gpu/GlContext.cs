@@ -13,48 +13,48 @@ namespace Mediapipe.Net.Native
     {
         #region GlContext
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_SharedGlContext__get(IntPtr sharedGlContext);
+        public static extern void* mp_SharedGlContext__get(void* sharedGlContext);
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__egl_display(IntPtr glContext);
+        public static extern void* mp_GlContext__egl_display(void* glContext);
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__egl_config(IntPtr glContext);
+        public static extern void* mp_GlContext__egl_config(void* glContext);
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__egl_context(IntPtr glContext);
+        public static extern void* mp_GlContext__egl_context(void* glContext);
 
         [SupportedOSPlatform("IOS")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__eagl_context(IntPtr glContext);
+        public static extern void* mp_GlContext__eagl_context(void* glContext);
 
         [SupportedOSPlatform("OSX")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__nsgl_context(IntPtr glContext);
+        public static extern void* mp_GlContext__nsgl_context(void* glContext);
 
         [SupportedOSPlatform("OSX")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlContext__nsgl_pixel_format(IntPtr glContext);
+        public static extern void* mp_GlContext__nsgl_pixel_format(void* glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_GlContext__IsCurrent(IntPtr glContext);
+        public static extern bool mp_GlContext__IsCurrent(void* glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GlContext__gl_major_version(IntPtr glContext);
+        public static extern int mp_GlContext__gl_major_version(void* glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GlContext__gl_minor_version(IntPtr glContext);
+        public static extern int mp_GlContext__gl_minor_version(void* glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern long mp_GlContext__gl_finish_count(IntPtr glContext);
+        public static extern long mp_GlContext__gl_finish_count(void* glContext);
         #endregion
 
         #region GlSyncToken
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlSyncToken__get(IntPtr glSyncToken);
+        public static extern void* mp_GlSyncToken__get(void* glSyncToken);
         #endregion
     }
 }

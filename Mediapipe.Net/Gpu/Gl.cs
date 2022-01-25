@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Gpu
 
         public static void Flush() => UnsafeNativeMethods.glFlush();
 
-        public static void ReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, IntPtr pixels)
+        public static void ReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, void* pixels)
             => UnsafeNativeMethods.glReadPixels(x, y, width, height, glFormat, glType, pixels);
     }
 }

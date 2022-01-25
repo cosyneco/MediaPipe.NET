@@ -12,7 +12,7 @@ namespace Mediapipe.Net.External
     [StructLayout(LayoutKind.Sequential)]
     internal struct SerializedProto
     {
-        public IntPtr StrPtr;
+        public void* StrPtr;
         public int Length;
 
         // TODO: That Dispose() method is looking very sus...

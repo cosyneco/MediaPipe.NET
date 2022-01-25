@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Framework.Packet
 
         public FloatArrayPacket() : base() { }
 
-        public FloatArrayPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public FloatArrayPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public FloatArrayPacket(float[] value) : base()
         {
@@ -63,7 +63,7 @@ namespace Mediapipe.Net.Framework.Packet
             return result;
         }
 
-        public IntPtr GetArrayPtr()
+        public void* GetArrayPtr()
         {
             UnsafeNativeMethods.mp_Packet__GetFloatArray(MpPtr, out var value).Assert();
             GC.KeepAlive(this);

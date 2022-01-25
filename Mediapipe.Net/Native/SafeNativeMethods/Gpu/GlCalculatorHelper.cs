@@ -11,12 +11,12 @@ namespace Mediapipe.Net.Native
     internal partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern uint mp_GlCalculatorHelper__framebuffer(IntPtr glCalculatorHelper);
+        public static extern uint mp_GlCalculatorHelper__framebuffer(void* glCalculatorHelper);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_GlCalculatorHelper__GetGlContext(IntPtr glCalculatorHelper);
+        public static extern void* mp_GlCalculatorHelper__GetGlContext(void* glCalculatorHelper);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_GlCalculatorHelper__Initialized(IntPtr glCalculatorHelper);
+        public static extern bool mp_GlCalculatorHelper__Initialized(void* glCalculatorHelper);
     }
 }

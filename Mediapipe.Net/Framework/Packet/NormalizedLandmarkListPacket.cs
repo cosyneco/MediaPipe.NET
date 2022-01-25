@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class NormalizedLandmarkListPacket : Packet<NormalizedLandmarkList>
     {
         public NormalizedLandmarkListPacket() : base() { }
-        public NormalizedLandmarkListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public NormalizedLandmarkListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override NormalizedLandmarkList Get()
         {

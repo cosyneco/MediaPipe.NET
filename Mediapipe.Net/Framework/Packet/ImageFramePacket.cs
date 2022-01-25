@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     {
         public ImageFramePacket() : base() { }
 
-        public ImageFramePacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public ImageFramePacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public ImageFramePacket(ImageFrame imageFrame) : base()
         {

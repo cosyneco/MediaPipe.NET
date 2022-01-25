@@ -11,15 +11,15 @@ namespace Mediapipe.Net.Native
     internal partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeAnchor3dVectorPacket__PA_i(Anchor3d[] value, int size, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeAnchor3dVectorPacket__PA_i(Anchor3d[] value, int size, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeAnchor3dVectorPacket_At__PA_i_Rt(Anchor3d[] value, int size, IntPtr timestamp, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeAnchor3dVectorPacket_At__PA_i_Rt(Anchor3d[] value, int size, void* timestamp, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_Anchor3dArray__delete(IntPtr anchorVectorData);
+        public static extern void mp_Anchor3dArray__delete(void* anchorVectorData);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetAnchor3dVector(IntPtr packet, out Anchor3dVector anchorVector);
+        public static extern MpReturnCode mp_Packet__GetAnchor3dVector(void* packet, out Anchor3dVector anchorVector);
     }
 }

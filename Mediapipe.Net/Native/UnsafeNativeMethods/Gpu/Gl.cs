@@ -13,6 +13,6 @@ namespace Mediapipe.Net.Native
         public static extern void glFlush();
 
         [DllImport(MEDIAPIPE_LIBRARY)]
-        public static extern void glReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, IntPtr pixels);
+        public static extern void glReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, void* pixels);
     }
 }

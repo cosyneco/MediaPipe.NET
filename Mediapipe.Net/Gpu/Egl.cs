@@ -11,6 +11,6 @@ namespace Mediapipe.Net.Gpu
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
     public class Egl
     {
-        public static IntPtr GetCurrentContext() => SafeNativeMethods.eglGetCurrentContext();
+        public static void* GetCurrentContext() => SafeNativeMethods.eglGetCurrentContext();
     }
 }

@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Port
 {
     public class StatusOrGpuBuffer : StatusOr<GpuBuffer>
     {
-        public StatusOrGpuBuffer(IntPtr ptr) : base(ptr) { }
+        public StatusOrGpuBuffer(void* ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_StatusOrGpuBuffer__delete(Ptr);
 

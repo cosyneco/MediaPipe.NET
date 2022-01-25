@@ -31,7 +31,7 @@ namespace Mediapipe.Net.Framework.Port
             Unauthenticated = 16,
         }
 
-        public Status(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public Status(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.absl_Status__delete(Ptr);
 

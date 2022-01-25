@@ -12,41 +12,41 @@ namespace Mediapipe.Net.Native
     internal partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlCalculatorHelper__(out IntPtr glCalculatorHelper);
+        public static extern MpReturnCode mp_GlCalculatorHelper__(out void* glCalculatorHelper);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_GlCalculatorHelper__delete(IntPtr glCalculatorHelper);
+        public static extern void mp_GlCalculatorHelper__delete(void* glCalculatorHelper);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlCalculatorHelper__InitializeForTest__Pgr(IntPtr glCalculatorHelper, IntPtr gpuResources);
+        public static extern MpReturnCode mp_GlCalculatorHelper__InitializeForTest__Pgr(void* glCalculatorHelper, void* gpuResources);
 
         // TODO: Make it ba a member of GlCalculatorHelper
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__RunInGlContext__PF(
-            IntPtr glCalculatorHelper, GlCalculatorHelper.NativeGlStatusFunction glFunc, out IntPtr status);
+            void* glCalculatorHelper, GlCalculatorHelper.NativeGlStatusFunction glFunc, out void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rif(
-            IntPtr glCalculatorHelper, IntPtr imageFrame, out IntPtr glTexture);
+            void* glCalculatorHelper, void* imageFrame, out void* glTexture);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rgb(
-            IntPtr glCalculatorHelper, IntPtr gpuBuffer, out IntPtr glTexture);
+            void* glCalculatorHelper, void* gpuBuffer, out void* glTexture);
 
         [SupportedOSPlatform("IOS")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rgb_i(
-            IntPtr glCalculatorHelper, IntPtr gpuBuffer, int plane, out IntPtr glTexture);
+            void* glCalculatorHelper, void* gpuBuffer, int plane, out void* glTexture);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateDestinationTexture__i_i_ui(
-            IntPtr glCalculatorHelper, int outputWidth, int outputHeight, GpuBufferFormat formatCode, out IntPtr glTexture);
+            void* glCalculatorHelper, int outputWidth, int outputHeight, GpuBufferFormat formatCode, out void* glTexture);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateDestinationTexture__Rgb(
-            IntPtr glCalculatorHelper, IntPtr gpuBuffer, out IntPtr glTexture);
+            void* glCalculatorHelper, void* gpuBuffer, out void* glTexture);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlCalculatorHelper__BindFrameBuffer__Rtexture(IntPtr glCalculatorHelper, IntPtr glTexture);
+        public static extern MpReturnCode mp_GlCalculatorHelper__BindFrameBuffer__Rtexture(void* glCalculatorHelper, void* glTexture);
     }
 }

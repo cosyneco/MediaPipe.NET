@@ -15,7 +15,7 @@ namespace Mediapipe.Net.Gpu
         private SharedPtrHandle? sharedPtrHandle;
 
         /// <param name="ptr">Shared pointer of mediapipe::GpuResources</param>
-        public GpuResources(IntPtr ptr) : base()
+        public GpuResources(void* ptr) : base()
         {
             sharedPtrHandle = new SharedGpuResourcesPtr(ptr);
             Ptr = sharedPtrHandle.Get();
@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public IntPtr SharedPtr => sharedPtrHandle == null ? IntPtr.Zero : sharedPtrHandle.MpPtr;
+        public void* SharedPtr => sharedPtrHandle == null ? void*.Zero : sharedPtrHandle.MpPtr;
 
         public static StatusOrGpuResources Create()
         {
@@ -45,7 +45,7 @@ namespace Mediapipe.Net.Gpu
             return new StatusOrGpuResources(statusOrGpuResourcesPtr);
         }
 
-        public static StatusOrGpuResources Create(IntPtr externalContext)
+        public static StatusOrGpuResources Create(void* externalContext)
         {
             UnsafeNativeMethods.mp_GpuResources_Create__Pv(externalContext, out var statusOrGpuResourcesPtr).Assert();
 
@@ -53,15 +53,15 @@ namespace Mediapipe.Net.Gpu
         }
 
         [SupportedOSPlatform("IOS")]
-        public IntPtr IosGpuData => SafeNativeMethods.mp_GpuResources__ios_gpu_data(MpPtr);
+        public void* IosGpuData => SafeNativeMethods.mp_GpuResources__ios_gpu_data(MpPtr);
 
         private class SharedGpuResourcesPtr : SharedPtrHandle
         {
-            public SharedGpuResourcesPtr(IntPtr ptr) : base(ptr) { }
+            public SharedGpuResourcesPtr(void* ptr) : base(ptr) { }
 
             protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_SharedGpuResources__delete(Ptr);
 
-            public override IntPtr Get() => SafeNativeMethods.mp_SharedGpuResources__get(MpPtr);
+            public override void* Get() => SafeNativeMethods.mp_SharedGpuResources__get(MpPtr);
 
             public override void Reset() => UnsafeNativeMethods.mp_SharedGpuResources__reset(MpPtr);
         }

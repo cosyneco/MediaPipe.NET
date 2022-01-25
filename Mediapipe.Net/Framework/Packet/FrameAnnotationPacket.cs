@@ -13,7 +13,7 @@ namespace Mediapipe
     public class FrameAnnotationPacket : Packet<FrameAnnotation>
     {
         public FrameAnnotationPacket() : base() { }
-        public FrameAnnotationPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public FrameAnnotationPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override FrameAnnotation Get()
         {

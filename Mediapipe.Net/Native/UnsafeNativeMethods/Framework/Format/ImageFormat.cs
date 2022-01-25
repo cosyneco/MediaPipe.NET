@@ -11,63 +11,63 @@ namespace Mediapipe.Net.Native
     internal partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__(out IntPtr imageFrame);
+        public static extern MpReturnCode mp_ImageFrame__(out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_ui(
-            ImageFormat format, int width, int height, uint alignmentBoundary, out IntPtr imageFrame);
+            ImageFormat format, int width, int height, uint alignmentBoundary, out void* imageFrame);
 
         // TODO: Make it be a member of ImageFrame
-        public delegate void Deleter(IntPtr ptr);
+        public delegate void Deleter(void* ptr);
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8_PF(
-            ImageFormat format, int width, int height, int widthStep, IntPtr pixelData,
-            Deleter deleter, out IntPtr imageFrame);
+            ImageFormat format, int width, int height, int widthStep, void* pixelData,
+            Deleter deleter, out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_ImageFrame__delete(IntPtr imageFrame);
+        public static extern void mp_ImageFrame__delete(void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__SetToZero(IntPtr imageFrame);
+        public static extern MpReturnCode mp_ImageFrame__SetToZero(void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__SetAlignmentPaddingAreas(IntPtr imageFrame);
+        public static extern MpReturnCode mp_ImageFrame__SetAlignmentPaddingAreas(void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui8_i(IntPtr imageFrame, IntPtr buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui8_i(void* imageFrame, void* buffer, int bufferSize);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui16_i(IntPtr imageFrame, IntPtr buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui16_i(void* imageFrame, void* buffer, int bufferSize);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pf_i(IntPtr imageFrame, IntPtr buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pf_i(void* imageFrame, void* buffer, int bufferSize);
 
         #region StatusOr
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_StatusOrImageFrame__delete(IntPtr statusOrImageFrame);
+        public static extern void mp_StatusOrImageFrame__delete(void* statusOrImageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrImageFrame__status(IntPtr statusOrImageFrame, out IntPtr status);
+        public static extern MpReturnCode mp_StatusOrImageFrame__status(void* statusOrImageFrame, out void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrImageFrame__value(IntPtr statusOrImageFrame, out IntPtr imageFrame);
+        public static extern MpReturnCode mp_StatusOrImageFrame__value(void* statusOrImageFrame, out void* imageFrame);
         #endregion
 
         #region Packet
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeImageFramePacket__Pif(IntPtr imageFrame, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeImageFramePacket__Pif(void* imageFrame, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeImageFramePacket_At__Pif_Rt(IntPtr imageFrame, IntPtr timestamp, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeImageFramePacket_At__Pif_Rt(void* imageFrame, void* timestamp, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__ConsumeImageFrame(IntPtr packet, out IntPtr statusOrImageFrame);
+        public static extern MpReturnCode mp_Packet__ConsumeImageFrame(void* packet, out void* statusOrImageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetImageFrame(IntPtr packet, out IntPtr imageFrame);
+        public static extern MpReturnCode mp_Packet__GetImageFrame(void* packet, out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__ValidateAsImageFrame(IntPtr packet, out IntPtr status);
+        public static extern MpReturnCode mp_Packet__ValidateAsImageFrame(void* packet, out void* status);
         #endregion
     }
 }

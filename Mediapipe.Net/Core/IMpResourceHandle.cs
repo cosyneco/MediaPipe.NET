@@ -8,7 +8,7 @@ namespace Mediapipe.Net.Core
 {
     public interface IMpResourceHandle : IDisposable
     {
-        IntPtr MpPtr { get; }
+        void* MpPtr { get; }
 
         /// <summary>
         /// Relinquish the ownership, and release the resource it owns if necessary.

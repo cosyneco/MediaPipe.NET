@@ -11,17 +11,17 @@ namespace Mediapipe.Net.Core
 {
     public abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        protected IntPtr Ptr;
+        protected void* Ptr;
 
-        protected MpResourceHandle(bool isOwner = true) : this(IntPtr.Zero, isOwner) { }
+        protected MpResourceHandle(bool isOwner = true) : this(void*.Zero, isOwner) { }
 
-        protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
+        protected MpResourceHandle(void* ptr, bool isOwner = true) : base(isOwner)
         {
             Ptr = ptr;
         }
 
         #region IMpResourceHandle
-        public IntPtr MpPtr
+        public void* MpPtr
         {
             get
             {
@@ -38,7 +38,7 @@ namespace Mediapipe.Net.Core
             TransferOwnership();
         }
 
-        public bool OwnsResource => IsOwner && Ptr != IntPtr.Zero;
+        public bool OwnsResource => IsOwner && Ptr != void*.Zero;
         #endregion
 
         protected override void DisposeUnmanaged()
@@ -54,7 +54,7 @@ namespace Mediapipe.Net.Core
         /// Forgets the pointer address.
         /// After calling this method, <see ref="OwnsResource" /> will return false.
         /// </summary>
-        protected void ReleaseMpPtr() => Ptr = IntPtr.Zero;
+        protected void ReleaseMpPtr() => Ptr = void*.Zero;
 
         /// <summary>
         /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.
@@ -62,10 +62,10 @@ namespace Mediapipe.Net.Core
         /// <remarks>In most cases, this method should not be called directly.</remarks>
         protected abstract void DeleteMpPtr();
 
-        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out IntPtr strPtr);
+        protected delegate MpReturnCode StringOutFunc(void* ptr, out void* strPtr);
         protected string? MarshalStringFromNative(StringOutFunc func)
         {
-            func(MpPtr, out IntPtr strPtr).Assert();
+            func(MpPtr, out void* strPtr).Assert();
             GC.KeepAlive(this);
 
             string? str = Marshal.PtrToStringAnsi(strPtr);

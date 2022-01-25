@@ -13,7 +13,7 @@ namespace Mediapipe.Net.External
     [StructLayout(LayoutKind.Sequential)]
     internal struct SerializedProtoVector
     {
-        public IntPtr Data;
+        public void* Data;
         public int Size;
 
         // TODO: This is looking just as sus as SerializedProto.Dispose().
@@ -30,7 +30,7 @@ namespace Mediapipe.Net.External
 
                 for (var i = 0; i < Size; i++)
                 {
-                    var serializedProto = Marshal.PtrToStructure<SerializedProto>((IntPtr)protoPtr++);
+                    var serializedProto = Marshal.PtrToStructure<SerializedProto>((void*)protoPtr++);
                     protos.Add(serializedProto.Deserialize(parser));
                 }
             }

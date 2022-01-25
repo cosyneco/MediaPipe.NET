@@ -11,13 +11,13 @@ namespace Mediapipe.Net.Native
     {
 #pragma warning disable CA2101
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
-        public static extern MpReturnCode absl_Status__i_PKc(int code, string message, out IntPtr status);
+        public static extern MpReturnCode absl_Status__i_PKc(int code, string message, out void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void absl_Status__delete(IntPtr status);
+        public static extern void absl_Status__delete(void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode absl_Status__ToString(IntPtr status, out IntPtr str);
+        public static extern MpReturnCode absl_Status__ToString(void* status, out void* str);
 #pragma warning restore CA2101
     }
 }

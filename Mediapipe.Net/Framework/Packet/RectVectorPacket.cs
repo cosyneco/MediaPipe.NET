@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class RectVectorPacket : Packet<List<Rect>>
     {
         public RectVectorPacket() : base() { }
-        public RectVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public RectVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override List<Rect> Get()
         {

@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public class FaceGeometryVectorPacket : Packet<List<FaceGeometry.FaceGeometry>>
     {
         public FaceGeometryVectorPacket() : base() { }
-        public FaceGeometryVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public FaceGeometryVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override List<FaceGeometry.FaceGeometry> Get()
         {

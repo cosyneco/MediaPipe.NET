@@ -10,17 +10,17 @@ namespace Mediapipe.Net.Native
     internal partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void delete_array__PKc(IntPtr str);
+        public static extern void delete_array__PKc(void* str);
 
         #region String
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__delete(IntPtr str);
+        public static extern void std_string__delete(void* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out IntPtr str);
+        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out void* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__swap__Rstr(IntPtr src, IntPtr dst);
+        public static extern void std_string__swap__Rstr(void* src, void* dst);
         #endregion
     }
 }

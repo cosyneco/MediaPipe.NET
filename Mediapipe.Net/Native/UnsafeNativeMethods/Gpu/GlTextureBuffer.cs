@@ -12,39 +12,39 @@ namespace Mediapipe.Net.Native
     {
         #region GlTextureBuffer
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__WaitUntilComplete(IntPtr glTextureBuffer);
+        public static extern MpReturnCode mp_GlTextureBuffer__WaitUntilComplete(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__WaitOnGpu(IntPtr glTextureBuffer);
+        public static extern MpReturnCode mp_GlTextureBuffer__WaitOnGpu(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__Reuse(IntPtr glTextureBuffer);
+        public static extern MpReturnCode mp_GlTextureBuffer__Reuse(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__Updated__Pgst(IntPtr glTextureBuffer, IntPtr prodToken);
+        public static extern MpReturnCode mp_GlTextureBuffer__Updated__Pgst(void* glTextureBuffer, void* prodToken);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__DidRead__Pgst(IntPtr glTextureBuffer, IntPtr consToken);
+        public static extern MpReturnCode mp_GlTextureBuffer__DidRead__Pgst(void* glTextureBuffer, void* consToken);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__WaitForConsumers(IntPtr glTextureBuffer);
+        public static extern MpReturnCode mp_GlTextureBuffer__WaitForConsumers(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlTextureBuffer__WaitForConsumersOnGpu(IntPtr glTextureBuffer);
+        public static extern MpReturnCode mp_GlTextureBuffer__WaitForConsumersOnGpu(void* glTextureBuffer);
         #endregion
 
         #region SharedGlTextureBuffer
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_SharedGlTextureBuffer__delete(IntPtr glTextureBuffer);
+        public static extern void mp_SharedGlTextureBuffer__delete(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_SharedGlTextureBuffer__reset(IntPtr glTextureBuffer);
+        public static extern void mp_SharedGlTextureBuffer__reset(void* glTextureBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_SharedGlTextureBuffer__ui_ui_i_i_ui_PF_PSgc(
             uint target, uint name, int width, int height, GpuBufferFormat format,
             GlTextureBuffer.DeletionCallback deletionCallback,
-            IntPtr producerContext, out IntPtr sharedGlTextureBuffer);
+            void* producerContext, out void* sharedGlTextureBuffer);
         #endregion
     }
 }

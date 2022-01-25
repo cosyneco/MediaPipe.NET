@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     {
         public StringPacket() : base() { }
 
-        public StringPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public StringPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public StringPacket(string value) : base()
         {

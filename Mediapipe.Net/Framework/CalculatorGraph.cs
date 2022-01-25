@@ -17,7 +17,7 @@ namespace Mediapipe.Net.Framework
 {
     public class CalculatorGraph : MpResourceHandle
     {
-        public delegate IntPtr NativePacketCallback(IntPtr graphPtr, IntPtr packetPtr);
+        public delegate void* NativePacketCallback(void* graphPtr, void* packetPtr);
         public delegate Status PacketCallback<TPacket, TValue>(TPacket? packet) where TPacket : Packet<TValue>;
 
         public CalculatorGraph() : base()

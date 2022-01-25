@@ -12,37 +12,37 @@ namespace Mediapipe.Net.Native
     {
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GpuBuffer__PSgtb(IntPtr glTextureBuffer, out IntPtr gpuBuffer);
+        public static extern MpReturnCode mp_GpuBuffer__PSgtb(void* glTextureBuffer, out void* gpuBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_GpuBuffer__delete(IntPtr gpuBuffer);
+        public static extern void mp_GpuBuffer__delete(void* gpuBuffer);
 
         #region StatusOr
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_StatusOrGpuBuffer__delete(IntPtr statusOrGpuBuffer);
+        public static extern void mp_StatusOrGpuBuffer__delete(void* statusOrGpuBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrGpuBuffer__status(IntPtr statusOrGpuBuffer, out IntPtr status);
+        public static extern MpReturnCode mp_StatusOrGpuBuffer__status(void* statusOrGpuBuffer, out void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrGpuBuffer__value(IntPtr statusOrGpuBuffer, out IntPtr gpuBuffer);
+        public static extern MpReturnCode mp_StatusOrGpuBuffer__value(void* statusOrGpuBuffer, out void* gpuBuffer);
         #endregion
 
         #region Packet
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeGpuBufferPacket__Rgb(IntPtr gpuBuffer, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeGpuBufferPacket__Rgb(void* gpuBuffer, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeGpuBufferPacket_At__Rgb_Rts(IntPtr gpuBuffer, IntPtr timestamp, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeGpuBufferPacket_At__Rgb_Rts(void* gpuBuffer, void* timestamp, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__ConsumeGpuBuffer(IntPtr packet, out IntPtr statusOrGpuBuffer);
+        public static extern MpReturnCode mp_Packet__ConsumeGpuBuffer(void* packet, out void* statusOrGpuBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetGpuBuffer(IntPtr packet, out IntPtr gpuBuffer);
+        public static extern MpReturnCode mp_Packet__GetGpuBuffer(void* packet, out void* gpuBuffer);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__ValidateAsGpuBuffer(IntPtr packet, out IntPtr status);
+        public static extern MpReturnCode mp_Packet__ValidateAsGpuBuffer(void* packet, out void* status);
         #endregion
     }
 }
