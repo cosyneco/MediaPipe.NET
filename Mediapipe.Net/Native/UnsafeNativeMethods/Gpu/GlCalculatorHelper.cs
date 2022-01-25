@@ -23,7 +23,7 @@ namespace Mediapipe.Net.Native
         // TODO: Make it ba a member of GlCalculatorHelper
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__RunInGlContext__PF(
-            IntPtr glCalculatorHelper, [MarshalAs(UnmanagedType.FunctionPtr)] GlCalculatorHelper.NativeGlStatusFunction glFunc, out IntPtr status);
+            IntPtr glCalculatorHelper, GlCalculatorHelper.NativeGlStatusFunction glFunc, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlCalculatorHelper__CreateSourceTexture__Rif(

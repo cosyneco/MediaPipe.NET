@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Native
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
         public static extern MpReturnCode mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(IntPtr graph, string streamName,
-            [MarshalAs(UnmanagedType.FunctionPtr)] CalculatorGraph.NativePacketCallback packetCallback,
+            CalculatorGraph.NativePacketCallback packetCallback,
             bool observeTimestampBounds, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]

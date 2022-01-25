@@ -43,7 +43,7 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_SharedGlTextureBuffer__ui_ui_i_i_ui_PF_PSgc(
             uint target, uint name, int width, int height, GpuBufferFormat format,
-            [MarshalAs(UnmanagedType.FunctionPtr)] GlTextureBuffer.DeletionCallback deletionCallback,
+            GlTextureBuffer.DeletionCallback deletionCallback,
             IntPtr producerContext, out IntPtr sharedGlTextureBuffer);
         #endregion
     }

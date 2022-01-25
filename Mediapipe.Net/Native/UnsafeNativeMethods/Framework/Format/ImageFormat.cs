@@ -22,7 +22,7 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8_PF(
             ImageFormat format, int width, int height, int widthStep, IntPtr pixelData,
-            [MarshalAs(UnmanagedType.FunctionPtr)] Deleter deleter, out IntPtr imageFrame);
+            Deleter deleter, out IntPtr imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp_ImageFrame__delete(IntPtr imageFrame);
