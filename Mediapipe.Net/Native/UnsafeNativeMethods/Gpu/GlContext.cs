@@ -21,20 +21,20 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_GlContext_GetCurrent(out IntPtr sharedGlContext);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_GlContext_Create__P_b([MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
+        public static extern MpReturnCode mp_GlContext_Create__P_b(bool createThread, out IntPtr statusOrSharedGlContext);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlContext_Create__Rgc_b(
-            IntPtr shareContext, [MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
+            IntPtr shareContext, bool createThread, out IntPtr statusOrSharedGlContext);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlContext_Create__ui_b(
-            uint shareContext, [MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
+            uint shareContext, bool createThread, out IntPtr statusOrSharedGlContext);
 
         [SupportedOSPlatform("IOS")]
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_GlContext_Create__Pes_b(
-            IntPtr sharegroup, [MarshalAs(UnmanagedType.I1)] bool createThread, out IntPtr statusOrSharedGlContext);
+            IntPtr sharegroup, bool createThread, out IntPtr statusOrSharedGlContext);
         #endregion
 
         #region GlSyncToken

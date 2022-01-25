@@ -17,7 +17,7 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode google_ShutdownGoogleLogging();
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void glog_FLAGS_logtostderr([MarshalAs(UnmanagedType.I1)] bool value);
+        public static extern void glog_FLAGS_logtostderr(bool value);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void glog_FLAGS_stderrthreshold(int threshold);
