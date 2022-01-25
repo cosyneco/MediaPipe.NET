@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Core
     {
         protected void* Ptr;
 
-        protected MpResourceHandle(bool isOwner = true) : this(void*.Zero, isOwner) { }
+        protected MpResourceHandle(bool isOwner = true) : this(null, isOwner) { }
 
         protected MpResourceHandle(void* ptr, bool isOwner = true) : base(isOwner)
         {
@@ -38,7 +38,7 @@ namespace Mediapipe.Net.Core
             TransferOwnership();
         }
 
-        public bool OwnsResource => IsOwner && Ptr != void*.Zero;
+        public bool OwnsResource => IsOwner && Ptr != null;
         #endregion
 
         protected override void DisposeUnmanaged()
@@ -54,7 +54,7 @@ namespace Mediapipe.Net.Core
         /// Forgets the pointer address.
         /// After calling this method, <see ref="OwnsResource" /> will return false.
         /// </summary>
-        protected void ReleaseMpPtr() => Ptr = void*.Zero;
+        protected void ReleaseMpPtr() => Ptr = null;
 
         /// <summary>
         /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.

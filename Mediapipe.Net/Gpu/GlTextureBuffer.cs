@@ -32,7 +32,7 @@ namespace Mediapipe.Net.Gpu
         public GlTextureBuffer(uint target, uint name, int width, int height,
             GpuBufferFormat format, DeletionCallback callback, GlContext? glContext)
         {
-            var sharedContextPtr = glContext == null ? void*.Zero : glContext.SharedPtr;
+            var sharedContextPtr = glContext == null ? null : glContext.SharedPtr;
             UnsafeNativeMethods.mp_SharedGlTextureBuffer__ui_ui_i_i_ui_PF_PSgc(
                 target, name, width, height, format, callback, sharedContextPtr, out var ptr).Assert();
 
@@ -59,7 +59,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? void*.Zero : sharedPtrHandle.MpPtr;
+        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         public uint Name() => SafeNativeMethods.mp_GlTextureBuffer__name(MpPtr);
 

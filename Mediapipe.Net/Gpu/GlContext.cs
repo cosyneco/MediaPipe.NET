@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Gpu
         public static GlContext? GetCurrent()
         {
             UnsafeNativeMethods.mp_GlContext_GetCurrent(out var glContextPtr).Assert();
-            return glContextPtr == void*.Zero ? null : new GlContext(glContextPtr);
+            return glContextPtr == null ? null : new GlContext(glContextPtr);
         }
 
         public GlContext(void* ptr, bool isOwner = true) : base(isOwner)
@@ -40,7 +40,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? void*.Zero : sharedPtrHandle.MpPtr;
+        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         public void* EglDisplay => SafeNativeMethods.mp_GlContext__egl_display(MpPtr);

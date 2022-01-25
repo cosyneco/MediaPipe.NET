@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? void*.Zero : sharedPtrHandle.MpPtr;
+        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         public static StatusOrGpuResources Create()
         {

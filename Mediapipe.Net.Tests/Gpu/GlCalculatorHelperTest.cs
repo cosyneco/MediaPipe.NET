@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Tests.Gpu
         public void Ctor_ShouldInstantiateGlCalculatorHelper()
         {
             using var glCalculatorHelper = new GlCalculatorHelper();
-            Assert.AreNotEqual(glCalculatorHelper.MpPtr, void*.Zero);
+            Assert.AreNotEqual(glCalculatorHelper.MpPtr, null);
         }
         #endregion
 
@@ -173,11 +173,11 @@ namespace Mediapipe.Net.Tests.Gpu
             using var glContext = glCalculatorHelper.GetGlContext();
 
             if (OperatingSystem.IsLinux() || OperatingSystem.IsAndroid())
-                Assert.AreNotEqual(glContext.EglContext, void*.Zero);
+                Assert.AreNotEqual(glContext.EglContext, null);
             else if (OperatingSystem.IsMacOS())
-                Assert.AreNotEqual(glContext.NsglContext, void*.Zero);
+                Assert.AreNotEqual(glContext.NsglContext, null);
             else if (OperatingSystem.IsIOS())
-                Assert.AreNotEqual(glContext.EaglContext, void*.Zero);
+                Assert.AreNotEqual(glContext.EaglContext, null);
         }
         #endregion
     }

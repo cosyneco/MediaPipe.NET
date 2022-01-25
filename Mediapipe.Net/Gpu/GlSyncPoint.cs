@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? void*.Zero : sharedPtrHandle.MpPtr;
+        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         public void Wait() => UnsafeNativeMethods.mp_GlSyncPoint__Wait(MpPtr).Assert();
 

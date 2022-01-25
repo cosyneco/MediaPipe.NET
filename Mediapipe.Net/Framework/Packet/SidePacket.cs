@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Framework.Packet
         {
             UnsafeNativeMethods.mp_SidePacket__at__PKc(MpPtr, key, out var packetPtr).Assert();
 
-            if (packetPtr == void*.Zero)
+            if (packetPtr == null)
                 return default; // null
 
             GC.KeepAlive(this);
