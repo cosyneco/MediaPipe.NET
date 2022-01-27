@@ -9,14 +9,14 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void delete_array__PKc(void* str);
+        public static extern void delete_array__PKc(sbyte* str);
 
         #region String
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__delete(void* str);
+        public static extern void std_string__delete(sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out void* str);
+        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void std_string__swap__Rstr(void* src, void* dst);

@@ -26,13 +26,13 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_Packet__Timestamp(void* packet, out void* timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__DebugString(void* packet, out void* str);
+        public static extern MpReturnCode mp_Packet__DebugString(void* packet, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__RegisteredTypeName(void* packet, out void* str);
+        public static extern MpReturnCode mp_Packet__RegisteredTypeName(void* packet, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__DebugTypeName(void* packet, out void* str);
+        public static extern MpReturnCode mp_Packet__DebugTypeName(void* packet, out sbyte* str);
         #endregion
 
         #region Bool
@@ -105,10 +105,10 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp__MakeStringPacket_At__PKc_i_Rt(byte[] bytes, int size, void* timestamp, out void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetString(void* packet, out void* value);
+        public static extern MpReturnCode mp_Packet__GetString(void* packet, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetByteString(void* packet, out void* value, out int size);
+        public static extern MpReturnCode mp_Packet__GetByteString(void* packet, out sbyte* str, out int size);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__ValidateAsString(void* packet, out void* status);

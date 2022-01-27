@@ -61,13 +61,13 @@ namespace Mediapipe.Net.Core
         /// <remarks>In most cases, this method should not be called directly.</remarks>
         protected abstract void DeleteMpPtr();
 
-        protected delegate MpReturnCode StringOutFunc(void* ptr, out void* strPtr);
+        protected delegate MpReturnCode StringOutFunc(void* ptr, out sbyte* strPtr);
         protected string? MarshalStringFromNative(StringOutFunc func)
         {
-            func(MpPtr, out void* strPtr).Assert();
+            func(MpPtr, out sbyte* strPtr).Assert();
             GC.KeepAlive(this);
 
-            string? str = new string((sbyte*)strPtr);
+            string? str = new string(strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return str;

@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Native
         public static extern void absl_Status__delete(void* status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode absl_Status__ToString(void* status, out void* str);
+        public static extern MpReturnCode absl_Status__ToString(void* status, out sbyte* str);
 #pragma warning restore CA2101
     }
 }

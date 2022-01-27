@@ -18,7 +18,7 @@ namespace Mediapipe.Net.External
             Ptr = ptr;
         }
 
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete(Ptr);
+        protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete((sbyte*)Ptr);
 
         public void Swap(StdString str)
         {

@@ -45,10 +45,9 @@ namespace Mediapipe.Net.Framework.Packet
 
         public byte[] GetByteArray()
         {
-            UnsafeNativeMethods.mp_Packet__GetByteString(MpPtr, out var ptr, out var size).Assert();
+            UnsafeNativeMethods.mp_Packet__GetByteString(MpPtr, out var strPtr, out var size).Assert();
             GC.KeepAlive(this);
 
-            var strPtr = (sbyte*)ptr;
             var bytes = new byte[size];
             for (int i = 0; i < bytes.Length; i++)
                 bytes[i] = (byte)strPtr[i];
