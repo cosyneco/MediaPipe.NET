@@ -87,7 +87,7 @@ namespace Mediapipe.Net.Framework
                 Status status;
                 try
                 {
-                    var packet = (TPacket?)Activator.CreateInstance(typeof(TPacket), packetPtr, false);
+                    var packet = (TPacket?)Activator.CreateInstance(typeof(TPacket), (IntPtr)packetPtr, false);
                     status = packetCallback(packet);
                 }
                 catch (Exception e)

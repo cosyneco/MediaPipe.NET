@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Framework.Packet
             GC.KeepAlive(timestamp);
 
             // Oh gosh... the Activator...
-            return (Packet<T>?)Activator.CreateInstance(GetType(), packetPtr, true);
+            return (Packet<T>?)Activator.CreateInstance(GetType(), (IntPtr)packetPtr, true);
         }
 
         public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr);
