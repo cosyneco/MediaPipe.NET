@@ -24,16 +24,9 @@ namespace Mediapipe.Net.External
         {
             var protos = new List<T>(Size);
 
-            unsafe
-            {
-                var protoPtr = (SerializedProto*)Data;
-
-                for (var i = 0; i < Size; i++)
-                {
-                    var serializedProto = Marshal.PtrToStructure<SerializedProto>((void*)protoPtr++);
-                    protos.Add(serializedProto.Deserialize(parser));
-                }
-            }
+            var protoPtr = (SerializedProto*)Data;
+            for (var i = 0; i < Size; i++)
+                protos.Add((*protoPtr++).Deserialize(parser));
 
             return protos;
         }
