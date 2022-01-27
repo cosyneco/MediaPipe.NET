@@ -11,10 +11,10 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_ImageFrame__IsEmpty(void* imageFrame);
+        public static extern byte mp_ImageFrame__IsEmpty(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_ImageFrame__IsContiguous(void* imageFrame);
+        public static extern byte mp_ImageFrame__IsContiguous(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__IsAligned__ui(
@@ -52,7 +52,7 @@ namespace Mediapipe.Net.Native
 
         #region StatusOr
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_StatusOrImageFrame__ok(void* statusOrImageFrame);
+        public static extern byte mp_StatusOrImageFrame__ok(void* statusOrImageFrame);
         #endregion
     }
 }

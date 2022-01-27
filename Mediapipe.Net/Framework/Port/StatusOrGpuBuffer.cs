@@ -30,7 +30,7 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrGpuBuffer__ok(MpPtr);
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrGpuBuffer__ok(MpPtr) > 0;
 
         public override GpuBuffer Value()
         {

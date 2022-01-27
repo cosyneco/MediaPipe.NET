@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Native
 
         #region StatusOr
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_StatusOrGpuBuffer__ok(void* statusOrGpuBuffer);
+        public static extern byte mp_StatusOrGpuBuffer__ok(void* statusOrGpuBuffer);
         #endregion
     }
 }

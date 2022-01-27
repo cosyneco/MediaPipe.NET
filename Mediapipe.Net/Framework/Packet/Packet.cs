@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Framework.Packet
             return (Packet<T>?)Activator.CreateInstance(GetType(), (IntPtr)packetPtr, true);
         }
 
-        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr);
+        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr) > 0;
 
         public Status ValidateAsProtoMessageLite()
         {

@@ -138,6 +138,6 @@ namespace Mediapipe.Net.Gpu
             return new GlContext(glContextPtr, false);
         }
 
-        public bool Initialized() => SafeNativeMethods.mp_GlCalculatorHelper__Initialized(MpPtr);
+        public bool Initialized() => SafeNativeMethods.mp_GlCalculatorHelper__Initialized(MpPtr) > 0;
     }
 }

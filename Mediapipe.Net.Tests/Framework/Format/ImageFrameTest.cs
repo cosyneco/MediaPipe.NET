@@ -31,7 +31,10 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.True(imageFrame.IsEmpty);
             Assert.False(imageFrame.IsContiguous);
             Assert.False(imageFrame.IsAligned(16));
-            Assert.AreEqual(imageFrame.MutablePixelData, null);
+            unsafe
+            {
+                Assert.True(imageFrame.MutablePixelData == null);
+            }
 #pragma warning restore IDE0058
         }
 
@@ -51,7 +54,10 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.False(imageFrame.IsEmpty);
             Assert.True(imageFrame.IsContiguous);
             Assert.True(imageFrame.IsAligned(16));
-            Assert.AreNotEqual(imageFrame.MutablePixelData, null);
+            unsafe
+            {
+                Assert.True(imageFrame.MutablePixelData != null);
+            }
         }
 
         [Test]

@@ -57,7 +57,7 @@ namespace Mediapipe.Net.Gpu
         [SupportedOSPlatform("IOS")]
         public void* EaglContext => SafeNativeMethods.mp_GlContext__eagl_context(MpPtr);
 
-        public bool IsCurrent() => SafeNativeMethods.mp_GlContext__IsCurrent(MpPtr);
+        public bool IsCurrent() => SafeNativeMethods.mp_GlContext__IsCurrent(MpPtr) > 0;
 
         public int GlMajorVersion => SafeNativeMethods.mp_GlContext__gl_major_version(MpPtr);
 

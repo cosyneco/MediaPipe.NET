@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework
     {
         public static CalculatorGraphConfig ParseFromTextFormat(this MessageParser<CalculatorGraphConfig> _, string configText)
         {
-            if (UnsafeNativeMethods.mp_api__ConvertFromCalculatorGraphConfigTextFormat(configText, out var serializedProto))
+            if (UnsafeNativeMethods.mp_api__ConvertFromCalculatorGraphConfigTextFormat(configText, out var serializedProto) > 0)
             {
                 var config = serializedProto.Deserialize(CalculatorGraphConfig.Parser);
                 serializedProto.Dispose();

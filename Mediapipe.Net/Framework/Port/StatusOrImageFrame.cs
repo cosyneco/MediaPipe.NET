@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(MpPtr);
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(MpPtr) > 0;
 
         public override ImageFrame Value()
         {

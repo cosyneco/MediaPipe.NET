@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_Packet__IsEmpty(void* packet);
+        public static extern byte mp_Packet__IsEmpty(void* packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp_SidePacket__clear(void* sidePacket);

@@ -18,6 +18,6 @@ namespace Mediapipe.Net.Native
         public static extern void* mp_SharedGpuResources__get(void* gpuResources);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern bool mp_StatusOrGpuResources__ok(void* statusOrGpuResources);
+        public static extern byte mp_StatusOrGpuResources__ok(void* statusOrGpuResources);
     }
 }

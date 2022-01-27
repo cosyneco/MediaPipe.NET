@@ -150,7 +150,7 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public bool HasError() => SafeNativeMethods.mp_CalculatorGraph__HasError(MpPtr);
+        public bool HasError() => SafeNativeMethods.mp_CalculatorGraph__HasError(MpPtr) > 0;
 
         public Status AddPacketToInputStream<T>(string streamName, Packet<T> packet)
         {
@@ -191,11 +191,11 @@ namespace Mediapipe.Net.Framework
             GC.KeepAlive(this);
         }
 
-        public bool GraphInputStreamsClosed() => SafeNativeMethods.mp_CalculatorGraph__GraphInputStreamsClosed(MpPtr);
+        public bool GraphInputStreamsClosed() => SafeNativeMethods.mp_CalculatorGraph__GraphInputStreamsClosed(MpPtr) > 0;
 
-        public bool IsNodeThrottled(int nodeId) => SafeNativeMethods.mp_CalculatorGraph__IsNodeThrottled__i(MpPtr, nodeId);
+        public bool IsNodeThrottled(int nodeId) => SafeNativeMethods.mp_CalculatorGraph__IsNodeThrottled__i(MpPtr, nodeId) > 0;
 
-        public bool UnthrottleSources() => SafeNativeMethods.mp_CalculatorGraph__UnthrottleSources(MpPtr);
+        public bool UnthrottleSources() => SafeNativeMethods.mp_CalculatorGraph__UnthrottleSources(MpPtr) > 0;
 
         public GpuResources GetGpuResources()
         {

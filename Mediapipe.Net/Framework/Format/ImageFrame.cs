@@ -57,9 +57,9 @@ namespace Mediapipe.Net.Framework.Format
             // Do nothing (pixelData is moved)
         }
 
-        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr);
+        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
 
-        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr);
+        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr) > 0;
 
         public bool IsAligned(uint alignmentBoundary)
         {
