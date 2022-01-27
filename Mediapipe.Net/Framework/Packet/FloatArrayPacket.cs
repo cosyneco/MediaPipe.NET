@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Framework.Packet
 
         public FloatArrayPacket() : base() { }
 
-        public FloatArrayPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public FloatArrayPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public FloatArrayPacket(float[] value) : base()
         {

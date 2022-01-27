@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packet
     public unsafe class FaceGeometryPacket : Packet<FaceGeometry.FaceGeometry>
     {
         public FaceGeometryPacket() : base() { }
-        public FaceGeometryPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public FaceGeometryPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override FaceGeometry.FaceGeometry Get()
         {

@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public unsafe class TimedModelMatrixProtoListPacket : Packet<TimedModelMatrixProtoList>
     {
         public TimedModelMatrixProtoListPacket() : base() { }
-        public TimedModelMatrixProtoListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public TimedModelMatrixProtoListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override TimedModelMatrixProtoList Get()
         {

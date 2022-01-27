@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packet
     public unsafe class RectPacket : Packet<Rect>
     {
         public RectPacket() : base() { }
-        public RectPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public RectPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override Rect Get()
         {

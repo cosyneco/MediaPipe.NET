@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     public unsafe class ClassificationListVectorPacket : Packet<List<ClassificationList>>
     {
         public ClassificationListVectorPacket() : base() { }
-        public ClassificationListVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public ClassificationListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override List<ClassificationList> Get()
         {

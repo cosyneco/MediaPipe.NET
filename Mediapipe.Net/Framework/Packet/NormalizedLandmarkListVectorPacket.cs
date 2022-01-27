@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Packet
     public unsafe class NormalizedLandmarkListVectorPacket : Packet<List<NormalizedLandmarkList>>
     {
         public NormalizedLandmarkListVectorPacket() : base() { }
-        public NormalizedLandmarkListVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public NormalizedLandmarkListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public override List<NormalizedLandmarkList> Get()
         {

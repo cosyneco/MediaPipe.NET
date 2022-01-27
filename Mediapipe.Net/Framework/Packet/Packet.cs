@@ -19,6 +19,9 @@ namespace Mediapipe.Net.Framework.Packet
 
         public Packet(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
+        // Temp backwards compatibility until we find something better than the Activator. ¬¬
+        public Packet(IntPtr ptr, bool isOwner = true) : base((void*)ptr, isOwner) { }
+
         /// <exception cref="MediaPipeException">Thrown when the value is not set</exception>
         public abstract T Get();
 
@@ -29,7 +32,6 @@ namespace Mediapipe.Net.Framework.Packet
         public Packet<T>? At(Timestamp timestamp)
         {
             UnsafeNativeMethods.mp_Packet__At__Rt(MpPtr, timestamp.MpPtr, out var packetPtr).Assert();
-
             GC.KeepAlive(timestamp);
 
             // Oh gosh... the Activator...
