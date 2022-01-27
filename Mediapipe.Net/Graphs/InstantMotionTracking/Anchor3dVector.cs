@@ -20,7 +20,6 @@ namespace Mediapipe.Net.Graphs.InstantMotionTracking
         public List<Anchor3d> ToList()
         {
             var anchors = new List<Anchor3d>(Size);
-
             for (int i = 0; i < Size; i++)
                 anchors.Add(Data[i]);
 

@@ -5,6 +5,7 @@
 using System;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Framework.Packet
 {
@@ -48,9 +49,7 @@ namespace Mediapipe.Net.Framework.Packet
             UnsafeNativeMethods.mp_Packet__GetByteString(MpPtr, out var strPtr, out var size).Assert();
             GC.KeepAlive(this);
 
-            var bytes = new byte[size];
-            for (int i = 0; i < bytes.Length; i++)
-                bytes[i] = (byte)strPtr[i];
+            byte[] bytes = UnsafeUtil.SafeArrayCopy((byte*)strPtr, size);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return bytes;

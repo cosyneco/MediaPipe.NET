@@ -5,6 +5,7 @@
 using System.Runtime.InteropServices;
 using Google.Protobuf;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.External
 {
@@ -20,9 +21,7 @@ namespace Mediapipe.Net.External
 
         public T Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
-            byte[] bytes = new byte[Length];
-            for (int i = 0; i < bytes.Length; i++)
-                bytes[i] = (byte)StrPtr[i];
+            byte[] bytes = UnsafeUtil.SafeArrayCopy((byte*)StrPtr, Length);
             return parser.ParseFrom(bytes);
         }
     }

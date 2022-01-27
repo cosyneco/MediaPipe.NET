@@ -5,6 +5,7 @@
 using System;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Framework.Packet
 {
@@ -48,13 +49,7 @@ namespace Mediapipe.Net.Framework.Packet
             if (Length < 0)
                 throw new InvalidOperationException("The array's length is unknown, set Length first");
 
-            var result = new float[Length];
-
-            var src = GetArrayPtr();
-            for (int i = 0; i < result.Length; i++)
-                result[i] = src[i];
-
-            return result;
+            return UnsafeUtil.SafeArrayCopy(GetArrayPtr(), Length);
         }
 
         public float* GetArrayPtr()

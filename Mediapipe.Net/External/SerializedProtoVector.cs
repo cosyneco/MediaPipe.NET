@@ -22,7 +22,6 @@ namespace Mediapipe.Net.External
         public List<T> Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
             var protos = new List<T>(Size);
-
             for (int i = 0; i < Size; i++)
                 protos.Add(Data[i].Deserialize(parser));
 
