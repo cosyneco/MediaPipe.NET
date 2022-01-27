@@ -113,7 +113,6 @@ namespace Mediapipe.Net.Tests.Gpu
         }
 
         [Test, GpuOnly]
-        [Ignore("Skip because a thread hangs")]
         public void CreateSourceTexture_ShouldFail_When_ImageFrameFormatIsInvalid()
         {
             using var glCalculatorHelper = new GlCalculatorHelper();
