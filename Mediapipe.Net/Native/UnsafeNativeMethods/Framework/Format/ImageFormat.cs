@@ -16,12 +16,10 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_ui(
             ImageFormat format, int width, int height, uint alignmentBoundary, out void* imageFrame);
 
-        // TODO: Make it be a member of ImageFrame
-        public delegate void Deleter(void* ptr);
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8_PF(
-            ImageFormat format, int width, int height, int widthStep, void* pixelData,
-            Deleter deleter, out void* imageFrame);
+            ImageFormat format, int width, int height, int widthStep, byte* pixelData,
+            ImageFrame.Deleter deleter, out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp_ImageFrame__delete(void* imageFrame);
@@ -33,13 +31,13 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_ImageFrame__SetAlignmentPaddingAreas(void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui8_i(void* imageFrame, void* buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui8_i(void* imageFrame, byte* buffer, int bufferSize);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui16_i(void* imageFrame, void* buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pui16_i(void* imageFrame, ushort* buffer, int bufferSize);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pf_i(void* imageFrame, void* buffer, int bufferSize);
+        public static extern MpReturnCode mp_ImageFrame__CopyToBuffer__Pf_i(void* imageFrame, float* buffer, int bufferSize);
 
         #region StatusOr
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

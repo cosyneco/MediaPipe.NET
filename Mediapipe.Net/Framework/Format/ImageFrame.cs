@@ -43,7 +43,7 @@ namespace Mediapipe.Net.Framework.Format
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
                 format, width, height, widthStep,
-                (void*)pixelData,
+                pixelData,
                 releasePixelData,
                 out var ptr).Assert();
             Ptr = ptr;
@@ -110,7 +110,7 @@ namespace Mediapipe.Net.Framework.Format
 
         public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
 
-        public void* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        public byte* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
 
         public int PixelDataSize => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
 
@@ -190,9 +190,11 @@ namespace Mediapipe.Net.Framework.Format
         public byte[] GetChannel(int channelNumber, bool flipVertically)
             => GetChannel(channelNumber, flipVertically, new byte[Width * Height]);
 
-        private delegate MpReturnCode CopyToBufferHandler(void* ptr, void* buffer, int bufferSize);
+        private delegate MpReturnCode CopyToBufferHandler<T>(void* ptr, T* buffer, int bufferSize)
+            where T : unmanaged;
 
-        private T[] copyToBuffer<T>(CopyToBufferHandler handler, int bufferSize) where T : unmanaged
+        private T[] copyToBuffer<T>(CopyToBufferHandler<T> handler, int bufferSize)
+            where T : unmanaged
         {
             var buffer = new T[bufferSize];
 
@@ -200,7 +202,7 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (T* bufferPtr = buffer)
                 {
-                    handler(MpPtr, (void*)bufferPtr, bufferSize).Assert();
+                    handler(MpPtr, bufferPtr, bufferSize).Assert();
                 }
             }
 
@@ -225,7 +227,7 @@ namespace Mediapipe.Net.Framework.Format
         /// In the source array, pixels are laid out left to right, top to bottom,
         /// but in the returned array, left to right, top to bottom.
         /// </remarks>
-        private static void readChannel(void* ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
+        private static void readChannel(byte* ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
         {
             if (colors.Length != width * height)
                 throw new ArgumentException("colors length is invalid");
@@ -235,7 +237,7 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (byte* dest = colors)
                 {
-                    var pSrc = (byte*)ptr;
+                    var pSrc = ptr;
                     pSrc += channelNumber;
 
                     if (flipVertically)

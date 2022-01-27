@@ -42,7 +42,7 @@ namespace Mediapipe.Net.Native
         public static extern int mp_ImageFrame__WidthStep(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void* mp_ImageFrame__MutablePixelData(void* imageFrame);
+        public static extern byte* mp_ImageFrame__MutablePixelData(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern int mp_ImageFrame__PixelDataSize(void* imageFrame);
