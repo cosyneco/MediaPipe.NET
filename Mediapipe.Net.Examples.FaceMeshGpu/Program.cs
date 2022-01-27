@@ -79,6 +79,7 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                 imgframe = new ImageFrame(ImageFormat.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, rawDataPtr);
             }
+
             using ImageFrame img = calculator.Send(imgframe);
             imgframe.Dispose();
         }

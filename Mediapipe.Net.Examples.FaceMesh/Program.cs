@@ -17,9 +17,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
     public static class Program
     {
         private static Camera? camera;
-
         private static FrameConverter? converter;
-
         private static FaceMeshCpuCalculator? calculator;
 
         public static void Main(string[] args)
@@ -76,11 +74,11 @@ namespace Mediapipe.Net.Examples.FaceMesh
             ImageFrame imgframe;
             fixed (byte* rawDataPtr = cFrame.RawData)
             {
-                imgframe = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
-                    rawDataPtr);
+                imgframe = new ImageFrame(ImageFormat.Srgba,
+                    cFrame.Width, cFrame.Height, cFrame.WidthStep, rawDataPtr);
             }
 
-            ImageFrame img = calculator.Send(imgframe);
+            using ImageFrame img = calculator.Send(imgframe);
             imgframe.Dispose();
         }
 
