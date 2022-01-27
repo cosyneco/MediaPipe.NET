@@ -3,7 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Runtime.InteropServices;
 using Mediapipe.Net.Native;
 using static Mediapipe.Net.Native.MpReturnCodeExtension;
 
