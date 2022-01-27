@@ -63,7 +63,10 @@ namespace Mediapipe.Net.Calculators
                 outFrame = new ImageFrame(outBuffer.Format.ImageFormatFor(), outBuffer.Width, outBuffer.Height, ImageFrame.GlDefaultAlignmentBoundary);
                 gpuHelper.BindFramebuffer(texture);
                 GlTextureInfo info = outBuffer.Format.GlTextureInfoFor(0);
-                Gl.ReadPixels(0, 0, texture.Width, texture.Height, info.GlFormat, info.GlType, outFrame.MutablePixelData);
+                unsafe
+                {
+                    Gl.ReadPixels(0, 0, texture.Width, texture.Height, info.GlFormat, info.GlType, outFrame.MutablePixelData);
+                }
                 Gl.Flush();
                 texture.Release();
 

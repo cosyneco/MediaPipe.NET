@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class StatusOrGpuBuffer : StatusOr<GpuBuffer>
+    public unsafe class StatusOrGpuBuffer : StatusOr<GpuBuffer>
     {
         public StatusOrGpuBuffer(void* ptr) : base(ptr) { }
 

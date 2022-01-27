@@ -15,7 +15,7 @@ namespace Mediapipe.Net.Util
     /// <remarks>
     /// There must not be more than one instance at the same time.
     /// </remarks>
-    public abstract class ResourceManager
+    public unsafe abstract class ResourceManager
     {
         public delegate string PathResolver(string path);
         public abstract PathResolver ResolvePath { get; }

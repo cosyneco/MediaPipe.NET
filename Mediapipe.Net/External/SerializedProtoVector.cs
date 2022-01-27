@@ -11,7 +11,7 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.External
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct SerializedProtoVector
+    internal unsafe struct SerializedProtoVector
     {
         public void* Data;
         public int Size;

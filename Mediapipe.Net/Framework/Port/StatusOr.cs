@@ -7,7 +7,7 @@ using Mediapipe.Net.Core;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public abstract class StatusOr<T> : MpResourceHandle
+    public unsafe abstract class StatusOr<T> : MpResourceHandle
     {
         public StatusOr(void* ptr) : base(ptr) { }
 

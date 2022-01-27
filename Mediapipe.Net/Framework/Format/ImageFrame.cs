@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Format
 {
-    public class ImageFrame : MpResourceHandle
+    public unsafe class ImageFrame : MpResourceHandle
     {
         public static readonly uint DefaultAlignmentBoundary = 16;
         public static readonly uint GlDefaultAlignmentBoundary = 4;

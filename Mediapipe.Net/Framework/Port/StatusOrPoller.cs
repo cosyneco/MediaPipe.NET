@@ -7,7 +7,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
+    public unsafe class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
     {
         public StatusOrPoller(void* ptr) : base(ptr) { }
 

@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlContext : MpResourceHandle
+    public unsafe class GlContext : MpResourceHandle
     {
         private SharedPtrHandle? sharedPtrHandle;
 

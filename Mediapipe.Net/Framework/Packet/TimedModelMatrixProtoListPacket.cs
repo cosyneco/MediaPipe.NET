@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class TimedModelMatrixProtoListPacket : Packet<TimedModelMatrixProtoList>
+    public unsafe class TimedModelMatrixProtoListPacket : Packet<TimedModelMatrixProtoList>
     {
         public TimedModelMatrixProtoListPacket() : base() { }
         public TimedModelMatrixProtoListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }

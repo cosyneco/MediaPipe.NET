@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class Status : MpResourceHandle
+    public unsafe class Status : MpResourceHandle
     {
         public enum StatusCode : int
         {

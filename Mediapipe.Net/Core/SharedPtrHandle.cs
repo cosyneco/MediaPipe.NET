@@ -6,7 +6,7 @@ using System;
 
 namespace Mediapipe.Net.Core
 {
-    public abstract class SharedPtrHandle : MpResourceHandle
+    public unsafe abstract class SharedPtrHandle : MpResourceHandle
     {
         protected SharedPtrHandle(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 

@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class FloatArrayPacket : Packet<float[]>
+    public unsafe class FloatArrayPacket : Packet<float[]>
     {
         private int length = -1;
 

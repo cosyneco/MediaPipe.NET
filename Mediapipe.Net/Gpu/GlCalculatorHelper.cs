@@ -12,7 +12,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlCalculatorHelper : MpResourceHandle
+    public unsafe class GlCalculatorHelper : MpResourceHandle
     {
         public delegate void* NativeGlStatusFunction();
         public delegate Status GlStatusFunction();

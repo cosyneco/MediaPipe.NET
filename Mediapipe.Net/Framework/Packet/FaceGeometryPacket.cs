@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class FaceGeometryPacket : Packet<FaceGeometry.FaceGeometry>
+    public unsafe class FaceGeometryPacket : Packet<FaceGeometry.FaceGeometry>
     {
         public FaceGeometryPacket() : base() { }
         public FaceGeometryPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }

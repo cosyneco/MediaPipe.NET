@@ -9,7 +9,7 @@ using static Mediapipe.Net.Native.MpReturnCodeExtension;
 
 namespace Mediapipe.Net.Core
 {
-    public abstract class MpResourceHandle : Disposable, IMpResourceHandle
+    public unsafe abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
         protected void* Ptr;
 

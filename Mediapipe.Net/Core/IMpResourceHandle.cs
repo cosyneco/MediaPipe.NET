@@ -6,7 +6,7 @@ using System;
 
 namespace Mediapipe.Net.Core
 {
-    public interface IMpResourceHandle : IDisposable
+    public unsafe interface IMpResourceHandle : IDisposable
     {
         void* MpPtr { get; }
 

@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class StatusOrImageFrame : StatusOr<ImageFrame>
+    public unsafe class StatusOrImageFrame : StatusOr<ImageFrame>
     {
         public StatusOrImageFrame(void* ptr) : base(ptr) { }
 

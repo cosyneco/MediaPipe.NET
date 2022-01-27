@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlTexture : MpResourceHandle
+    public unsafe class GlTexture : MpResourceHandle
     {
         public GlTexture() : base()
         {

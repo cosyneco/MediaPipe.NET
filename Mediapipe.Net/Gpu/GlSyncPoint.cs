@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlSyncPoint : MpResourceHandle
+    public unsafe class GlSyncPoint : MpResourceHandle
     {
         private SharedPtrHandle? sharedPtrHandle;
 

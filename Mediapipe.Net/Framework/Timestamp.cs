@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework
 {
-    public class Timestamp : MpResourceHandle, IEquatable<Timestamp>
+    public unsafe class Timestamp : MpResourceHandle, IEquatable<Timestamp>
     {
         public Timestamp(void* ptr) : base(ptr) { }
 

@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class GpuBufferPacket : Packet<GpuBuffer>
+    public unsafe class GpuBufferPacket : Packet<GpuBuffer>
     {
         public GpuBufferPacket() : base() { }
         public GpuBufferPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }

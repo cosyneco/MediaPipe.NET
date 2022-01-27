@@ -15,7 +15,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework
 {
-    public class CalculatorGraph : MpResourceHandle
+    public unsafe class CalculatorGraph : MpResourceHandle
     {
         public delegate void* NativePacketCallback(void* graphPtr, void* packetPtr);
         public delegate Status PacketCallback<TPacket, TValue>(TPacket? packet) where TPacket : Packet<TValue>;

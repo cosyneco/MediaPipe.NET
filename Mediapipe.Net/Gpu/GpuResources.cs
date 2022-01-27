@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GpuResources : MpResourceHandle
+    public unsafe class GpuResources : MpResourceHandle
     {
         private SharedPtrHandle? sharedPtrHandle;
 

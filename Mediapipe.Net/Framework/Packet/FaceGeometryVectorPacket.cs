@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class FaceGeometryVectorPacket : Packet<List<FaceGeometry.FaceGeometry>>
+    public unsafe class FaceGeometryVectorPacket : Packet<List<FaceGeometry.FaceGeometry>>
     {
         public FaceGeometryVectorPacket() : base() { }
         public FaceGeometryVectorPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }

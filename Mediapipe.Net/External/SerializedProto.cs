@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.External
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct SerializedProto
+    internal unsafe struct SerializedProto
     {
         public void* StrPtr;
         public int Length;

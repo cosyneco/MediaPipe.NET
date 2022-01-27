@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class StringPacket : Packet<string>
+    public unsafe class StringPacket : Packet<string>
     {
         public StringPacket() : base() { }
 

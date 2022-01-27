@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class SidePacket : MpResourceHandle
+    public unsafe class SidePacket : MpResourceHandle
     {
         public SidePacket() : base()
         {

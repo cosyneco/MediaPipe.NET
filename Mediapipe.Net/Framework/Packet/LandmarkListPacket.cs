@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class LandmarkListPacket : Packet<LandmarkList>
+    public unsafe class LandmarkListPacket : Packet<LandmarkList>
     {
         public LandmarkListPacket() : base() { }
         public LandmarkListPacket(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }

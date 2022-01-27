@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.Gpu
 {
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public class Egl
+    public unsafe class Egl
     {
         public static void* GetCurrentContext() => SafeNativeMethods.eglGetCurrentContext();
     }

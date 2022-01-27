@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GpuBuffer : MpResourceHandle
+    public unsafe class GpuBuffer : MpResourceHandle
     {
         public GpuBuffer(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
