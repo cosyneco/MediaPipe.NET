@@ -22,7 +22,7 @@ namespace Mediapipe.Net.Framework.Packet
         // Temp backwards compatibility until we find something better than the Activator. ¬¬
         public Packet(IntPtr ptr, bool isOwner = true) : base((void*)ptr, isOwner) { }
 
-        /// <exception cref="MediaPipeException">Thrown when the value is not set</exception>
+        /// <exception cref="MediapipeException">Thrown when the value is not set</exception>
         public abstract T Get();
 
         public abstract StatusOr<T> Consume();

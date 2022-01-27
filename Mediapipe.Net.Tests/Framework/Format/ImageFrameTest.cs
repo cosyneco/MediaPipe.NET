@@ -91,7 +91,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
 
         [Test, SignalAbort]
-        public void Ctor_ShouldThrowMediaPipeException_When_CalledWithInvalidArgument()
+        public void Ctor_ShouldThrowMediapipeException_When_CalledWithInvalidArgument()
         {
 #pragma warning disable IDE0058
             Assert.Throws<MediapipeException>(() => { new ImageFrame(ImageFormat.Sbgra, 640, 480, 0); });
