@@ -50,18 +50,18 @@ namespace Mediapipe.Net.Framework.Packet
 
             var result = new float[Length];
 
-            var src = (float*)GetArrayPtr();
+            var src = GetArrayPtr();
             for (int i = 0; i < result.Length; i++)
                 result[i] = src[i];
 
             return result;
         }
 
-        public void* GetArrayPtr()
+        public float* GetArrayPtr()
         {
-            UnsafeNativeMethods.mp_Packet__GetFloatArray(MpPtr, out var value).Assert();
+            UnsafeNativeMethods.mp_Packet__GetFloatArray(MpPtr, out float* array).Assert();
             GC.KeepAlive(this);
-            return value;
+            return array;
         }
 
         public override StatusOr<float[]> Consume() => throw new NotSupportedException();
