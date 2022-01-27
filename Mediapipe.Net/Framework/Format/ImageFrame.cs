@@ -235,7 +235,7 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (byte* dest = colors)
                 {
-                    var pSrc = (byte*)ptr.ToPointer();
+                    var pSrc = (byte*)ptr;
                     pSrc += channelNumber;
 
                     if (flipVertically)
