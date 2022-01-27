@@ -242,9 +242,9 @@ namespace Mediapipe.Net.Framework.Format
                     {
                         var pDest = dest + colors.Length - 1;
 
-                        for (var i = 0; i < height; i++)
+                        for (int i = 0; i < height; i++)
                         {
-                            for (var j = 0; j < width; j++)
+                            for (int j = 0; j < width; j++)
                             {
                                 *pDest-- = *pSrc;
                                 pSrc += channelCount;
@@ -256,9 +256,9 @@ namespace Mediapipe.Net.Framework.Format
                     {
                         var pDest = dest + width * (height - 1);
 
-                        for (var i = 0; i < height; i++)
+                        for (int i = 0; i < height; i++)
                         {
-                            for (var j = 0; j < width; j++)
+                            for (int j = 0; j < width; j++)
                             {
                                 *pDest++ = *pSrc;
                                 pSrc += channelCount;

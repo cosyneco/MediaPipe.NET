@@ -50,15 +50,9 @@ namespace Mediapipe.Net.Framework.Packet
 
             var result = new float[Length];
 
-            unsafe
-            {
-                var src = (float*)GetArrayPtr();
-
-                for (var i = 0; i < result.Length; i++)
-                {
-                    result[i] = *src++;
-                }
-            }
+            var src = (float*)GetArrayPtr();
+            for (int i = 0; i < result.Length; i++)
+                result[i] = src[i];
 
             return result;
         }

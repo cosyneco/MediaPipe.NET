@@ -12,7 +12,7 @@ namespace Mediapipe.Net.External
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct SerializedProtoVector
     {
-        public void* Data;
+        public SerializedProto* Data;
         public int Size;
 
         // TODO: This is looking just as sus as SerializedProto.Dispose().
@@ -23,9 +23,8 @@ namespace Mediapipe.Net.External
         {
             var protos = new List<T>(Size);
 
-            var protoPtr = (SerializedProto*)Data;
-            for (var i = 0; i < Size; i++)
-                protos.Add((*protoPtr++).Deserialize(parser));
+            for (int i = 0; i < Size; i++)
+                protos.Add(Data[i].Deserialize(parser));
 
             return protos;
         }
