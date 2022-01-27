@@ -12,6 +12,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
 {
     public class TestSceneFaceMeshCpu : OsuFrameworkVisualTestsTestScene
     {
+#pragma warning disable IDE0051
         [BackgroundDependencyLoader]
         private void load(MediapipeDrawable mediapipeDrawable)
         {
@@ -30,5 +31,6 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
             });
             mediapipeDrawable.Start();
         }
+#pragma warning restore IDE0051
     }
 }

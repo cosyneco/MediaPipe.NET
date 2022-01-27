@@ -27,6 +27,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             });
         }
 
+#pragma warning disable IDE0051
         [BackgroundDependencyLoader]
         private void load()
         {
@@ -39,6 +40,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             };
             dependencies?.Cache(mediapipeDrawable);
         }
+#pragma warning restore IDE0051
 
         protected override bool OnExiting()
         {
