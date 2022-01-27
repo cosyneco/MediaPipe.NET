@@ -22,7 +22,7 @@ namespace Mediapipe.Net.External
         public T Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
             byte[] bytes = new byte[Length];
-            Marshal.Copy(StrPtr, bytes, 0, bytes.Length);
+            Marshal.Copy((IntPtr)StrPtr, bytes, 0, bytes.Length);
             return parser.ParseFrom(bytes);
         }
     }

@@ -68,7 +68,7 @@ namespace Mediapipe.Net.Core
             func(MpPtr, out void* strPtr).Assert();
             GC.KeepAlive(this);
 
-            string? str = Marshal.PtrToStringAnsi(strPtr);
+            string? str = Marshal.PtrToStringAnsi((IntPtr)strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return str;

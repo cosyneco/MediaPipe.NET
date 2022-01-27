@@ -50,7 +50,7 @@ namespace Mediapipe.Net.Framework.Packet
             GC.KeepAlive(this);
 
             var bytes = new byte[size];
-            Marshal.Copy(strPtr, bytes, 0, size);
+            Marshal.Copy((IntPtr)strPtr, bytes, 0, size);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return bytes;
