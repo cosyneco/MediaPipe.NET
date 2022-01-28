@@ -1,5 +1,15 @@
 name: Style Check
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - master
+    tags-ignore:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
 
 jobs:
   check:
