@@ -7,7 +7,7 @@ using Mediapipe.Net.External;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
 #pragma warning disable CA2101
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
@@ -17,7 +17,7 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode google_ShutdownGoogleLogging();
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void glog_FLAGS_logtostderr([MarshalAs(UnmanagedType.I1)] bool value);
+        public static extern void glog_FLAGS_logtostderr(bool value);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void glog_FLAGS_stderrthreshold(int threshold);

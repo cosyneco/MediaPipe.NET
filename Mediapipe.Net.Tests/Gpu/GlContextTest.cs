@@ -48,25 +48,25 @@ namespace Mediapipe.Net.Tests.Gpu
 
         #region Properties
         [Test, GpuOnly]
-        public void ShouldReturnProperties()
+        public unsafe void ShouldReturnProperties()
         {
             using var glContext = getGlContext();
             if (OperatingSystem.IsLinux() || OperatingSystem.IsAndroid())
             {
-                Assert.AreNotEqual(glContext.EglDisplay, IntPtr.Zero);
-                Assert.AreNotEqual(glContext.EglConfig, IntPtr.Zero);
-                Assert.AreNotEqual(glContext.EglContext, IntPtr.Zero);
+                Assert.True(glContext.EglDisplay != null);
+                Assert.True(glContext.EglConfig != null);
+                Assert.True(glContext.EglContext != null);
                 Assert.AreEqual(glContext.GlMajorVersion, 3);
                 Assert.AreEqual(glContext.GlMinorVersion, 2);
                 Assert.AreEqual(glContext.GlFinishCount, 0);
             }
             else if (OperatingSystem.IsMacOS())
             {
-                Assert.AreNotEqual(glContext.NsglContext, IntPtr.Zero);
+                Assert.True(glContext.NsglContext != null);
             }
             else if (OperatingSystem.IsIOS())
             {
-                Assert.AreNotEqual(glContext.EaglContext, IntPtr.Zero);
+                Assert.True(glContext.EaglContext != null);
             }
         }
         #endregion

@@ -8,9 +8,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class StatusOrGpuResources : StatusOr<GpuResources>
+    public unsafe class StatusOrGpuResources : StatusOr<GpuResources>
     {
-        public StatusOrGpuResources(IntPtr ptr) : base(ptr) { }
+        public StatusOrGpuResources(void* ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {
@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrGpuResources__ok(MpPtr);
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrGpuResources__ok(MpPtr) > 0;
 
         public override GpuResources Value()
         {

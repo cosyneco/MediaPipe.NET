@@ -2,13 +2,12 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class Status : MpResourceHandle
+    public unsafe class Status : MpResourceHandle
     {
         public enum StatusCode : int
         {
@@ -31,7 +30,7 @@ namespace Mediapipe.Net.Framework.Port
             Unauthenticated = 16,
         }
 
-        public Status(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public Status(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.absl_Status__delete(Ptr);
 
@@ -48,7 +47,7 @@ namespace Mediapipe.Net.Framework.Port
         {
             if (ok is bool valueOfOk)
                 return valueOfOk;
-            ok = SafeNativeMethods.absl_Status__ok(MpPtr);
+            ok = SafeNativeMethods.absl_Status__ok(MpPtr) > 0;
             return (bool)ok;
         }
 

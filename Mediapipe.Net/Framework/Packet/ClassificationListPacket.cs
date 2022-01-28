@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class ClassificationListPacket : Packet<ClassificationList>
+    public unsafe class ClassificationListPacket : Packet<ClassificationList>
     {
         public ClassificationListPacket() : base() { }
         public ClassificationListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

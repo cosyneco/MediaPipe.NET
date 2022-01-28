@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class Anchor3dVectorPacket : Packet<List<Anchor3d>>
+    public unsafe class Anchor3dVectorPacket : Packet<List<Anchor3d>>
     {
         public Anchor3dVectorPacket() : base() { }
         public Anchor3dVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

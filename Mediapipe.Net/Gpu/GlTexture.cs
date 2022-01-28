@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlTexture : MpResourceHandle
+    public unsafe class GlTexture : MpResourceHandle
     {
         public GlTexture() : base()
         {
@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Gpu
             Ptr = ptr;
         }
 
-        public GlTexture(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public GlTexture(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_GlTexture__delete(Ptr);
 

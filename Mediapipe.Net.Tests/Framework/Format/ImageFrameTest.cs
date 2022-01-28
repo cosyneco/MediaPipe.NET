@@ -31,7 +31,10 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.True(imageFrame.IsEmpty);
             Assert.False(imageFrame.IsContiguous);
             Assert.False(imageFrame.IsAligned(16));
-            Assert.AreEqual(imageFrame.MutablePixelData, IntPtr.Zero);
+            unsafe
+            {
+                Assert.True(imageFrame.MutablePixelData == null);
+            }
 #pragma warning restore IDE0058
         }
 
@@ -51,7 +54,10 @@ namespace Mediapipe.Net.Tests.Framework.Format
             Assert.False(imageFrame.IsEmpty);
             Assert.True(imageFrame.IsContiguous);
             Assert.True(imageFrame.IsAligned(16));
-            Assert.AreNotEqual(imageFrame.MutablePixelData, IntPtr.Zero);
+            unsafe
+            {
+                Assert.True(imageFrame.MutablePixelData != null);
+            }
         }
 
         [Test]
@@ -85,7 +91,7 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
 
         [Test, SignalAbort]
-        public void Ctor_ShouldThrowMediaPipeException_When_CalledWithInvalidArgument()
+        public void Ctor_ShouldThrowMediapipeException_When_CalledWithInvalidArgument()
         {
 #pragma warning disable IDE0058
             Assert.Throws<MediapipeException>(() => { new ImageFrame(ImageFormat.Sbgra, 640, 480, 0); });

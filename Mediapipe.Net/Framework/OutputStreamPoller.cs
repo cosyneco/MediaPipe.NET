@@ -9,9 +9,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework
 {
-    public class OutputStreamPoller<T> : MpResourceHandle
+    public unsafe class OutputStreamPoller<T> : MpResourceHandle
     {
-        public OutputStreamPoller(IntPtr ptr) : base(ptr) { }
+        public OutputStreamPoller(void* ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {

@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class SidePacket : MpResourceHandle
+    public unsafe class SidePacket : MpResourceHandle
     {
         public SidePacket() : base()
         {
@@ -26,13 +26,13 @@ namespace Mediapipe.Net.Framework.Packet
         {
             UnsafeNativeMethods.mp_SidePacket__at__PKc(MpPtr, key, out var packetPtr).Assert();
 
-            if (packetPtr == IntPtr.Zero)
+            if (packetPtr == null)
                 return default; // null
 
             GC.KeepAlive(this);
 
             // Oh gosh²... the Activator²...
-            return (T?)Activator.CreateInstance(typeof(T), packetPtr, true);
+            return (T?)Activator.CreateInstance(typeof(T), (IntPtr)packetPtr, true);
         }
 
         public void Emplace<T>(string key, Packet<T> packet)

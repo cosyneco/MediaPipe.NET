@@ -3,13 +3,13 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Runtime.InteropServices;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class StringPacket : Packet<string>
+    public unsafe class StringPacket : Packet<string>
     {
         public StringPacket() : base() { }
 
@@ -49,8 +49,7 @@ namespace Mediapipe.Net.Framework.Packet
             UnsafeNativeMethods.mp_Packet__GetByteString(MpPtr, out var strPtr, out var size).Assert();
             GC.KeepAlive(this);
 
-            var bytes = new byte[size];
-            Marshal.Copy(strPtr, bytes, 0, size);
+            byte[] bytes = UnsafeUtil.SafeArrayCopy((byte*)strPtr, size);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return bytes;

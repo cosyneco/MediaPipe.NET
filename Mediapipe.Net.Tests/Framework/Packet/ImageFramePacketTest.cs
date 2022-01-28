@@ -81,7 +81,7 @@ namespace Mediapipe.Net.Tests.Framework.Packet
 
         #region Get
         [Test, SignalAbort]
-        public void Get_ShouldThrowMediaPipeException_When_DataIsEmpty()
+        public void Get_ShouldThrowMediapipeException_When_DataIsEmpty()
         {
             using var packet = new ImageFramePacket();
 #pragma warning disable IDE0058

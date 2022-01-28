@@ -6,9 +6,9 @@ using System;
 
 namespace Mediapipe.Net.Core
 {
-    public interface IMpResourceHandle : IDisposable
+    public unsafe interface IMpResourceHandle : IDisposable
     {
-        IntPtr MpPtr { get; }
+        void* MpPtr { get; }
 
         /// <summary>
         /// Relinquish the ownership, and release the resource it owns if necessary.

@@ -74,7 +74,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             using ImageFrame outImgFrame = calculator.Send(imgFrame);
             imgFrame.Dispose();
 
-            var span = new ReadOnlySpan<byte>((byte*)outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
+            var span = new ReadOnlySpan<byte>(outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
             var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);
 
             texture ??= new Texture(cFrame.Width, cFrame.Height);

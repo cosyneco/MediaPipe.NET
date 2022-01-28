@@ -8,9 +8,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.External
 {
-    public class StdString : MpResourceHandle
+    public unsafe class StdString : MpResourceHandle
     {
-        public StdString(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public StdString(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public StdString(byte[] bytes) : base()
         {
@@ -18,7 +18,7 @@ namespace Mediapipe.Net.External
             Ptr = ptr;
         }
 
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete(Ptr);
+        protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete((sbyte*)Ptr);
 
         public void Swap(StdString str)
         {

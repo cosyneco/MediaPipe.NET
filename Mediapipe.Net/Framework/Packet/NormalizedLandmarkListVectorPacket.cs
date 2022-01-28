@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class NormalizedLandmarkListVectorPacket : Packet<List<NormalizedLandmarkList>>
+    public unsafe class NormalizedLandmarkListVectorPacket : Packet<List<NormalizedLandmarkList>>
     {
         public NormalizedLandmarkListVectorPacket() : base() { }
         public NormalizedLandmarkListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe
 {
-    public class FrameAnnotationPacket : Packet<FrameAnnotation>
+    public unsafe class FrameAnnotationPacket : Packet<FrameAnnotation>
     {
         public FrameAnnotationPacket() : base() { }
         public FrameAnnotationPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

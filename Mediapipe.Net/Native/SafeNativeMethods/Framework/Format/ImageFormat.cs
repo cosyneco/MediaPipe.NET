@@ -2,61 +2,57 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using Mediapipe.Net.Framework.Format;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_ImageFrame__IsEmpty(IntPtr imageFrame);
+        public static extern byte mp_ImageFrame__IsEmpty(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_ImageFrame__IsContiguous(IntPtr imageFrame);
+        public static extern byte mp_ImageFrame__IsContiguous(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__IsAligned__ui(
-            IntPtr imageFrame, uint alignmentBoundary, [MarshalAs(UnmanagedType.I1)] out bool value);
+            void* imageFrame, uint alignmentBoundary, out bool value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern ImageFormat mp_ImageFrame__Format(IntPtr imageFrame);
+        public static extern ImageFormat mp_ImageFrame__Format(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_ImageFrame__Width(IntPtr imageFrame);
+        public static extern int mp_ImageFrame__Width(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_ImageFrame__Height(IntPtr imageFrame);
+        public static extern int mp_ImageFrame__Height(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__ChannelSize(IntPtr imageFrame, out int value);
+        public static extern MpReturnCode mp_ImageFrame__ChannelSize(void* imageFrame, out int value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__NumberOfChannels(IntPtr imageFrame, out int value);
+        public static extern MpReturnCode mp_ImageFrame__NumberOfChannels(void* imageFrame, out int value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__ByteDepth(IntPtr imageFrame, out int value);
+        public static extern MpReturnCode mp_ImageFrame__ByteDepth(void* imageFrame, out int value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_ImageFrame__WidthStep(IntPtr imageFrame);
+        public static extern int mp_ImageFrame__WidthStep(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern IntPtr mp_ImageFrame__MutablePixelData(IntPtr imageFrame);
+        public static extern byte* mp_ImageFrame__MutablePixelData(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_ImageFrame__PixelDataSize(IntPtr imageFrame);
+        public static extern int mp_ImageFrame__PixelDataSize(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__PixelDataSizeStoredContiguously(IntPtr imageFrame, out int value);
+        public static extern MpReturnCode mp_ImageFrame__PixelDataSizeStoredContiguously(void* imageFrame, out int value);
 
         #region StatusOr
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_StatusOrImageFrame__ok(IntPtr statusOrImageFrame);
+        public static extern byte mp_StatusOrImageFrame__ok(void* statusOrImageFrame);
         #endregion
     }
 }

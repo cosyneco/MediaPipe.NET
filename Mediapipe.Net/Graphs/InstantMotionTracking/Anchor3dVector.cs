@@ -10,9 +10,9 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.Graphs.InstantMotionTracking
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct Anchor3dVector : IDisposable
+    internal unsafe struct Anchor3dVector : IDisposable
     {
-        public IntPtr Data;
+        public Anchor3d* Data;
         public int Size;
 
         public void Dispose() => UnsafeNativeMethods.mp_Anchor3dArray__delete(Data);
@@ -20,14 +20,8 @@ namespace Mediapipe.Net.Graphs.InstantMotionTracking
         public List<Anchor3d> ToList()
         {
             var anchors = new List<Anchor3d>(Size);
-
-            unsafe
-            {
-                var anchorPtr = (Anchor3d*)Data;
-
-                for (var i = 0; i < Size; i++)
-                    anchors.Add(Marshal.PtrToStructure<Anchor3d>((IntPtr)anchorPtr++));
-            }
+            for (int i = 0; i < Size; i++)
+                anchors.Add(Data[i]);
 
             return anchors;
         }

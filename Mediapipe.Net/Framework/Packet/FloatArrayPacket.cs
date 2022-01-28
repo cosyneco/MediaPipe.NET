@@ -5,10 +5,11 @@
 using System;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class FloatArrayPacket : Packet<float[]>
+    public unsafe class FloatArrayPacket : Packet<float[]>
     {
         private int length = -1;
 
@@ -48,26 +49,14 @@ namespace Mediapipe.Net.Framework.Packet
             if (Length < 0)
                 throw new InvalidOperationException("The array's length is unknown, set Length first");
 
-            var result = new float[Length];
-
-            unsafe
-            {
-                var src = (float*)GetArrayPtr();
-
-                for (var i = 0; i < result.Length; i++)
-                {
-                    result[i] = *src++;
-                }
-            }
-
-            return result;
+            return UnsafeUtil.SafeArrayCopy(GetArrayPtr(), Length);
         }
 
-        public IntPtr GetArrayPtr()
+        public float* GetArrayPtr()
         {
-            UnsafeNativeMethods.mp_Packet__GetFloatArray(MpPtr, out var value).Assert();
+            UnsafeNativeMethods.mp_Packet__GetFloatArray(MpPtr, out float* array).Assert();
             GC.KeepAlive(this);
-            return value;
+            return array;
         }
 
         public override StatusOr<float[]> Consume() => throw new NotSupportedException();

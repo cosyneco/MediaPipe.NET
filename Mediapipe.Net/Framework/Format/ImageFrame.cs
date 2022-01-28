@@ -8,12 +8,12 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Format
 {
-    public class ImageFrame : MpResourceHandle
+    public unsafe class ImageFrame : MpResourceHandle
     {
         public static readonly uint DefaultAlignmentBoundary = 16;
         public static readonly uint GlDefaultAlignmentBoundary = 4;
 
-        public delegate void Deleter(IntPtr ptr);
+        public delegate void Deleter(void* ptr);
 
         public ImageFrame() : base()
         {
@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public ImageFrame(IntPtr imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
+        public ImageFrame(void* imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
 
         public ImageFrame(ImageFormat format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
@@ -43,7 +43,7 @@ namespace Mediapipe.Net.Framework.Format
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
                 format, width, height, widthStep,
-                (IntPtr)pixelData,
+                pixelData,
                 releasePixelData,
                 out var ptr).Assert();
             Ptr = ptr;
@@ -52,14 +52,14 @@ namespace Mediapipe.Net.Framework.Format
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
 
         // [AOT.MonoPInvokeCallback(typeof(Deleter))] (?)
-        private static void releasePixelData(IntPtr ptr)
+        private static void releasePixelData(void* ptr)
         {
             // Do nothing (pixelData is moved)
         }
 
-        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr);
+        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
 
-        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr);
+        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr) > 0;
 
         public bool IsAligned(uint alignmentBoundary)
         {
@@ -110,7 +110,7 @@ namespace Mediapipe.Net.Framework.Format
 
         public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
 
-        public IntPtr MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        public byte* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
 
         public int PixelDataSize => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
 
@@ -190,9 +190,11 @@ namespace Mediapipe.Net.Framework.Format
         public byte[] GetChannel(int channelNumber, bool flipVertically)
             => GetChannel(channelNumber, flipVertically, new byte[Width * Height]);
 
-        private delegate MpReturnCode CopyToBufferHandler(IntPtr ptr, IntPtr buffer, int bufferSize);
+        private delegate MpReturnCode CopyToBufferHandler<T>(void* ptr, T* buffer, int bufferSize)
+            where T : unmanaged;
 
-        private T[] copyToBuffer<T>(CopyToBufferHandler handler, int bufferSize) where T : unmanaged
+        private T[] copyToBuffer<T>(CopyToBufferHandler<T> handler, int bufferSize)
+            where T : unmanaged
         {
             var buffer = new T[bufferSize];
 
@@ -200,7 +202,7 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (T* bufferPtr = buffer)
                 {
-                    handler(MpPtr, (IntPtr)bufferPtr, bufferSize).Assert();
+                    handler(MpPtr, bufferPtr, bufferSize).Assert();
                 }
             }
 
@@ -225,7 +227,7 @@ namespace Mediapipe.Net.Framework.Format
         /// In the source array, pixels are laid out left to right, top to bottom,
         /// but in the returned array, left to right, top to bottom.
         /// </remarks>
-        private static void readChannel(IntPtr ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
+        private static void readChannel(byte* ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
         {
             if (colors.Length != width * height)
                 throw new ArgumentException("colors length is invalid");
@@ -235,16 +237,16 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (byte* dest = colors)
                 {
-                    var pSrc = (byte*)ptr.ToPointer();
+                    var pSrc = ptr;
                     pSrc += channelNumber;
 
                     if (flipVertically)
                     {
                         var pDest = dest + colors.Length - 1;
 
-                        for (var i = 0; i < height; i++)
+                        for (int i = 0; i < height; i++)
                         {
-                            for (var j = 0; j < width; j++)
+                            for (int j = 0; j < width; j++)
                             {
                                 *pDest-- = *pSrc;
                                 pSrc += channelCount;
@@ -256,9 +258,9 @@ namespace Mediapipe.Net.Framework.Format
                     {
                         var pDest = dest + width * (height - 1);
 
-                        for (var i = 0; i < height; i++)
+                        for (int i = 0; i < height; i++)
                         {
-                            for (var j = 0; j < width; j++)
+                            for (int j = 0; j < width; j++)
                             {
                                 *pDest++ = *pSrc;
                                 pSrc += channelCount;

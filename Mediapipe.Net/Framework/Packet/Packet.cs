@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public abstract class Packet<T> : MpResourceHandle
+    public unsafe abstract class Packet<T> : MpResourceHandle
     {
         public Packet() : base()
         {
@@ -17,9 +17,12 @@ namespace Mediapipe.Net.Framework.Packet
             Ptr = ptr;
         }
 
-        public Packet(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public Packet(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
-        /// <exception cref="MediaPipeException">Thrown when the value is not set</exception>
+        // Temp backwards compatibility until we find something better than the Activator. ¬¬
+        public Packet(IntPtr ptr, bool isOwner = true) : base((void*)ptr, isOwner) { }
+
+        /// <exception cref="MediapipeException">Thrown when the value is not set</exception>
         public abstract T Get();
 
         public abstract StatusOr<T> Consume();
@@ -29,14 +32,13 @@ namespace Mediapipe.Net.Framework.Packet
         public Packet<T>? At(Timestamp timestamp)
         {
             UnsafeNativeMethods.mp_Packet__At__Rt(MpPtr, timestamp.MpPtr, out var packetPtr).Assert();
-
             GC.KeepAlive(timestamp);
 
             // Oh gosh... the Activator...
-            return (Packet<T>?)Activator.CreateInstance(GetType(), packetPtr, true);
+            return (Packet<T>?)Activator.CreateInstance(GetType(), (IntPtr)packetPtr, true);
         }
 
-        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr);
+        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr) > 0;
 
         public Status ValidateAsProtoMessageLite()
         {

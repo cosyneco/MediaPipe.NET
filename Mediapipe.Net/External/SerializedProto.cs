@@ -2,17 +2,17 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using System.Runtime.InteropServices;
 using Google.Protobuf;
 using Mediapipe.Net.Native;
+using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.External
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal struct SerializedProto
+    internal unsafe struct SerializedProto
     {
-        public IntPtr StrPtr;
+        public sbyte* StrPtr;
         public int Length;
 
         // TODO: That Dispose() method is looking very sus...
@@ -21,8 +21,7 @@ namespace Mediapipe.Net.External
 
         public T Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
-            byte[] bytes = new byte[Length];
-            Marshal.Copy(StrPtr, bytes, 0, bytes.Length);
+            byte[] bytes = UnsafeUtil.SafeArrayCopy((byte*)StrPtr, Length);
             return parser.ParseFrom(bytes);
         }
     }

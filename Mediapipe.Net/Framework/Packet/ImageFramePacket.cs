@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public class ImageFramePacket : Packet<ImageFrame>
+    public unsafe class ImageFramePacket : Packet<ImageFrame>
     {
         public ImageFramePacket() : base() { }
 

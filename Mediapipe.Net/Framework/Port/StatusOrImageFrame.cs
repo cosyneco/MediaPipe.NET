@@ -8,9 +8,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public class StatusOrImageFrame : StatusOr<ImageFrame>
+    public unsafe class StatusOrImageFrame : StatusOr<ImageFrame>
     {
-        public StatusOrImageFrame(IntPtr ptr) : base(ptr) { }
+        public StatusOrImageFrame(void* ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {
@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(MpPtr);
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(MpPtr) > 0;
 
         public override ImageFrame Value()
         {

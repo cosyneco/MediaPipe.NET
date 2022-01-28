@@ -2,34 +2,28 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class SafeNativeMethods : NativeMethods
+    internal unsafe partial class SafeNativeMethods : NativeMethods
     {
 #pragma warning disable CA2101
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_CalculatorGraph__HasError(IntPtr graph);
+        public static extern byte mp_CalculatorGraph__HasError(void* graph);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_CalculatorGraph__HasInputStream__PKc(IntPtr graph, string name);
+        public static extern byte mp_CalculatorGraph__HasInputStream__PKc(void* graph, string name);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_CalculatorGraph__GraphInputStreamsClosed(IntPtr graph);
+        public static extern byte mp_CalculatorGraph__GraphInputStreamsClosed(void* graph);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_CalculatorGraph__IsNodeThrottled__i(IntPtr graph, int nodeId);
+        public static extern byte mp_CalculatorGraph__IsNodeThrottled__i(void* graph, int nodeId);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_CalculatorGraph__UnthrottleSources(IntPtr graph);
+        public static extern byte mp_CalculatorGraph__UnthrottleSources(void* graph);
 #pragma warning restore CA2101
     }
 }

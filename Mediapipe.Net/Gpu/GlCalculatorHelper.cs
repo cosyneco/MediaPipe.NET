@@ -12,9 +12,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Gpu
 {
-    public class GlCalculatorHelper : MpResourceHandle
+    public unsafe class GlCalculatorHelper : MpResourceHandle
     {
-        public delegate IntPtr NativeGlStatusFunction();
+        public delegate void* NativeGlStatusFunction();
         public delegate Status GlStatusFunction();
 
         public GlCalculatorHelper() : base()
@@ -138,6 +138,6 @@ namespace Mediapipe.Net.Gpu
             return new GlContext(glContextPtr, false);
         }
 
-        public bool Initialized() => SafeNativeMethods.mp_GlCalculatorHelper__Initialized(MpPtr);
+        public bool Initialized() => SafeNativeMethods.mp_GlCalculatorHelper__Initialized(MpPtr) > 0;
     }
 }

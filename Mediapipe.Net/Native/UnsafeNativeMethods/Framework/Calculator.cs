@@ -7,12 +7,11 @@ using Mediapipe.Net.External;
 
 namespace Mediapipe.Net.Native
 {
-    internal partial class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
 #pragma warning disable CA2101
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true, CharSet = CharSet.Ansi)]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool mp_api__ConvertFromCalculatorGraphConfigTextFormat(string configText, out SerializedProto serializedProto);
+        public static extern byte mp_api__ConvertFromCalculatorGraphConfigTextFormat(string configText, out SerializedProto serializedProto);
 #pragma warning restore CA2101
     }
 }
