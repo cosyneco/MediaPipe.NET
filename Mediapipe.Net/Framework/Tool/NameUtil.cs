@@ -27,12 +27,10 @@ namespace Mediapipe.Net.Framework.Tool
         public static string GetUnusedNodeName(CalculatorGraphConfig config, string nodeNameBase)
         {
             var nodeNames = new HashSet<string>(config.Node.Select(node => node.Name).Where(name => name.Length > 0));
-
             var candidate = nodeNameBase;
-            var iter = 1;
 
-            while (nodeNames.Contains(candidate))
-                candidate = $"{nodeNameBase}_{++iter:D2}";
+            for (int i = 2; nodeNames.Contains(candidate); i++)
+                candidate = $"{nodeNameBase}_{i:D2}";
 
             return candidate;
         }
@@ -48,39 +46,34 @@ namespace Mediapipe.Net.Framework.Tool
                 }));
 
             var candidate = inputSidePacketNameBase;
-            var iter = 1;
 
-            while (inputSidePackets.Contains(candidate))
-            {
-                candidate = $"{inputSidePacketNameBase}_{++iter:D2}";
-            }
+            for (int i = 2; inputSidePackets.Contains(candidate); i++)
+                candidate = $"{inputSidePacketNameBase}_{i:D2}";
 
             return candidate;
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        ///   Thrown when <paramref name="nodeId" /> is invalid
+        /// Thrown when <paramref name="nodeId" /> is invalid
         /// </exception>
         public static string CanonicalNodeName(CalculatorGraphConfig graphConfig, int nodeId)
         {
-            var nodeConfig = graphConfig.Node[nodeId];
-            var nodeName = nodeConfig.Name.Length == 0 ? nodeConfig.Calculator : nodeConfig.Name;
+            CalculatorGraphConfig.Types.Node nodeConfig = graphConfig.Node[nodeId];
+            string nodeName = nodeConfig.Name.Length == 0 ? nodeConfig.Calculator : nodeConfig.Name;
 
             var nodesWithSameName = graphConfig.Node
               .Select((node, i) => (node.Name.Length == 0 ? node.Calculator : node.Name, i))
               .Where(pair => pair.Item1 == nodeName);
 
             if (nodesWithSameName.Count() <= 1)
-            {
                 return nodeName;
-            }
 
             var seq = nodesWithSameName.Count(pair => pair.i <= nodeId);
             return $"{nodeName}_{seq}";
         }
 
         /// <exception cref="ArgumentException">
-        ///   Thrown when the format of <paramref cref="stream" /> is invalid
+        /// Thrown when the format of <paramref cref="stream" /> is invalid
         /// </exception>
         public static string ParseNameFromStream(string stream)
         {
@@ -89,7 +82,7 @@ namespace Mediapipe.Net.Framework.Tool
         }
 
         /// <exception cref="ArgumentException">
-        ///   Thrown when the format of <paramref cref="tagIndex" /> is invalid
+        /// Thrown when the format of <paramref cref="tagIndex" /> is invalid
         /// </exception>
         public static (string, int) ParseTagIndex(string tagIndex)
         {
@@ -98,7 +91,7 @@ namespace Mediapipe.Net.Framework.Tool
         }
 
         /// <exception cref="ArgumentException">
-        ///   Thrown when the format of <paramref cref="stream" /> is invalid
+        /// Thrown when the format of <paramref cref="stream" /> is invalid
         /// </exception>
         public static (string, int) ParseTagIndexFromStream(string stream)
         {
@@ -108,14 +101,13 @@ namespace Mediapipe.Net.Framework.Tool
 
         public static string CatTag(string tag, int index)
         {
-            var colonIndex = index <= 0 || tag.Length == 0 ? "" : $":{index}";
+            string colonIndex = index <= 0 || tag.Length == 0 ? "" : $":{index}";
             return $"{tag}{colonIndex}";
         }
 
         public static string CatStream((string, int) tagIndex, string name)
         {
-            var tag = CatTag(tagIndex.Item1, tagIndex.Item2);
-
+            string tag = CatTag(tagIndex.Item1, tagIndex.Item2);
             return tag.Length == 0 ? name : $"{tag}:{name}";
         }
     }

@@ -61,8 +61,8 @@ namespace Mediapipe.Net.Framework.Tool
 
         public static void ParseTagAndName(string tagAndName, out string tag, out string name)
         {
-            var nameIndex = -1;
-            var v = tagAndName.Split(':');
+            int nameIndex;
+            string[] v = tagAndName.Split(':');
 
             try
             {
@@ -77,10 +77,11 @@ namespace Mediapipe.Net.Framework.Tool
                     ValidateName(v[1]);
                     nameIndex = 1;
                 }
+                else
+                {
+                    throw new ArgumentException("nope");
+                }
 
-                // TODO: what do we put inside of this ArgumentException?
-                if (nameIndex == -1)
-                    throw new ArgumentException();
             }
             catch (ArgumentException)
             {
@@ -93,9 +94,9 @@ namespace Mediapipe.Net.Framework.Tool
 
         public static void ParseTagIndexName(string tagIndexName, out string tag, out int index, out string name)
         {
-            var nameIndex = -1;
-            var theIndex = 0;
-            var v = tagIndexName.Split(':');
+            int nameIndex;
+            int theIndex = 0;
+            string[] v = tagIndexName.Split(':');
 
             try
             {
@@ -116,13 +117,18 @@ namespace Mediapipe.Net.Framework.Tool
                     ValidateTag(v[0]);
                     ValidateNumber(v[1]);
 
-                    theIndex = int.TryParse(v[1], out var result) && result <= Internal.MaxCollectionItemId ? result : throw new ArgumentException();
+                    if (int.TryParse(v[1], out var result) && result <= Internal.MaxCollectionItemId)
+                        theIndex = result;
+                    else
+                        throw new ArgumentException("nope");
+
                     ValidateName(v[2]);
                     nameIndex = 2;
                 }
-
-                if (nameIndex == -1)
-                    throw new ArgumentException();
+                else
+                {
+                    throw new ArgumentException("nope");
+                }
             }
             catch (ArgumentException)
             {
@@ -136,32 +142,32 @@ namespace Mediapipe.Net.Framework.Tool
 
         public static void ParseTagIndex(string tagIndex, out string tag, out int index)
         {
-            var theIndex = -1;
-            var v = tagIndex.Split(':');
+            int theIndex;
+            string[] v = tagIndex.Split(':');
 
             try
             {
                 if (v.Length == 1)
                 {
                     if (v[0].Length != 0)
-                    {
                         ValidateTag(v[0]);
-                    }
                     theIndex = 0;
                 }
                 else if (v.Length == 2)
                 {
                     if (v[0].Length != 0)
-                    {
                         ValidateTag(v[0]);
-                    }
                     ValidateNumber(v[1]);
 
-                    theIndex = int.TryParse(v[1], out var result) && result <= Internal.MaxCollectionItemId ? result : throw new ArgumentException();
+                    if (int.TryParse(v[1], out var result) && result <= Internal.MaxCollectionItemId)
+                        theIndex = result;
+                    else
+                        throw new ArgumentException("nope");
                 }
-
-                if (theIndex == -1)
-                    throw new ArgumentException();
+                else
+                {
+                    throw new ArgumentException("nope");
+                }
             }
             catch (ArgumentException)
             {
