@@ -49,10 +49,14 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) :
-        this(format, width, height, widthStep, SpanToBytePtr(pixelData)) { }
+        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : this(format,
+                                                                                                                         width,
+                                                                                                                         height,
+                                                                                                                         widthStep,
+                                                                                                                         spanToBytePtr(pixelData))
+        { }
 
-        private static byte* SpanToBytePtr(ReadOnlySpan<byte> span)
+        private static byte* spanToBytePtr(ReadOnlySpan<byte> span)
         {
             fixed (byte* ptr = span)
             {
