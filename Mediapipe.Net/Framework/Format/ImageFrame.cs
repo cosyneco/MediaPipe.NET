@@ -25,7 +25,7 @@ namespace Mediapipe.Net.Framework.Format
 
         public ImageFrame(ImageFormat format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
-        public ImageFrame(ImageFormat format, int width, int height, uint alignmentBoundary)
+        public ImageFrame(ImageFormat format, int width, int height, uint alignmentBoundary) : base()
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_ui(format, width, height, alignmentBoundary, out var ptr).Assert();
             Ptr = ptr;
@@ -49,12 +49,8 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : this(format,
-                                                                                                                         width,
-                                                                                                                         height,
-                                                                                                                         widthStep,
-                                                                                                                         spanToBytePtr(pixelData))
-        { }
+        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
+        : this(format, width, height, widthStep, spanToBytePtr(pixelData)) { }
 
         private static byte* spanToBytePtr(ReadOnlySpan<byte> span)
         {
