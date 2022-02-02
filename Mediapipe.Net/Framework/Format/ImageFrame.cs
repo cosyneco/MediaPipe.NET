@@ -25,7 +25,7 @@ namespace Mediapipe.Net.Framework.Format
 
         public ImageFrame(ImageFormat format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
-        public ImageFrame(ImageFormat format, int width, int height, uint alignmentBoundary) : base()
+        public ImageFrame(ImageFormat format, int width, int height, uint alignmentBoundary)
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_ui(format, width, height, alignmentBoundary, out var ptr).Assert();
             Ptr = ptr;
@@ -39,7 +39,7 @@ namespace Mediapipe.Net.Framework.Format
         //     mediapipe::ImageFormat::Format format,
         //     int width, int height, int width_step, uint8* pixel_data,
         //     Deleter* deleter, mediapipe::ImageFrame** image_frame_out);
-        unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData)
+        unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData) : base()
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
                 format, width, height, widthStep,
@@ -49,16 +49,14 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
+        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) :
+        this(format, width, height, widthStep, SpanToBytePtr(pixelData)) { }
+
+        private static byte* SpanToBytePtr(ReadOnlySpan<byte> span)
         {
-            fixed (byte* pixelDataPtr = pixelData)
+            fixed (byte* ptr = span)
             {
-                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
-                    format, width, height, widthStep,
-                    pixelDataPtr,
-                    releasePixelData,
-                    out var ptr).Assert();
-                Ptr = ptr;
+                return ptr;
             }
         }
 
