@@ -50,7 +50,7 @@ namespace Mediapipe.Net.Framework.Format
         }
 
         public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
-        : this(format, width, height, widthStep, spanToBytePtr(pixelData)) { }
+            : this(format, width, height, widthStep, spanToBytePtr(pixelData)) { }
 
         private static byte* spanToBytePtr(ReadOnlySpan<byte> span)
         {
