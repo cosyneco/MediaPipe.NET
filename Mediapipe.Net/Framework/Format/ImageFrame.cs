@@ -39,7 +39,7 @@ namespace Mediapipe.Net.Framework.Format
         //     mediapipe::ImageFormat::Format format,
         //     int width, int height, int width_step, uint8* pixel_data,
         //     Deleter* deleter, mediapipe::ImageFrame** image_frame_out);
-        unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData)
+        unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
                 format, width, height, widthStep,
