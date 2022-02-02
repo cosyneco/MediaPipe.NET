@@ -73,12 +73,8 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
 
             Frame cFrame = converter.Convert(frame);
 
-            ImageFrame imgframe;
-            fixed (byte* rawDataPtr = cFrame.RawData)
-            {
-                imgframe = new ImageFrame(ImageFormat.Srgba,
-                    cFrame.Width, cFrame.Height, cFrame.WidthStep, rawDataPtr);
-            }
+            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
             using ImageFrame img = calculator.Send(imgframe);
             imgframe.Dispose();
