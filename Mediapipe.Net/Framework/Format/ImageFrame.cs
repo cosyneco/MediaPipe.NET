@@ -49,6 +49,19 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
+        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
+        {
+            fixed (byte* pixelDataPtr = pixelData)
+            {
+                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
+                    format, width, height, widthStep,
+                    pixelDataPtr,
+                    releasePixelData,
+                    out var ptr).Assert();
+                Ptr = ptr;
+            }
+        }
+
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
 
         // [AOT.MonoPInvokeCallback(typeof(Deleter))] (?)
