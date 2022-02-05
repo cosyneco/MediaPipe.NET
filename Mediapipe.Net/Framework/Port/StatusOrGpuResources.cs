@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Port
 {
     public unsafe class StatusOrGpuResources : StatusOr<GpuResources>
     {
-        public StatusOrGpuResources(void* ptr) : base(ptr) { }
+        public StatusOrGpuResources(IntPtr ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {

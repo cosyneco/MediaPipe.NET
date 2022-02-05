@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Gpu
     {
         private SharedPtrHandle? sharedPtrHandle;
 
-        public GlSyncPoint(void* ptr) : base(ptr)
+        public GlSyncPoint(IntPtr ptr) : base(ptr)
         {
             sharedPtrHandle = new SharedGlSyncPointPtr(ptr);
             Ptr = sharedPtrHandle.Get();
@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
+        public IntPtr SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         public void Wait() => UnsafeNativeMethods.mp_GlSyncPoint__Wait(MpPtr).Assert();
 
@@ -60,11 +60,11 @@ namespace Mediapipe.Net.Gpu
         // TODO: Put it in its own file
         private class SharedGlSyncPointPtr : SharedPtrHandle
         {
-            public SharedGlSyncPointPtr(void* ptr) : base(ptr) { }
+            public SharedGlSyncPointPtr(IntPtr ptr) : base(ptr) { }
 
             protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_GlSyncToken__delete(Ptr);
 
-            public override void* Get() => SafeNativeMethods.mp_GlSyncToken__get(MpPtr);
+            public override IntPtr Get() => SafeNativeMethods.mp_GlSyncToken__get(MpPtr);
 
             public override void Reset() => UnsafeNativeMethods.mp_GlSyncToken__reset(MpPtr);
         }

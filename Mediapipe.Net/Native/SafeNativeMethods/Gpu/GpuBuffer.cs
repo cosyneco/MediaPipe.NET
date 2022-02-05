@@ -13,20 +13,20 @@ namespace Mediapipe.Net.Native
     {
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void* mp_GpuBuffer__GetGlTextureBufferSharedPtr(void* gpuBuffer);
+        public static extern IntPtr mp_GpuBuffer__GetGlTextureBufferSharedPtr(IntPtr gpuBuffer);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GpuBuffer__width(void* gpuBuffer);
+        public static extern int mp_GpuBuffer__width(IntPtr gpuBuffer);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern int mp_GpuBuffer__height(void* gpuBuffer);
+        public static extern int mp_GpuBuffer__height(IntPtr gpuBuffer);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern GpuBufferFormat mp_GpuBuffer__format(void* gpuBuffer);
+        public static extern GpuBufferFormat mp_GpuBuffer__format(IntPtr gpuBuffer);
 
         #region StatusOr
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte mp_StatusOrGpuBuffer__ok(void* statusOrGpuBuffer);
+        public static extern byte mp_StatusOrGpuBuffer__ok(IntPtr statusOrGpuBuffer);
         #endregion
     }
 }

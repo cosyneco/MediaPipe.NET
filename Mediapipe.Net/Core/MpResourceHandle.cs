@@ -10,17 +10,17 @@ namespace Mediapipe.Net.Core
 {
     public unsafe abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        protected void* Ptr;
+        protected IntPtr Ptr;
 
         protected MpResourceHandle(bool isOwner = true) : this(null, isOwner) { }
 
-        protected MpResourceHandle(void* ptr, bool isOwner = true) : base(isOwner)
+        protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
             Ptr = ptr;
         }
 
         #region IMpResourceHandle
-        public void* MpPtr
+        public IntPtr MpPtr
         {
             get
             {
@@ -61,7 +61,7 @@ namespace Mediapipe.Net.Core
         /// <remarks>In most cases, this method should not be called directly.</remarks>
         protected abstract void DeleteMpPtr();
 
-        protected delegate MpReturnCode StringOutFunc(void* ptr, out sbyte* strPtr);
+        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out sbyte* strPtr);
         protected string? MarshalStringFromNative(StringOutFunc func)
         {
             func(MpPtr, out sbyte* strPtr).Assert();

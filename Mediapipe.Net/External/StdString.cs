@@ -10,7 +10,7 @@ namespace Mediapipe.Net.External
 {
     public unsafe class StdString : MpResourceHandle
     {
-        public StdString(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public StdString(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public StdString(byte[] bytes) : base()
         {

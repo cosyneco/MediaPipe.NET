@@ -9,45 +9,45 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp__l(long value, out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp__l(long value, out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_Timestamp__delete(void* timestamp);
+        public static extern void mp_Timestamp__delete(IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp__DebugString(void* timestamp, out sbyte* str);
+        public static extern MpReturnCode mp_Timestamp__DebugString(IntPtr timestamp, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp__NextAllowedInStream(void* timestamp, out void* nextTimestamp);
+        public static extern MpReturnCode mp_Timestamp__NextAllowedInStream(IntPtr timestamp, out IntPtr nextTimestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp__PreviousAllowedInStream(void* timestamp, out void* prevTimestamp);
+        public static extern MpReturnCode mp_Timestamp__PreviousAllowedInStream(IntPtr timestamp, out IntPtr prevTimestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_FromSeconds__d(double seconds, out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_FromSeconds__d(double seconds, out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_Unset(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_Unset(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_Unstarted(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_Unstarted(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_PreStream(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_PreStream(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_Min(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_Min(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_Max(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_Max(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_PostStream(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_PostStream(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_OneOverPostStream(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_OneOverPostStream(out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp_Done(out void* timestamp);
+        public static extern MpReturnCode mp_Timestamp_Done(out IntPtr timestamp);
     }
 }

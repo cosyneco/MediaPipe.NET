@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Gpu
             return glContextPtr == null ? null : new GlContext(glContextPtr);
         }
 
-        public GlContext(void* ptr, bool isOwner = true) : base(isOwner)
+        public GlContext(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
             sharedPtrHandle = new SharedGlContextPtr(ptr, isOwner);
             Ptr = sharedPtrHandle.Get();
@@ -39,23 +39,23 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
+        public IntPtr SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        public void* EglDisplay => SafeNativeMethods.mp_GlContext__egl_display(MpPtr);
+        public IntPtr EglDisplay => SafeNativeMethods.mp_GlContext__egl_display(MpPtr);
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        public void* EglConfig => SafeNativeMethods.mp_GlContext__egl_config(MpPtr);
+        public IntPtr EglConfig => SafeNativeMethods.mp_GlContext__egl_config(MpPtr);
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        public void* EglContext => SafeNativeMethods.mp_GlContext__egl_context(MpPtr);
+        public IntPtr EglContext => SafeNativeMethods.mp_GlContext__egl_context(MpPtr);
 
         // NOTE: (from homuler) On macOS, native libs cannot be built with GPU enabled, so it cannot be used actually.
         [SupportedOSPlatform("OSX")]
-        public void* NsglContext => SafeNativeMethods.mp_GlContext__nsgl_context(MpPtr);
+        public IntPtr NsglContext => SafeNativeMethods.mp_GlContext__nsgl_context(MpPtr);
 
         [SupportedOSPlatform("IOS")]
-        public void* EaglContext => SafeNativeMethods.mp_GlContext__eagl_context(MpPtr);
+        public IntPtr EaglContext => SafeNativeMethods.mp_GlContext__eagl_context(MpPtr);
 
         public bool IsCurrent() => SafeNativeMethods.mp_GlContext__IsCurrent(MpPtr) > 0;
 
@@ -68,11 +68,11 @@ namespace Mediapipe.Net.Gpu
         // TODO: Put it in its own file
         private class SharedGlContextPtr : SharedPtrHandle
         {
-            public SharedGlContextPtr(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+            public SharedGlContextPtr(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
             protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_SharedGlContext__delete(Ptr);
 
-            public override void* Get() => SafeNativeMethods.mp_SharedGlContext__get(MpPtr);
+            public override IntPtr Get() => SafeNativeMethods.mp_SharedGlContext__get(MpPtr);
 
             public override void Reset() => UnsafeNativeMethods.mp_SharedGlContext__reset(MpPtr);
         }

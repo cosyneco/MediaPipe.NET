@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework
 {
     public unsafe class OutputStreamPoller<T> : MpResourceHandle
     {
-        public OutputStreamPoller(void* ptr) : base(ptr) { }
+        public OutputStreamPoller(IntPtr ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {

@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Gpu
 {
     public unsafe class GpuBuffer : MpResourceHandle
     {
-        public GpuBuffer(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public GpuBuffer(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         public GpuBuffer(GlTextureBuffer glTextureBuffer) : base()

@@ -14,56 +14,56 @@ namespace Mediapipe.Net.Native
             Protobuf.ProtobufLogHandler logHandler);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_api_SerializedProtoArray__delete(void* serializedProtoVectorData);
+        public static extern void mp_api_SerializedProtoArray__delete(IntPtr serializedProtoVectorData);
 
         #region MessageProto
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetClassificationList(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetClassificationList(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetClassificationListVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetClassificationListVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetDetection(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetDetection(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetDetectionVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetDetectionVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetFaceGeometry(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetFaceGeometry(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetFaceGeometryVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetFaceGeometryVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetFrameAnnotation(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetFrameAnnotation(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetLandmarkList(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetLandmarkList(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetLandmarkListVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetLandmarkListVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetNormalizedLandmarkList(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetNormalizedLandmarkList(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetNormalizedLandmarkListVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetNormalizedLandmarkListVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetNormalizedRect(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetNormalizedRect(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetNormalizedRectVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetNormalizedRectVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetRect(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetRect(IntPtr packet, out SerializedProto serializedProto);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetRectVector(void* packet, out SerializedProtoVector serializedProtoVector);
+        public static extern MpReturnCode mp_Packet__GetRectVector(IntPtr packet, out SerializedProtoVector serializedProtoVector);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetTimedModelMatrixProtoList(void* packet, out SerializedProto serializedProto);
+        public static extern MpReturnCode mp_Packet__GetTimedModelMatrixProtoList(IntPtr packet, out SerializedProto serializedProto);
         #endregion
     }
 }

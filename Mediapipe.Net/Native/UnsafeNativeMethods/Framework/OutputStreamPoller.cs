@@ -10,30 +10,30 @@ namespace Mediapipe.Net.Native
     {
         #region OutputStreamPoller
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_OutputStreamPoller__delete(void* poller);
+        public static extern void mp_OutputStreamPoller__delete(IntPtr poller);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_OutputStreamPoller__Reset(void* poller);
+        public static extern MpReturnCode mp_OutputStreamPoller__Reset(IntPtr poller);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_OutputStreamPoller__Next_Ppacket(void* poller, void* packet, out bool result);
+        public static extern MpReturnCode mp_OutputStreamPoller__Next_Ppacket(IntPtr poller, IntPtr packet, out bool result);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_OutputStreamPoller__SetMaxQueueSize(void* poller, int queueSize);
+        public static extern MpReturnCode mp_OutputStreamPoller__SetMaxQueueSize(IntPtr poller, int queueSize);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_OutputStreamPoller__QueueSize(void* poller, out int queueSize);
+        public static extern MpReturnCode mp_OutputStreamPoller__QueueSize(IntPtr poller, out int queueSize);
         #endregion
 
         #region StatusOrPoller
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_StatusOrPoller__delete(void* statusOrPoller);
+        public static extern void mp_StatusOrPoller__delete(IntPtr statusOrPoller);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrPoller__status(void* statusOrPoller, out void* status);
+        public static extern MpReturnCode mp_StatusOrPoller__status(IntPtr statusOrPoller, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrPoller__value(void* statusOrPoller, out void* poller);
+        public static extern MpReturnCode mp_StatusOrPoller__value(IntPtr statusOrPoller, out IntPtr poller);
         #endregion
     }
 }

@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__swap__Rstr(void* src, void* dst);
+        public static extern void std_string__swap__Rstr(IntPtr src, IntPtr dst);
         #endregion
     }
 }

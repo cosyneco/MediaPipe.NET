@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Port
 {
     public unsafe class StatusOrImageFrame : StatusOr<ImageFrame>
     {
-        public StatusOrImageFrame(void* ptr) : base(ptr) { }
+        public StatusOrImageFrame(IntPtr ptr) : base(ptr) { }
 
         protected override void DeleteMpPtr()
         {

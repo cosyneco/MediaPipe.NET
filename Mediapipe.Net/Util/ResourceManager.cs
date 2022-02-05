@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Util
     {
         public delegate string PathResolver(string path);
         public abstract PathResolver ResolvePath { get; }
-        public delegate bool ResourceProvider(string path, void* output);
+        public delegate bool ResourceProvider(string path, IntPtr output);
         public abstract ResourceProvider ProvideResource { get; }
 
         private static readonly object initLock = new object();

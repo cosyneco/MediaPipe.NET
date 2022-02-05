@@ -12,6 +12,6 @@ namespace Mediapipe.Net.Native
     {
         [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
         [Pure, DllImport(MEDIAPIPE_LIBRARY)]
-        public static extern void* eglGetCurrentContext();
+        public static extern IntPtr eglGetCurrentContext();
     }
 }

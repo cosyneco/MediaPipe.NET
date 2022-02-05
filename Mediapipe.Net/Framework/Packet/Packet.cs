@@ -17,10 +17,10 @@ namespace Mediapipe.Net.Framework.Packet
             Ptr = ptr;
         }
 
-        public Packet(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+        public Packet(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         // Temp backwards compatibility until we find something better than the Activator. ¬¬
-        public Packet(IntPtr ptr, bool isOwner = true) : base((void*)ptr, isOwner) { }
+        public Packet(IntPtr ptr, bool isOwner = true) : base((IntPtr)ptr, isOwner) { }
 
         /// <exception cref="MediapipeException">Thrown when the value is not set</exception>
         public abstract T Get();

@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Framework.Format
         public static readonly uint DefaultAlignmentBoundary = 16;
         public static readonly uint GlDefaultAlignmentBoundary = 4;
 
-        public delegate void Deleter(void* ptr);
+        public delegate void Deleter(IntPtr ptr);
 
         public ImageFrame() : base()
         {
@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public ImageFrame(void* imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
+        public ImageFrame(IntPtr imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
 
         public ImageFrame(ImageFormat format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
@@ -63,7 +63,7 @@ namespace Mediapipe.Net.Framework.Format
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
 
         // [AOT.MonoPInvokeCallback(typeof(Deleter))] (?)
-        private static void releasePixelData(void* ptr)
+        private static void releasePixelData(IntPtr ptr)
         {
             // Do nothing (pixelData is moved)
         }
@@ -201,7 +201,7 @@ namespace Mediapipe.Net.Framework.Format
         public byte[] GetChannel(int channelNumber, bool flipVertically)
             => GetChannel(channelNumber, flipVertically, new byte[Width * Height]);
 
-        private delegate MpReturnCode CopyToBufferHandler<T>(void* ptr, T* buffer, int bufferSize)
+        private delegate MpReturnCode CopyToBufferHandler<T>(IntPtr ptr, T* buffer, int bufferSize)
             where T : unmanaged;
 
         private T[] copyToBuffer<T>(CopyToBufferHandler<T> handler, int bufferSize)
