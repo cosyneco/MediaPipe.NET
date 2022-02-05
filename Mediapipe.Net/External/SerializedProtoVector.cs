@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Google.Protobuf;
@@ -12,7 +13,7 @@ namespace Mediapipe.Net.External
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct SerializedProtoVector
     {
-        public SerializedProto* Data;
+        public IntPtr Data;
         public int Size;
 
         // TODO: This is looking just as sus as SerializedProto.Dispose().
@@ -21,9 +22,10 @@ namespace Mediapipe.Net.External
 
         public List<T> Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
+            SerializedProto* dataPtr = (SerializedProto*)Data;
             var protos = new List<T>(Size);
             for (int i = 0; i < Size; i++)
-                protos.Add(Data[i].Deserialize(parser));
+                protos.Add(dataPtr[i].Deserialize(parser));
 
             return protos;
         }

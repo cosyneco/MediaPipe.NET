@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Core
     {
         protected IntPtr Ptr;
 
-        protected MpResourceHandle(bool isOwner = true) : this(null, isOwner) { }
+        protected MpResourceHandle(bool isOwner = true) : this((IntPtr)null, isOwner) { }
 
         protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
@@ -53,7 +53,7 @@ namespace Mediapipe.Net.Core
         /// Forgets the pointer address.
         /// After calling this method, <see ref="OwnsResource" /> will return false.
         /// </summary>
-        protected void ReleaseMpPtr() => Ptr = null;
+        protected void ReleaseMpPtr() => Ptr = IntPtr.Zero;
 
         /// <summary>
         /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.

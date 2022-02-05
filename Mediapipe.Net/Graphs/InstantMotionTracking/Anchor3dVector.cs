@@ -15,7 +15,7 @@ namespace Mediapipe.Net.Graphs.InstantMotionTracking
         public Anchor3d* Data;
         public int Size;
 
-        public void Dispose() => UnsafeNativeMethods.mp_Anchor3dArray__delete(Data);
+        public void Dispose() => UnsafeNativeMethods.mp_Anchor3dArray__delete((IntPtr)Data);
 
         public List<Anchor3d> ToList()
         {

@@ -15,7 +15,7 @@ namespace Mediapipe.Net.External
         public StdString(byte[] bytes) : base()
         {
             UnsafeNativeMethods.std_string__PKc_i(bytes, bytes.Length, out var ptr).Assert();
-            Ptr = ptr;
+            Ptr = (IntPtr)ptr;
         }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete((sbyte*)Ptr);

@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using Mediapipe.Net.Framework.Format;
@@ -42,7 +43,7 @@ namespace Mediapipe.Net.Native
         public static extern int mp_ImageFrame__WidthStep(IntPtr imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte* mp_ImageFrame__MutablePixelData(IntPtr imageFrame);
+        public static extern IntPtr mp_ImageFrame__MutablePixelData(IntPtr imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern int mp_ImageFrame__PixelDataSize(IntPtr imageFrame);

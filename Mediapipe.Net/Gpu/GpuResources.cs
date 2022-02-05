@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Port;
@@ -35,7 +36,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public IntPtr SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
+        public IntPtr SharedPtr => sharedPtrHandle == null ? IntPtr.Zero : sharedPtrHandle.MpPtr;
 
         public static StatusOrGpuResources Create()
         {

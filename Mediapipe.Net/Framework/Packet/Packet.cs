@@ -19,9 +19,6 @@ namespace Mediapipe.Net.Framework.Packet
 
         public Packet(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
-        // Temp backwards compatibility until we find something better than the Activator. ¬¬
-        public Packet(IntPtr ptr, bool isOwner = true) : base((IntPtr)ptr, isOwner) { }
-
         /// <exception cref="MediapipeException">Thrown when the value is not set</exception>
         public abstract T Get();
 

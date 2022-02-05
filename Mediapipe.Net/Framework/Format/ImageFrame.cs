@@ -121,7 +121,7 @@ namespace Mediapipe.Net.Framework.Format
 
         public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
 
-        public byte* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        public IntPtr MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
 
         public int PixelDataSize => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
 
@@ -238,7 +238,7 @@ namespace Mediapipe.Net.Framework.Format
         /// In the source array, pixels are laid out left to right, top to bottom,
         /// but in the returned array, left to right, top to bottom.
         /// </remarks>
-        private static void readChannel(byte* ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
+        private static void readChannel(IntPtr ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
         {
             if (colors.Length != width * height)
                 throw new ArgumentException("colors length is invalid");
@@ -248,7 +248,7 @@ namespace Mediapipe.Net.Framework.Format
             {
                 fixed (byte* dest = colors)
                 {
-                    var pSrc = ptr;
+                    byte* pSrc = (byte*)ptr;
                     pSrc += channelNumber;
 
                     if (flipVertically)
