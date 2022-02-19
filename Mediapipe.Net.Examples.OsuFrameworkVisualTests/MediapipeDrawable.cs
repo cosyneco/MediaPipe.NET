@@ -50,7 +50,6 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         public void Start()
         {
             calculator.Run();
-            Camera.StartCapture();
         }
 
         protected override unsafe void Update()

@@ -44,12 +44,10 @@ namespace Mediapipe.Net.Examples.FaceMesh
                     return;
                 }
             }
-            //camera.OnFrame += onFrame;
 
             calculator = new FaceMeshCpuCalculator();
             calculator.OnResult += handleLandmarks;
             calculator.Run();
-            camera.StartCapture();
 
             Console.CancelKeyPress += (sender, eventArgs) => exit();
             while (true)
