@@ -31,7 +31,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         [BackgroundDependencyLoader]
         private void load()
         {
-            mediapipeDrawable = new MediapipeDrawable
+            mediapipeDrawable = new MediapipeDrawable(1)
             {
                 Anchor = Anchor.Centre,
                 Origin = Anchor.Centre,

@@ -4,14 +4,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using CommandLine;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
 using SeeShark;
-using SeeShark.Decode;
 using SeeShark.Device;
 using SeeShark.FFmpeg;
 
@@ -35,7 +33,11 @@ namespace Mediapipe.Net.Examples.FaceMesh
             {
                 try
                 {
-                    camera = manager.GetDevice(parsed.CameraIndex);
+                    camera = manager.GetDevice(parsed.CameraIndex, new VideoInputOptions
+                    {
+                        InputFormat = "mjpeg",
+                        VideoSize = (800, 600),
+                    });
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
                 catch (Exception)

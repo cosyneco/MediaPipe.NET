@@ -29,7 +29,11 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         public MediapipeDrawable(int cameraIndex = 0)
         {
             var manager = new CameraManager();
-            Camera = manager.GetDevice(cameraIndex);
+            Camera = manager.GetDevice(cameraIndex, new VideoInputOptions
+            {
+                InputFormat = "mjpeg",
+                VideoSize = (800, 600),
+            });
             manager.Dispose();
 
             calculator = new FaceMeshCpuCalculator();
