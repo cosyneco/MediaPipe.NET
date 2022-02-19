@@ -7,6 +7,7 @@ using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osuTK;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
 {
@@ -14,7 +15,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
     {
 #pragma warning disable IDE0051
         [BackgroundDependencyLoader]
-        private void load(MediapipeDrawable mediapipeDrawable)
+        private void load()
         {
             Add(new Container
             {
@@ -26,10 +27,15 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests.Visual
                         RelativeSizeAxes = Axes.Both,
                         Colour = Color4Extensions.FromHex(@"272727"),
                     },
-                    mediapipeDrawable,
+                    new MediapipeDrawable
+                    {
+                        Anchor = Anchor.Centre,
+                        Origin = Anchor.Centre,
+                        Size = new Vector2(1280, 720),
+                        FillMode = FillMode.Fit,
+                    },
                 },
             });
-            mediapipeDrawable.Start();
         }
 #pragma warning restore IDE0051
     }

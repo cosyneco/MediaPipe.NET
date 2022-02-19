@@ -2,17 +2,23 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.Net.Calculators;
 using osu.Framework;
 using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osuTK;
+using SeeShark;
+using SeeShark.Device;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
     public class OsuFrameworkVisualTestsGameBase : Game
     {
-        private MediapipeDrawable? mediapipeDrawable;
+        private Camera? camera;
+        private FrameConverter? converter;
+        private FaceMeshCpuCalculator? calculator;
+
         protected override Container<Drawable> Content { get; }
 
         private DependencyContainer? dependencies;
@@ -31,20 +37,30 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         [BackgroundDependencyLoader]
         private void load()
         {
-            mediapipeDrawable = new MediapipeDrawable(1)
+            var manager = new CameraManager();
+            camera = manager.GetDevice(1, new VideoInputOptions
             {
-                Anchor = Anchor.Centre,
-                Origin = Anchor.Centre,
-                Size = new Vector2(1280, 720),
-                FillMode = FillMode.Fit
-            };
-            dependencies?.Cache(mediapipeDrawable);
+                InputFormat = "mjpeg",
+                VideoSize = (800, 600),
+            });
+            dependencies?.Cache(camera);
+            manager.Dispose();
+
+            var dummyFrame = camera.GetFrame();
+            converter = new FrameConverter(dummyFrame, PixelFormat.Rgba);
+            dependencies?.Cache(converter);
+
+            calculator = new FaceMeshCpuCalculator();
+            calculator.Run();
+            dependencies?.Cache(calculator);
         }
 #pragma warning restore IDE0051
 
         protected override bool OnExiting()
         {
-            mediapipeDrawable?.Dispose();
+            calculator?.Dispose();
+            converter?.Dispose();
+            camera?.Dispose();
             return base.OnExiting();
         }
     }
