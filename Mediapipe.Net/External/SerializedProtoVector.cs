@@ -17,7 +17,12 @@ namespace Mediapipe.Net.External
 
         // TODO: This is looking just as sus as SerializedProto.Dispose().
         // Should be investigated in the same way.
-        public void Dispose() => UnsafeNativeMethods.mp_api_SerializedProtoArray__delete(Data);
+        public void Dispose()
+        {
+            for (int i = 0; i < Size; i++)
+                Data[i].Dispose();
+            UnsafeNativeMethods.mp_api_SerializedProtoArray__delete(Data);
+        }
 
         public List<T> Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
