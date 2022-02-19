@@ -10,6 +10,8 @@ using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using SeeShark;
+using SeeShark.Decode;
+using SeeShark.Device;
 using SeeShark.FFmpeg;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -27,10 +29,9 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         public MediapipeDrawable(int cameraIndex = 0)
         {
             var manager = new CameraManager();
-            Camera = manager.GetCamera(cameraIndex);
+            Camera = manager.GetDevice(cameraIndex);
             manager.Dispose();
 
-            Camera.OnFrame += onFrame;
             calculator = new FaceMeshCpuCalculator();
 
             Masking = true;
@@ -52,15 +53,13 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             Camera.StartCapture();
         }
 
-        private unsafe void onFrame(object? sender, FrameEventArgs e)
+        protected override unsafe void Update()
         {
-            var frame = e.Frame;
+            if (Camera.TryGetFrame(out Frame frame) != DecodeStatus.NewFrame)
+                return;
+
             if (converter == null)
                 converter = new FrameConverter(frame, PixelFormat.Rgba);
-
-            // Don't use a frame if it's not new
-            if (e.Status != DecodeStatus.NewFrame)
-                return;
 
             Frame cFrame = converter.Convert(frame);
 
@@ -81,6 +80,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             texture.SetData(new TextureUpload(pixelData));
             sprite.FillAspectRatio = (float)cFrame.Width / cFrame.Height;
             sprite.Texture = texture;
+            base.Update();
         }
 
         public new void Dispose()

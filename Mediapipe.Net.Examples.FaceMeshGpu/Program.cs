@@ -11,6 +11,8 @@ using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
 using SeeShark;
+using SeeShark.Decode;
+using SeeShark.Device;
 using SeeShark.FFmpeg;
 
 namespace Mediapipe.Net.Examples.FaceMeshGpu
@@ -34,7 +36,7 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             {
                 try
                 {
-                    camera = manager.GetCamera(parsed.CameraIndex);
+                    camera = manager.GetDevice(parsed.CameraIndex);
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
                 catch (Exception)

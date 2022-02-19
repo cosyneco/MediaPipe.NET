@@ -4,12 +4,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using CommandLine;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
 using SeeShark;
+using SeeShark.Decode;
+using SeeShark.Device;
 using SeeShark.FFmpeg;
 
 namespace Mediapipe.Net.Examples.FaceMesh
@@ -32,7 +35,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
             {
                 try
                 {
-                    camera = manager.GetCamera(parsed.CameraIndex);
+                    camera = manager.GetDevice(parsed.CameraIndex);
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
                 catch (Exception)
@@ -41,7 +44,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
                     return;
                 }
             }
-            camera.OnFrame += onFrame;
+            //camera.OnFrame += onFrame;
 
             calculator = new FaceMeshCpuCalculator();
             calculator.OnResult += handleLandmarks;
@@ -49,33 +52,25 @@ namespace Mediapipe.Net.Examples.FaceMesh
             camera.StartCapture();
 
             Console.CancelKeyPress += (sender, eventArgs) => exit();
-            Console.ReadLine();
+            while (true)
+            {
+                var frame = camera.GetFrame();
+
+                converter ??= new FrameConverter(frame, PixelFormat.Rgba);
+
+                Frame cFrame = converter.Convert(frame);
+
+                ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
+
+                using ImageFrame img = calculator.Send(imgframe);
+                imgframe.Dispose();
+            }
         }
 
         private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> landmarks)
         {
             Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
-        }
-
-        private static unsafe void onFrame(object? sender, FrameEventArgs e)
-        {
-            if (calculator == null)
-                return;
-
-            var frame = e.Frame;
-            converter ??= new FrameConverter(frame, PixelFormat.Rgba);
-
-            // Don't use a frame if it's not new
-            if (e.Status != DecodeStatus.NewFrame)
-                return;
-
-            Frame cFrame = converter.Convert(frame);
-
-            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
-                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
-
-            using ImageFrame img = calculator.Send(imgframe);
-            imgframe.Dispose();
         }
 
         // Dispose everything on exit
