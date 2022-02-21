@@ -2,6 +2,8 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
+using CommandLine;
 using Mediapipe.Net.Calculators;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -37,12 +39,24 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         [BackgroundDependencyLoader]
         private void load()
         {
+            string[] args = Environment.GetCommandLineArgs();
+            Options parsedArgs = Parser.Default.ParseArguments<Options>(args).Value;
+
+            (int, int)? videoSize = null;
+            if (parsedArgs.Width != null && parsedArgs.Height != null)
+                videoSize = ((int)parsedArgs.Width, (int)parsedArgs.Height);
+            else if (parsedArgs.Width != null && parsedArgs.Height == null)
+                Console.Error.WriteLine("Specifying width requires to specify height");
+            else if (parsedArgs.Width == null && parsedArgs.Height != null)
+                Console.Error.WriteLine("Specifying height requires to specify width");
+
             var manager = new CameraManager();
-            camera = manager.GetDevice(1, new VideoInputOptions
-            {
-                InputFormat = "mjpeg",
-                VideoSize = (800, 600),
-            });
+            camera = manager.GetDevice(parsedArgs.CameraIndex,
+                new VideoInputOptions
+                {
+                    InputFormat = parsedArgs.InputFormat,
+                    VideoSize = videoSize,
+                });
             dependencies?.Cache(camera);
             manager.Dispose();
 
