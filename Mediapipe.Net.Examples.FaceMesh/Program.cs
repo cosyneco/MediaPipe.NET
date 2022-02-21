@@ -25,6 +25,15 @@ namespace Mediapipe.Net.Examples.FaceMesh
         {
             // Get and parse command line arguments
             Options parsed = Parser.Default.ParseArguments<Options>(args).Value;
+
+            (int, int)? videoSize = null;
+            if (parsed.Width != null && parsed.Height != null)
+                videoSize = ((int)parsed.Width, (int)parsed.Height);
+            else if (parsed.Width != null && parsed.Height == null)
+                Console.Error.WriteLine("Specifying width requires to specify height");
+            else if (parsed.Width == null && parsed.Height != null)
+                Console.Error.WriteLine("Specifying height requires to specify width");
+
             FFmpegManager.SetupFFmpeg("/usr/lib");
             Glog.Initialize("stuff");
 
@@ -33,11 +42,12 @@ namespace Mediapipe.Net.Examples.FaceMesh
             {
                 try
                 {
-                    camera = manager.GetDevice(parsed.CameraIndex, new VideoInputOptions
-                    {
-                        InputFormat = "mjpeg",
-                        VideoSize = (800, 600),
-                    });
+                    camera = manager.GetDevice(parsed.CameraIndex,
+                        new VideoInputOptions
+                        {
+                            InputFormat = parsed.InputFormat,
+                            VideoSize = videoSize,
+                        });
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
                 catch (Exception)
@@ -60,11 +70,10 @@ namespace Mediapipe.Net.Examples.FaceMesh
 
                 Frame cFrame = converter.Convert(frame);
 
-                ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
                 using ImageFrame img = calculator.Send(imgframe);
-                imgframe.Dispose();
             }
         }
 
