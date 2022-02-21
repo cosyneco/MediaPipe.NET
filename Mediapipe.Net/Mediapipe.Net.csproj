@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Package References">
-    <PackageReference Include="Google.Protobuf" Version="4.0.0-rc2" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
     <PackageReference Include="Mediapipe.Net.Framework.Protobuf" Version="0.8.9" />
   </ItemGroup>
 
