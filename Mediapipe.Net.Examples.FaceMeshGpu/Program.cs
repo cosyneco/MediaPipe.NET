@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 using CommandLine;
+using FFmpeg.AutoGen;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
@@ -48,6 +49,11 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                         new VideoInputOptions
                         {
                             InputFormat = parsed.InputFormat,
+                            Framerate = parsed.Framerate == null ? null : new AVRational
+                            {
+                                num = (int)parsed.Framerate,
+                                den = 1,
+                            },
                             VideoSize = videoSize,
                         });
                     Console.WriteLine($"Using camera {camera.Info}");

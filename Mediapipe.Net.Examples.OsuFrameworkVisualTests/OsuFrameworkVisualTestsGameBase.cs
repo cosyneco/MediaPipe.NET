@@ -4,6 +4,7 @@
 
 using System;
 using CommandLine;
+using FFmpeg.AutoGen;
 using Mediapipe.Net.Calculators;
 using osu.Framework;
 using osu.Framework.Allocation;
@@ -40,21 +41,26 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         private void load()
         {
             string[] args = Environment.GetCommandLineArgs();
-            Options parsedArgs = Parser.Default.ParseArguments<Options>(args).Value;
+            Options parsed = Parser.Default.ParseArguments<Options>(args).Value;
 
             (int, int)? videoSize = null;
-            if (parsedArgs.Width != null && parsedArgs.Height != null)
-                videoSize = ((int)parsedArgs.Width, (int)parsedArgs.Height);
-            else if (parsedArgs.Width != null && parsedArgs.Height == null)
+            if (parsed.Width != null && parsed.Height != null)
+                videoSize = ((int)parsed.Width, (int)parsed.Height);
+            else if (parsed.Width != null && parsed.Height == null)
                 Console.Error.WriteLine("Specifying width requires to specify height");
-            else if (parsedArgs.Width == null && parsedArgs.Height != null)
+            else if (parsed.Width == null && parsed.Height != null)
                 Console.Error.WriteLine("Specifying height requires to specify width");
 
             var manager = new CameraManager();
-            camera = manager.GetDevice(parsedArgs.CameraIndex,
+            camera = manager.GetDevice(parsed.CameraIndex,
                 new VideoInputOptions
                 {
-                    InputFormat = parsedArgs.InputFormat,
+                    InputFormat = parsed.InputFormat,
+                    Framerate = parsed.Framerate == null ? null : new AVRational
+                    {
+                        num = (int)parsed.Framerate,
+                        den = 1,
+                    },
                     VideoSize = videoSize,
                 });
             dependencies?.Cache(camera);
