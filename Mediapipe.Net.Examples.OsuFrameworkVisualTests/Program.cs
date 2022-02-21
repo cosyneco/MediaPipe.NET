@@ -13,7 +13,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
         public static void Main()
         {
             FFmpegManager.SetupFFmpeg("/usr/lib");
-            using GameHost host = Host.GetSuitableHost("visual-tests");
+            using GameHost host = Host.GetSuitableDesktopHost("visual-tests");
             using var game = new OsuFrameworkVisualTestsTestBrowser();
             host.Run(game);
         }

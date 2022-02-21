@@ -5,37 +5,32 @@
 using System;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.Framework.Format;
+using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Sprites;
 using osu.Framework.Graphics.Textures;
 using SeeShark;
-using SeeShark.FFmpeg;
+using SeeShark.Decode;
+using SeeShark.Device;
 using SixLabors.ImageSharp.PixelFormats;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
     public class MediapipeDrawable : CompositeDrawable
     {
-        public readonly Camera Camera;
+        private Camera? camera;
         private FrameConverter? converter;
-        private readonly FaceMeshCpuCalculator calculator;
+        private FaceMeshCpuCalculator? calculator;
 
         private readonly Sprite sprite;
         private Texture? texture;
 
-        public MediapipeDrawable(int cameraIndex = 0)
+        public MediapipeDrawable()
         {
-            var manager = new CameraManager();
-            Camera = manager.GetCamera(cameraIndex);
-            manager.Dispose();
-
-            Camera.OnFrame += onFrame;
-            calculator = new FaceMeshCpuCalculator();
-
             Masking = true;
             CornerRadius = 10;
-
             AddInternal(sprite = new Sprite
             {
                 Anchor = Anchor.Centre,
@@ -46,53 +41,38 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             });
         }
 
-        public void Start()
+#pragma warning disable IDE0051
+        [BackgroundDependencyLoader]
+        private void load(Camera camera, FrameConverter converter, FaceMeshCpuCalculator calculator)
         {
-            calculator.Run();
-            Camera.StartCapture();
+            this.camera = camera;
+            this.converter = converter;
+            this.calculator = calculator;
         }
+#pragma warning restore IDE0051
 
-        private unsafe void onFrame(object? sender, FrameEventArgs e)
+        protected override unsafe void Update()
         {
-            var frame = e.Frame;
-            if (converter == null)
-                converter = new FrameConverter(frame, PixelFormat.Rgba);
+            base.Update();
+            if (camera == null || converter == null || calculator == null)
+                return;
 
-            // Don't use a frame if it's not new
-            if (e.Status != DecodeStatus.NewFrame)
+            if (camera.TryGetFrame(out Frame frame) != DecodeStatus.NewFrame)
                 return;
 
             Frame cFrame = converter.Convert(frame);
-
-            ImageFrame imgFrame;
-            fixed (byte* rawDataPtr = cFrame.RawData)
-            {
-                imgFrame = new ImageFrame(ImageFormat.Srgba, cFrame.Width, cFrame.Height, cFrame.WidthStep,
-                    rawDataPtr);
-            }
-
+            ImageFrame imgFrame = new ImageFrame(ImageFormat.Srgba,
+                cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
             using ImageFrame outImgFrame = calculator.Send(imgFrame);
             imgFrame.Dispose();
 
             var span = new ReadOnlySpan<byte>(outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
-            var pixelData = SixLabors.ImageSharp.Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);
+            var pixelData = Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);
 
             texture ??= new Texture(cFrame.Width, cFrame.Height);
             texture.SetData(new TextureUpload(pixelData));
             sprite.FillAspectRatio = (float)cFrame.Width / cFrame.Height;
             sprite.Texture = texture;
-        }
-
-        public new void Dispose()
-        {
-            if (IsDisposed)
-                return;
-
-            Camera.StopCapture();
-            Camera.Dispose();
-            converter?.Dispose();
-            calculator.Dispose();
-            base.Dispose();
         }
     }
 }

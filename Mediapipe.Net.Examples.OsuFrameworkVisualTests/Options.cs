@@ -4,7 +4,7 @@
 
 using CommandLine;
 
-namespace Mediapipe.Net.Examples.FaceMesh
+namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
     public class Options
     {

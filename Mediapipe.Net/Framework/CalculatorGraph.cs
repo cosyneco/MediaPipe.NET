@@ -89,6 +89,7 @@ namespace Mediapipe.Net.Framework
                 {
                     var packet = (TPacket?)Activator.CreateInstance(typeof(TPacket), (IntPtr)packetPtr, false);
                     status = packetCallback(packet);
+                    packet?.Dispose();
                 }
                 catch (Exception e)
                 {

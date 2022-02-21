@@ -10,5 +10,17 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
     {
         [Option('c', "camera", Default = 0, HelpText = "The index of the camera to use")]
         public int CameraIndex { get; set; }
+
+        [Option('f', "input-format", Default = null, HelpText = "The format of the camera input")]
+        public string? InputFormat { get; set; }
+
+        [Option('r', "fps", Default = null, HelpText = "The framerate of the camera input")]
+        public int? Framerate { get; set; }
+
+        [Option('w', "width", Default = null, HelpText = "The width of the camera input")]
+        public int? Width { get; set; }
+
+        [Option('h', "height", Default = null, HelpText = "The height of the camera input")]
+        public int? Height { get; set; }
     }
 }

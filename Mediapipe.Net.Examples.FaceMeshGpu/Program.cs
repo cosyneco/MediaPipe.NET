@@ -6,11 +6,13 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 using CommandLine;
+using FFmpeg.AutoGen;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
 using SeeShark;
+using SeeShark.Device;
 using SeeShark.FFmpeg;
 
 namespace Mediapipe.Net.Examples.FaceMeshGpu
@@ -26,6 +28,15 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
         {
             // Get and parse command line arguments
             Options parsed = Parser.Default.ParseArguments<Options>(args).Value;
+
+            (int, int)? videoSize = null;
+            if (parsed.Width != null && parsed.Height != null)
+                videoSize = ((int)parsed.Width, (int)parsed.Height);
+            else if (parsed.Width != null && parsed.Height == null)
+                Console.Error.WriteLine("Specifying width requires to specify height");
+            else if (parsed.Width == null && parsed.Height != null)
+                Console.Error.WriteLine("Specifying height requires to specify width");
+
             FFmpegManager.SetupFFmpeg("/usr/lib");
             Glog.Initialize("stuff");
 
@@ -34,7 +45,17 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             {
                 try
                 {
-                    camera = manager.GetCamera(parsed.CameraIndex);
+                    camera = manager.GetDevice(parsed.CameraIndex,
+                        new VideoInputOptions
+                        {
+                            InputFormat = parsed.InputFormat,
+                            Framerate = parsed.Framerate == null ? null : new AVRational
+                            {
+                                num = (int)parsed.Framerate,
+                                den = 1,
+                            },
+                            VideoSize = videoSize,
+                        });
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
                 catch (Exception)
@@ -43,41 +64,31 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                     return;
                 }
             }
-            camera.OnFrame += onFrame;
 
             calculator = new FaceMeshGpuCalculator();
             calculator.OnResult += handleLandmarks;
             calculator.Run();
-            camera.StartCapture();
 
             Console.CancelKeyPress += (sender, eventArgs) => exit();
-            Console.ReadLine();
+            while (true)
+            {
+                var frame = camera.GetFrame();
+
+                converter ??= new FrameConverter(frame, PixelFormat.Rgba);
+
+                Frame cFrame = converter.Convert(frame);
+
+                ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
+
+                using ImageFrame img = calculator.Send(imgframe);
+                imgframe.Dispose();
+            }
         }
 
         private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> landmarks)
         {
             Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
-        }
-
-        private static unsafe void onFrame(object? sender, FrameEventArgs e)
-        {
-            if (calculator == null)
-                return;
-
-            var frame = e.Frame;
-            converter ??= new FrameConverter(frame, PixelFormat.Rgba);
-
-            // Don't use a frame if it's not new
-            if (e.Status != DecodeStatus.NewFrame)
-                return;
-
-            Frame cFrame = converter.Convert(frame);
-
-            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
-                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
-
-            using ImageFrame img = calculator.Send(imgframe);
-            imgframe.Dispose();
         }
 
         // Dispose everything on exit
