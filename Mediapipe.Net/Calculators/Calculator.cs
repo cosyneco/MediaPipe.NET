@@ -29,7 +29,7 @@ namespace Mediapipe.Net.Calculators
         protected readonly string? SecondaryOutputStream;
 
         protected readonly CalculatorGraph Graph;
-        private GCHandle observeStreamHandle;
+        private GCHandle? observeStreamHandle;
 
         /// <summary>
         /// Triggered every time the calculator returns a secondary output.
@@ -53,7 +53,8 @@ namespace Mediapipe.Net.Calculators
                     T secondaryOutput = packet.Get();
                     OnResult?.Invoke(this, secondaryOutput);
                     return Status.Ok();
-                }, out observeStreamHandle).AssertOk();
+                }, out GCHandle handle).AssertOk();
+                observeStreamHandle = handle;
             }
         }
 
@@ -95,7 +96,7 @@ namespace Mediapipe.Net.Calculators
             Graph.WaitUntilDone();
             Graph.Dispose();
 
-            observeStreamHandle.Free();
+            observeStreamHandle?.Free();
         }
     }
 }
