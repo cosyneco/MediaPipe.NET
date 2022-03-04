@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Native;
 
@@ -14,6 +15,8 @@ namespace Mediapipe.Net.Framework.Format
         public static readonly uint GlDefaultAlignmentBoundary = 4;
 
         public delegate void Deleter(void* ptr);
+        private readonly Deleter? deleter;
+        private GCHandle? deleterHandle;
 
         public ImageFrame() : base()
         {
@@ -39,33 +42,49 @@ namespace Mediapipe.Net.Framework.Format
         //     mediapipe::ImageFormat::Format format,
         //     int width, int height, int width_step, uint8* pixel_data,
         //     Deleter* deleter, mediapipe::ImageFrame** image_frame_out);
-        unsafe public ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData) : base()
+        public unsafe ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData) : base()
         {
+            deleter = new Deleter(releasePixelData);
+            deleterHandle = GCHandle.Alloc(deleter);
+
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
                 format, width, height, widthStep,
                 pixelData,
-                releasePixelData,
+                deleter,
                 out var ptr).Assert();
             Ptr = ptr;
         }
 
         public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
-            : this(format, width, height, widthStep, spanToBytePtr(pixelData)) { }
-
-        private static byte* spanToBytePtr(ReadOnlySpan<byte> span)
         {
-            fixed (byte* ptr = span)
+            deleter = releasePixelData;
+            deleterHandle = GCHandle.Alloc(deleter);
+
+            fixed (byte* pixelDataPtr = pixelData)
             {
-                return ptr;
+                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
+                    format, width, height, widthStep,
+                    pixelDataPtr,
+                    deleter,
+                    out var ptr).Assert();
+                Ptr = ptr;
             }
         }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
 
-        // [AOT.MonoPInvokeCallback(typeof(Deleter))] (?)
         private static void releasePixelData(void* ptr)
         {
             // Do nothing (pixelData is moved)
+        }
+
+        protected override void DisposeUnmanaged()
+        {
+            base.DisposeUnmanaged();
+
+            // `deleter` must not be garbage collected until unmanaged code calls it.
+            if (deleterHandle is GCHandle handle && handle.IsAllocated)
+                handle.Free();
         }
 
         public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
