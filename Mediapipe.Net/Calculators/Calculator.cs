@@ -70,11 +70,14 @@ namespace Mediapipe.Net.Calculators
         /// </summary>
         /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed after being sent, MediaPipe will crash.</remarks>
         /// <param name="frame">The frame that MediaPipe should process.</param>
+        /// <param name="disposeSourceFrame">Whether or not to dispose the source frame.</param>
         /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
-        public ImageFrame Send(ImageFrame frame)
+        public ImageFrame Send(ImageFrame frame, bool disposeSourceFrame = true)
         {
             ImageFrame outFrame = SendFrame(frame);
             CurrentFrame++;
+            if (disposeSourceFrame)
+                frame.Dispose();
             return outFrame;
         }
 
