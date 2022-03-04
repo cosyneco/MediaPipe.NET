@@ -74,11 +74,14 @@ namespace Mediapipe.Net.Calculators
         /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
         public ImageFrame Send(ImageFrame frame, bool disposeSourceFrame = true)
         {
-            ImageFrame outFrame = SendFrame(frame);
-            CurrentFrame++;
-            if (disposeSourceFrame)
-                frame.Dispose();
-            return outFrame;
+            lock (frame)
+            {
+                ImageFrame outFrame = SendFrame(frame);
+                CurrentFrame++;
+                if (disposeSourceFrame)
+                    frame.Dispose();
+                return outFrame;
+            }
         }
 
         /// <summary>
