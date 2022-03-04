@@ -29,7 +29,7 @@ namespace Mediapipe.Net.Calculators
         protected readonly string? SecondaryOutputStream;
 
         protected readonly CalculatorGraph Graph;
-        private GCHandle observeStreamHandle;
+        private GCHandle? observeStreamHandle;
 
         /// <summary>
         /// Triggered every time the calculator returns a secondary output.
@@ -53,7 +53,8 @@ namespace Mediapipe.Net.Calculators
                     T secondaryOutput = packet.Get();
                     OnResult?.Invoke(this, secondaryOutput);
                     return Status.Ok();
-                }, out observeStreamHandle).AssertOk();
+                }, out GCHandle handle).AssertOk();
+                observeStreamHandle = handle;
             }
         }
 
@@ -70,12 +71,18 @@ namespace Mediapipe.Net.Calculators
         /// </summary>
         /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed after being sent, MediaPipe will crash.</remarks>
         /// <param name="frame">The frame that MediaPipe should process.</param>
+        /// <param name="disposeSourceFrame">Whether or not to dispose the source frame.</param>
         /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
-        public ImageFrame Send(ImageFrame frame)
+        public ImageFrame Send(ImageFrame frame, bool disposeSourceFrame = true)
         {
-            ImageFrame outFrame = SendFrame(frame);
-            CurrentFrame++;
-            return outFrame;
+            lock (frame)
+            {
+                ImageFrame outFrame = SendFrame(frame);
+                CurrentFrame++;
+                if (disposeSourceFrame)
+                    frame.Dispose();
+                return outFrame;
+            }
         }
 
         /// <summary>
@@ -89,7 +96,7 @@ namespace Mediapipe.Net.Calculators
             Graph.WaitUntilDone();
             Graph.Dispose();
 
-            observeStreamHandle.Free();
+            observeStreamHandle?.Free();
         }
     }
 }

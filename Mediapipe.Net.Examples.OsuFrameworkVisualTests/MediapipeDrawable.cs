@@ -64,7 +64,6 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             ImageFrame imgFrame = new ImageFrame(ImageFormat.Srgba,
                 cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
             using ImageFrame outImgFrame = calculator.Send(imgFrame);
-            imgFrame.Dispose();
 
             var span = new ReadOnlySpan<byte>(outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
             var pixelData = Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);

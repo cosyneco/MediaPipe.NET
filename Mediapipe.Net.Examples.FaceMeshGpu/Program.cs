@@ -82,7 +82,6 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
                 using ImageFrame img = calculator.Send(imgframe);
-                imgframe.Dispose();
             }
         }
 
