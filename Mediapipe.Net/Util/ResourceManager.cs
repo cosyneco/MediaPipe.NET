@@ -40,15 +40,21 @@ namespace Mediapipe.Net.Util
 
         private bool provideResource(string path, void* output)
         {
-            byte[] bytes = ProvideResource(path);
-            if (bytes.Length == 0)
+            try
+            {
+                byte[] bytes = ProvideResource(path);
+
+                StdString strOutput = new StdString(output, isOwner: false);
+                StdString strSpan = new StdString(bytes);
+                strOutput.Swap(strSpan);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Glog.Log(Glog.Severity.Error, $"Error while trying to provide resource '{path}': {ex}");
                 return false;
-
-            StdString strOutput = new StdString(output, isOwner: false);
-            StdString strSpan = new StdString(bytes);
-            strOutput.Swap(strSpan);
-
-            return true;
+            }
         }
     }
 }
