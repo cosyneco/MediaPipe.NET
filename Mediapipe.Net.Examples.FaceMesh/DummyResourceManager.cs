@@ -13,7 +13,6 @@ namespace Mediapipe.Net.Examples.FaceMesh
         public override PathResolver ResolvePath => (path) =>
         {
             Console.WriteLine($"PathResolver: (not) resolving path '{path}'");
-            // return GetAssetNameFromPath(path);
             return path;
         };
 
