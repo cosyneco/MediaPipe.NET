@@ -3,9 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Collections;
 using System.IO;
-using Mediapipe.Net.External;
 using Mediapipe.Net.Util;
 
 namespace Mediapipe.Net.Examples.FaceMesh
@@ -19,23 +17,11 @@ namespace Mediapipe.Net.Examples.FaceMesh
             return path;
         };
 
-        public unsafe override ResourceProvider ProvideResource => (path, output) =>
+        public unsafe override ResourceProvider ProvideResource => (path) =>
         {
             Console.WriteLine($"ResourceProvider: providing resource '{path}'");
-            using StdString strOutput = new StdString(output, false);
-            using StdString resource = new StdString(File.ReadAllBytes(path));
-            resource.Swap(strOutput);
-            return true;
+            byte[] bytes = File.ReadAllBytes(path);
+            return bytes;
         };
-
-        public override bool IsPrepared(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override IEnumerator PrepareAssetAsync(string name, string uniqueKey, bool overwrite = true)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
