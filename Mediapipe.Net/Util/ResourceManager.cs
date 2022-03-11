@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Util
         public delegate string PathResolver(string path);
         public abstract PathResolver ResolvePath { get; }
 
-        public delegate Span<byte> ResourceProvider(string path);
+        public delegate byte[] ResourceProvider(string path);
         public abstract ResourceProvider ProvideResource { get; }
 
         private static readonly object initLock = new object();
@@ -40,16 +40,13 @@ namespace Mediapipe.Net.Util
 
         private bool provideResource(string path, void* output)
         {
-            Span<byte> span = ProvideResource(path);
-            if (span.IsEmpty)
+            byte[] bytes = ProvideResource(path);
+            if (bytes.Length == 0)
                 return false;
 
-            fixed (void* spanPtr = span)
-            {
-                using StdString strOutput = new StdString(output, isOwner: false);
-                using StdString strSpan = new StdString(spanPtr, isOwner: true);
-                strOutput.Swap(strSpan);
-            }
+            StdString strOutput = new StdString(output, isOwner: false);
+            StdString strSpan = new StdString(bytes);
+            strOutput.Swap(strSpan);
 
             return true;
         }
