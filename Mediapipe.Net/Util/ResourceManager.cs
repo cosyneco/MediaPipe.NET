@@ -17,8 +17,18 @@ namespace Mediapipe.Net.Util
     public unsafe abstract class ResourceManager
     {
         public delegate string PathResolver(string path);
+
+        /// <summary>
+        /// Resolves a path to a resource name.
+        /// If the resource name returned is different from the path, the <see cref="ResourceProvider" /> delegate will receive the resource name instead of the file path.
+        /// </summary>
         public abstract PathResolver ResolvePath { get; }
 
+        /// <summary>
+        /// Reads a resource that MediaPipe requests.
+        /// </summary>
+        /// <param name="path">File path or name of the resource.</param>
+        /// <returns>Content of the MediaPipe resource as a byte array.</returns>
         public delegate byte[] ResourceProvider(string path);
         public abstract ResourceProvider ProvideResource { get; }
 
