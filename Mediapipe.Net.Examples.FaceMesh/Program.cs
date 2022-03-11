@@ -10,6 +10,7 @@ using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
+using Mediapipe.Net.Util;
 using SeeShark;
 using SeeShark.Device;
 using SeeShark.FFmpeg;
@@ -21,6 +22,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
         private static Camera? camera;
         private static FrameConverter? converter;
         private static FaceMeshCpuCalculator? calculator;
+        private static ResourceManager? resourceManager;
 
         public static void Main(string[] args)
         {
@@ -37,6 +39,8 @@ namespace Mediapipe.Net.Examples.FaceMesh
 
             FFmpegManager.SetupFFmpeg("/usr/lib");
             Glog.Initialize("stuff");
+            if (parsed.UseResourceManager)
+                resourceManager = new DummyResourceManager();
 
             // Get a camera device
             using (CameraManager manager = new CameraManager())
