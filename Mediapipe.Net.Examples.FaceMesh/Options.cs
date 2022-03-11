@@ -23,7 +23,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
         [Option('h', "height", Default = null, HelpText = "The height of the camera input")]
         public int? Height { get; set; }
 
-        [Option("--use-resource-manager", Default = false, HelpText = "Whether to use a resource manager.")]
+        [Option("use-resource-manager", Default = false, HelpText = "Whether to use a resource manager.")]
         public bool UseResourceManager { get; set; }
     }
 }
