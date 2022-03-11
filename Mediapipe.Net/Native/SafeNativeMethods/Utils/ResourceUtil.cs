@@ -9,9 +9,10 @@ namespace Mediapipe.Net.Native
 {
     internal unsafe partial class SafeNativeMethods : NativeMethods
     {
+        public delegate bool UnsafeResourceProvider(string path, void* output);
+
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp__SetCustomGlobalResourceProvider__P(
-            ResourceManager.ResourceProvider provider);
+        public static extern void mp__SetCustomGlobalResourceProvider__P(UnsafeResourceProvider provider);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp__SetCustomGlobalPathResolver__P(

@@ -13,10 +13,10 @@ namespace Mediapipe.Net.Native
 
         #region String
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__delete(sbyte* str);
+        public static extern void std_string__delete(void* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out sbyte* str);
+        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out void* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void std_string__swap__Rstr(void* src, void* dst);

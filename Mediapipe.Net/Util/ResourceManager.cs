@@ -3,14 +3,13 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Collections;
-using System.IO;
+using Mediapipe.Net.External;
 using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Util
 {
     /// <summary>
-    /// Class to manage assets that MediaPipe accesses.
+    /// Class to manage MediaPipe resources, such as `.tflite` and `.pbtxt` files that it requests.
     /// </summary>
     /// <remarks>
     /// There must not be more than one instance at the same time.
@@ -18,8 +17,19 @@ namespace Mediapipe.Net.Util
     public unsafe abstract class ResourceManager
     {
         public delegate string PathResolver(string path);
+
+        /// <summary>
+        /// Resolves a path to a resource name.
+        /// If the resource name returned is different from the path, the <see cref="ResourceProvider" /> delegate will receive the resource name instead of the file path.
+        /// </summary>
         public abstract PathResolver ResolvePath { get; }
-        public delegate bool ResourceProvider(string path, void* output);
+
+        /// <summary>
+        /// Reads a resource that MediaPipe requests.
+        /// </summary>
+        /// <param name="path">File path or name of the resource.</param>
+        /// <returns>Content of the MediaPipe resource as a byte array.</returns>
+        public delegate byte[] ResourceProvider(string path);
         public abstract ResourceProvider ProvideResource { get; }
 
         private static readonly object initLock = new object();
@@ -33,42 +43,27 @@ namespace Mediapipe.Net.Util
                     throw new InvalidOperationException("ResourceManager can be initialized only once");
 
                 SafeNativeMethods.mp__SetCustomGlobalPathResolver__P(ResolvePath);
-                SafeNativeMethods.mp__SetCustomGlobalResourceProvider__P(ProvideResource);
+                SafeNativeMethods.mp__SetCustomGlobalResourceProvider__P(provideResource);
                 isInitialized = true;
             }
         }
 
-        /// <param name="name">Asset name</param>
-        /// <returns>
-        ///   Returns true if <paramref name="name" /> is already prepared (saved locally on the device).
-        /// </returns>
-        public abstract bool IsPrepared(string name);
-
-        /// <summary>
-        ///   Saves <paramref name="name" /> as <paramref name="uniqueKey" /> asynchronously.
-        /// </summary>
-        /// <param name="overwrite">
-        ///   Specifies whether <paramref name="uniqueKey" /> will be overwritten if it already exists.
-        /// </param>
-        public abstract IEnumerator PrepareAssetAsync(string name, string uniqueKey, bool overwrite = true);
-
-        public IEnumerator PrepareAssetAsync(string name, bool overwrite = true)
-            => PrepareAssetAsync(name, name, overwrite);
-
-        protected static string GetAssetNameFromPath(string assetPath)
+        private bool provideResource(string path, void* output)
         {
-            var assetName = Path.GetFileNameWithoutExtension(assetPath);
-            var extension = Path.GetExtension(assetPath);
-
-            switch (extension)
+            try
             {
-                case ".binarypb":
-                case ".tflite":
-                    return $"{assetName}.bytes";
-                case ".pbtxt":
-                    return $"{assetName}.txt";
-                default:
-                    return $"{assetName}{extension}";
+                byte[] bytes = ProvideResource(path);
+
+                StdString strOutput = new StdString(output, isOwner: false);
+                StdString strSpan = new StdString(bytes);
+                strOutput.Swap(strSpan);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Glog.Log(Glog.Severity.Error, $"Error while trying to provide resource '{path}': {ex}");
+                return false;
             }
         }
     }
