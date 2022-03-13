@@ -12,4 +12,23 @@
     <PackageReference Include="Mediapipe.Net.Framework.Protobuf" Version="0.8.9" />
   </ItemGroup>
 
+  <PropertyGroup Label="Nuget">
+    <IsPackable>true</IsPackable>
+    <PackageId>Mediapipe.Net</PackageId>
+    <Version>0.8.9</Version>
+    <Authors>homuler;Vignette</Authors>
+    <PackageTags>Google;Mediapipe;Tracking;Media Analysis</PackageTags>
+    <Title>Mediapipe.Net</Title>
+    <Description>Pure .NET bindings for MediaPipe</Description>
+    <Copyright>2022 homuler and Vignette</Copyright>
+    <PackageProjectUrl>https://github.com/vignetteapp/MediaPipe.NET</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup Label="Documents">
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
 </Project>
