@@ -5,6 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup Label="Package References">
@@ -15,7 +16,7 @@
   <PropertyGroup Label="Nuget">
     <IsPackable>true</IsPackable>
     <PackageId>Mediapipe.Net</PackageId>
-    <Version>0.8.9</Version>
+    <Version>0.8.10</Version>
     <Authors>homuler;Vignette</Authors>
     <PackageTags>Google;Mediapipe;Tracking;Media Analysis</PackageTags>
     <Title>Mediapipe.Net</Title>
@@ -23,8 +24,6 @@
     <Copyright>2022 homuler and Vignette</Copyright>
     <PackageProjectUrl>https://github.com/vignetteapp/MediaPipe.NET</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup Label="Documents">
