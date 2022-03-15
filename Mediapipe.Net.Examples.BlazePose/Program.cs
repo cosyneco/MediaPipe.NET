@@ -3,26 +3,25 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.Versioning;
 using CommandLine;
 using FFmpeg.AutoGen;
 using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
+using Mediapipe.Net.Util;
 using SeeShark;
 using SeeShark.Device;
 using SeeShark.FFmpeg;
 
-namespace Mediapipe.Net.Examples.FaceMeshGpu
+namespace Mediapipe.Net.Examples.BlazePose
 {
-    [SupportedOSPlatform("Linux")]
     public static class Program
     {
         private static Camera? camera;
         private static FrameConverter? converter;
-        private static FaceMeshGpuCalculator? calculator;
+        private static BlazePoseCpuCalculator? calculator;
+        private static ResourceManager? resourceManager;
 
         public static void Main(string[] args)
         {
@@ -37,8 +36,11 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             else if (parsed.Width == null && parsed.Height != null)
                 Console.Error.WriteLine("Specifying height requires to specify width");
 
-            FFmpegManager.SetupFFmpeg("/usr/lib");
+            // FFmpegManager.SetupFFmpeg("/usr/lib");
+            FFmpegManager.SetupFFmpeg(@"C:\ffmpeg\v5.0_x64\");
             Glog.Initialize("stuff");
+            if (parsed.UseResourceManager)
+                resourceManager = new DummyResourceManager();
 
             // Get a camera device
             using (CameraManager manager = new CameraManager())
@@ -65,7 +67,7 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
                 }
             }
 
-            calculator = new FaceMeshGpuCalculator();
+            calculator = new BlazePoseCpuCalculator();
             calculator.OnResult += handleLandmarks;
             calculator.Run();
 
@@ -74,20 +76,20 @@ namespace Mediapipe.Net.Examples.FaceMeshGpu
             {
                 var frame = camera.GetFrame();
 
-                converter ??= new FrameConverter(frame, PixelFormat.Rgba);
+                converter ??= new FrameConverter(frame, PixelFormat.Rgb24);
 
                 Frame cFrame = converter.Convert(frame);
 
-                ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgb,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
                 using ImageFrame? img = calculator.Send(imgframe);
             }
         }
 
-        private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> landmarks)
+        private static void handleLandmarks(object? sender, NormalizedLandmarkList landmarks)
         {
-            Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
+            Console.WriteLine($"Got a list of {landmarks.Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
         }
 
         // Dispose everything on exit

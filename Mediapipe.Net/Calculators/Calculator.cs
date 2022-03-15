@@ -64,7 +64,7 @@ namespace Mediapipe.Net.Calculators
         /// <remarks>You need to call this method before sending frames to it.</remarks>
         public void Run() => Graph.StartRun().AssertOk();
 
-        protected abstract ImageFrame SendFrame(ImageFrame frame);
+        protected abstract ImageFrame? SendFrame(ImageFrame frame);
 
         /// <summary>
         /// Sends an <see cref="ImageFrame"/> for the calculator to process.
@@ -73,11 +73,11 @@ namespace Mediapipe.Net.Calculators
         /// <param name="frame">The frame that MediaPipe should process.</param>
         /// <param name="disposeSourceFrame">Whether or not to dispose the source frame.</param>
         /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
-        public ImageFrame Send(ImageFrame frame, bool disposeSourceFrame = true)
+        public ImageFrame? Send(ImageFrame frame, bool disposeSourceFrame = true)
         {
             lock (frame)
             {
-                ImageFrame outFrame = SendFrame(frame);
+                ImageFrame? outFrame = SendFrame(frame);
                 CurrentFrame++;
                 if (disposeSourceFrame)
                     frame.Dispose();

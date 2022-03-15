@@ -37,7 +37,8 @@ namespace Mediapipe.Net.Examples.FaceMesh
             else if (parsed.Width == null && parsed.Height != null)
                 Console.Error.WriteLine("Specifying height requires to specify width");
 
-            FFmpegManager.SetupFFmpeg("/usr/lib");
+            FFmpegManager.SetupFFmpeg(@"C:\ffmpeg\v5.0_x64\");
+            // FFmpegManager.SetupFFmpeg("/usr/lib");
             Glog.Initialize("stuff");
             if (parsed.UseResourceManager)
                 resourceManager = new DummyResourceManager();
@@ -83,7 +84,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
                 using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
-                using ImageFrame img = calculator.Send(imgframe);
+                using ImageFrame? img = calculator.Send(imgframe);
             }
         }
 
