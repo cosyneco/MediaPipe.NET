@@ -67,7 +67,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             manager.Dispose();
 
             var dummyFrame = camera.GetFrame();
-            converter = new FrameConverter(dummyFrame, PixelFormat.Rgba);
+            converter = new FrameConverter(dummyFrame, dummyFrame.Width / 2, dummyFrame.Height / 2, PixelFormat.Rgba);
             dependencies?.Cache(converter);
 
             calculator = new FaceMeshCpuCalculator();
