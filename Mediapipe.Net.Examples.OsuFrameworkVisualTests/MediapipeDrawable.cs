@@ -48,23 +48,26 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
             this.camera = camera;
             this.converter = converter;
             this.calculator = calculator;
+            this.camera.OnFrame += onFrameEventHandler;
+            this.camera.StartCapture();
         }
 #pragma warning restore IDE0051
 
-        protected override unsafe void Update()
+        private unsafe void onFrameEventHandler(object? sender, FrameEventArgs e)
         {
-            base.Update();
-            if (camera == null || converter == null || calculator == null)
+            if (converter == null || calculator == null)
                 return;
 
-            if (camera.TryGetFrame(out Frame frame) != DecodeStatus.NewFrame)
+            if (e.Status != DecodeStatus.NewFrame)
                 return;
 
+            Frame frame = e.Frame;
             Frame cFrame = converter.Convert(frame);
             ImageFrame imgFrame = new ImageFrame(ImageFormat.Srgba,
                 cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
             using ImageFrame? outImgFrame = calculator.Send(imgFrame);
-            if (outImgFrame == null) return;
+            if (outImgFrame == null)
+                return;
 
             var span = new ReadOnlySpan<byte>(outImgFrame.MutablePixelData, outImgFrame.Height * outImgFrame.WidthStep);
             var pixelData = Image.LoadPixelData<Rgba32>(span, cFrame.Width, cFrame.Height);

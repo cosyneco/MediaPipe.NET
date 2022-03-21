@@ -17,9 +17,9 @@ namespace Mediapipe.Net.Native
             ImageFormat format, int width, int height, uint alignmentBoundary, out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8_PF(
+        public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8(
             ImageFormat format, int width, int height, int widthStep, byte* pixelData,
-            ImageFrame.Deleter deleter, out void* imageFrame);
+            out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void mp_ImageFrame__delete(void* imageFrame);

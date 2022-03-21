@@ -14,10 +14,6 @@ namespace Mediapipe.Net.Framework.Format
         public static readonly uint DefaultAlignmentBoundary = 16;
         public static readonly uint GlDefaultAlignmentBoundary = 4;
 
-        public delegate void Deleter(void* ptr);
-        private readonly Deleter? deleter;
-        private GCHandle? deleterHandle;
-
         public ImageFrame() : base()
         {
             UnsafeNativeMethods.mp_ImageFrame__(out var ptr).Assert();
@@ -34,58 +30,31 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        // NOTE: This byte* was a NativeArray<byte> from Unity.
-        // It will naturally translate to C++'s uint8*.
-        // The signature on the native side is:
-        //
-        // MP_CAPI(MpReturnCode) mp_ImageFrame__ui_i_i_i_Pui8_PF(
-        //     mediapipe::ImageFormat::Format format,
-        //     int width, int height, int width_step, uint8* pixel_data,
-        //     Deleter* deleter, mediapipe::ImageFrame** image_frame_out);
-        public unsafe ImageFrame(ImageFormat format, int width, int height, int widthStep, byte* pixelData) : base()
+        public unsafe ImageFrame(ImageFormat format, int width, int height, int widthStep, byte[] pixelData) : base()
         {
-            deleter = new Deleter(releasePixelData);
-            deleterHandle = GCHandle.Alloc(deleter);
-
-            UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
-                format, width, height, widthStep,
-                pixelData,
-                deleter,
-                out var ptr).Assert();
-            Ptr = ptr;
-        }
-
-        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData)
-        {
-            deleter = releasePixelData;
-            deleterHandle = GCHandle.Alloc(deleter);
-
             fixed (byte* pixelDataPtr = pixelData)
             {
-                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(
+                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8(
                     format, width, height, widthStep,
                     pixelDataPtr,
-                    deleter,
+                    out var ptr).Assert();
+                Ptr = ptr;
+            }
+        }
+
+        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : base()
+        {
+            fixed (byte* pixelDataPtr = pixelData)
+            {
+                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8(
+                    format, width, height, widthStep,
+                    pixelDataPtr,
                     out var ptr).Assert();
                 Ptr = ptr;
             }
         }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
-
-        private static void releasePixelData(void* ptr)
-        {
-            // Do nothing (pixelData is moved)
-        }
-
-        protected override void DisposeUnmanaged()
-        {
-            base.DisposeUnmanaged();
-
-            // `deleter` must not be garbage collected until unmanaged code calls it.
-            if (deleterHandle is GCHandle handle && handle.IsAllocated)
-                handle.Free();
-        }
 
         public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
 

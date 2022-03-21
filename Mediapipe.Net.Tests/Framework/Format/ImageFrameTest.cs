@@ -70,24 +70,20 @@ namespace Mediapipe.Net.Tests.Framework.Format
         }
 
         [Test]
-        unsafe public void Ctor_ShouldInstantiateImageFrame_When_CalledWithPixelData()
+        public void Ctor_ShouldInstantiateImageFrame_When_CalledWithPixelData()
         {
             byte[] srcBytes = new byte[] {
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
             };
-            byte[] dupBytes = srcBytes.ToArray();
 
-            fixed (byte* pixelData = dupBytes)
-            {
-                using var imageFrame = new ImageFrame(ImageFormat.Sbgra, 4, 2, 16, pixelData);
-                Assert.AreEqual(imageFrame.Width, 4);
-                Assert.AreEqual(imageFrame.Height, 2);
-                Assert.False(imageFrame.IsEmpty);
+            using var imageFrame = new ImageFrame(ImageFormat.Sbgra, 4, 2, 16, srcBytes);
+            Assert.AreEqual(imageFrame.Width, 4);
+            Assert.AreEqual(imageFrame.Height, 2);
+            Assert.False(imageFrame.IsEmpty);
 
-                var bytes = imageFrame.CopyToByteBuffer(32);
-                Assert.IsEmpty(bytes.Where((x, i) => x != srcBytes[i]));
-            }
+            byte[] bytes = imageFrame.CopyToByteBuffer(srcBytes.Length);
+            Assert.IsEmpty(bytes.Where((x, i) => x != srcBytes[i]));
         }
 
         [Test, SignalAbort]
