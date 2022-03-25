@@ -124,10 +124,9 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status StartRun() => StartRun(new SidePackets());
-
-        public Status StartRun(SidePackets sidePacket)
+        public Status StartRun(SidePackets? sidePacket = null)
         {
+            sidePacket ??= new SidePackets();
             UnsafeNativeMethods.mp_CalculatorGraph__StartRun__Rsp(MpPtr, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(sidePacket);
