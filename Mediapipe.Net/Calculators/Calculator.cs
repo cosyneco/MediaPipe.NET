@@ -29,6 +29,7 @@ namespace Mediapipe.Net.Calculators
         protected readonly string? SecondaryOutputStream;
 
         protected readonly CalculatorGraph Graph;
+        protected SidePackets? SidePackets { get; set; }
         private GCHandle? observeStreamHandle;
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace Mediapipe.Net.Calculators
         /// Starts the calculator.
         /// </summary>
         /// <remarks>You need to call this method before sending frames to it.</remarks>
-        public void Run() => Graph.StartRun().AssertOk();
+        public void Run() => Graph.StartRun(SidePackets).AssertOk();
 
         protected abstract ImageFrame? SendFrame(ImageFrame frame);
 
