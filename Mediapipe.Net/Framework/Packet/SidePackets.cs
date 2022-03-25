@@ -8,9 +8,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
-    public unsafe class SidePacket : MpResourceHandle
+    public unsafe class SidePackets : MpResourceHandle
     {
-        public SidePacket() : base()
+        public SidePackets() : base()
         {
             UnsafeNativeMethods.mp_SidePacket__(out var ptr).Assert();
             Ptr = ptr;
