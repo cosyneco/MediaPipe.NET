@@ -8,6 +8,9 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packet
 {
+    /// <summary>
+    /// Map of side packets.
+    /// </summary>
     public unsafe class SidePackets : MpResourceHandle
     {
         public SidePackets() : base()
