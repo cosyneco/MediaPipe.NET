@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Calculators
     public sealed class BlazePoseCpuCalculator : CpuCalculator<NormalizedLandmarkListPacket, NormalizedLandmarkList>
     {
         public BlazePoseCpuCalculator() : base(
-            graphPath: "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt",
+            graphPath: "mediapipe/modules/pose_landmark/pose_landmark_cpu.pbtxt",
             secondaryOutputStream: "pose_landmarks")
         {
         }
