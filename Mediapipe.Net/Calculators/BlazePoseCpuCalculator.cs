@@ -31,17 +31,17 @@ namespace Mediapipe.Net.Calculators
         /// </param>
         public BlazePoseCpuCalculator(
             bool smoothLandmarks = true,
-            bool enableSegmentation = false,
+            // bool enableSegmentation = false,
             bool smoothSegmentation = true,
             int modelComplexity = 1,
             bool usePrevLandmarks = true
         ) : base(
-            graphPath: "mediapipe/modules/pose_landmark/pose_landmark_cpu.pbtxt",
+            graphPath: "mediapipe/graphs/pose_tracking/pose_tracking_cpu.pbtxt",
             secondaryOutputStream: "pose_landmarks")
         {
             SidePackets = new SidePackets();
             SidePackets.Emplace("smooth_landmarks", new BoolPacket(smoothLandmarks));
-            SidePackets.Emplace("enable_segmentation", new BoolPacket(enableSegmentation));
+            // SidePackets.Emplace("enable_segmentation", new BoolPacket(enableSegmentation));
             SidePackets.Emplace("smooth_segmentation", new BoolPacket(smoothSegmentation));
             SidePackets.Emplace("model_complexity", new IntPacket(modelComplexity));
             SidePackets.Emplace("use_prev_landmarks", new BoolPacket(usePrevLandmarks));
