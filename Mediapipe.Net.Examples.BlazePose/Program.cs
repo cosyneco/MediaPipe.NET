@@ -20,7 +20,9 @@ namespace Mediapipe.Net.Examples.BlazePose
     {
         private static Camera? camera;
         private static FrameConverter? converter;
-        private static BlazePoseCpuCalculator? calculator;
+        private static readonly BlazePoseCpuCalculator calculator =
+            new BlazePoseCpuCalculator(modelComplexity: 2, smoothLandmarks: false);
+
         private static ResourceManager? resourceManager;
 
         public static void Main(string[] args)
@@ -67,24 +69,27 @@ namespace Mediapipe.Net.Examples.BlazePose
                 }
             }
 
-            calculator = new BlazePoseCpuCalculator();
             calculator.OnResult += handleLandmarks;
             calculator.Run();
 
+            camera.OnFrame += onFrameEventHandler;
+            camera.StartCapture();
+
             Console.CancelKeyPress += (sender, eventArgs) => exit();
-            while (true)
-            {
-                var frame = camera.GetFrame();
+        }
 
-                converter ??= new FrameConverter(frame, PixelFormat.Rgb24);
 
-                Frame cFrame = converter.Convert(frame);
+        private static void onFrameEventHandler(object? sender, FrameEventArgs e)
+        {
+            var frame = e.Frame;
 
-                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgb,
-                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
+            converter ??= new FrameConverter(frame, PixelFormat.Rgb24);
+            Frame cFrame = converter.Convert(frame);
 
-                using ImageFrame? img = calculator.Send(imgframe);
-            }
+            using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgb,
+                cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
+
+            using ImageFrame? img = calculator.Send(imgframe);
         }
 
         private static void handleLandmarks(object? sender, NormalizedLandmarkList landmarks)
