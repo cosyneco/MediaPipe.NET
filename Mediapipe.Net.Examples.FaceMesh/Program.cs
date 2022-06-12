@@ -37,11 +37,12 @@ namespace Mediapipe.Net.Examples.FaceMesh
             else if (parsed.Width == null && parsed.Height != null)
                 Console.Error.WriteLine("Specifying height requires to specify width");
 
-            FFmpegManager.SetupFFmpeg(@"C:\ffmpeg\v5.0_x64\");
-            // FFmpegManager.SetupFFmpeg("/usr/lib");
+            FFmpegManager.SetupFFmpeg(@"C:\ffmpeg\v5.0_x64\", "/usr/lib");
             Glog.Initialize("stuff");
             if (parsed.UseResourceManager)
                 resourceManager = new DummyResourceManager();
+            else
+                Console.WriteLine("Not using a resource manager");
 
             // Get a camera device
             using (CameraManager manager = new CameraManager())
@@ -61,9 +62,10 @@ namespace Mediapipe.Net.Examples.FaceMesh
                         });
                     Console.WriteLine($"Using camera {camera.Info}");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    Console.Error.WriteLine($"No camera exists at index {parsed.CameraIndex}.");
+                    Console.Error.WriteLine($"An error occured while trying to use camera at index {parsed.CameraIndex}.");
+                    Console.Error.WriteLine(e);
                     return;
                 }
             }
