@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
             return path;
         };
 
-        public unsafe override ResourceProvider ProvideResource => (path) =>
+        public override ResourceProvider ProvideResource => (path) =>
         {
             Console.WriteLine($"ResourceProvider: providing resource '{path}'");
             byte[] bytes = File.ReadAllBytes(path);
