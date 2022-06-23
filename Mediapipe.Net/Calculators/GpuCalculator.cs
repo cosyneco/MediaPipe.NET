@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.OldPacket;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 
@@ -18,12 +18,11 @@ namespace Mediapipe.Net.Calculators
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
     [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public abstract class GpuCalculator<TPacket, T> : Calculator<TPacket, T>
-        where TPacket : Packet<T>
+    public abstract class GpuCalculator : Calculator
     {
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
-        private readonly OutputStreamPoller<GpuBuffer> framePoller;
+        private readonly OutputStreamPoller framePoller;
 
         protected GpuCalculator(string graphPath, string? secondaryOutputStream)
             : base(graphPath, secondaryOutputStream)
@@ -33,10 +32,10 @@ namespace Mediapipe.Net.Calculators
             gpuHelper = new GlCalculatorHelper();
             gpuHelper.InitializeForTest(Graph.GetGpuResources());
 
-            framePoller = Graph.AddOutputStreamPoller<GpuBuffer>(OUTPUT_VIDEO_STREAM).Value();
+            framePoller = Graph.AddOutputStreamPoller(OUTPUT_VIDEO_STREAM).Value();
         }
 
-        protected override ImageFrame SendFrame(ImageFrame frame)
+        protected override void SendFrame(ImageFrame frame)
         {
             gpuHelper.RunInGlContext(() =>
             {
@@ -45,20 +44,20 @@ namespace Mediapipe.Net.Calculators
                 Gl.Flush();
                 texture.Release();
 
-                var packet = new GpuBufferPacket(gpuBuffer, new Timestamp(CurrentFrame));
+                var packet = PacketFactory.GpuBufferPacket(gpuBuffer, new Timestamp(CurrentFrame));
                 Graph.AddPacketToInputStream(INPUT_VIDEO_STREAM, packet);
 
                 return Status.Ok();
             }).AssertOk();
 
-            GpuBufferPacket outPacket = new GpuBufferPacket();
+            Packet outPacket = new Packet();
             framePoller.Next(outPacket);
 
             ImageFrame? outFrame = null;
 
             gpuHelper.RunInGlContext(() =>
             {
-                GpuBuffer outBuffer = outPacket.Get();
+                GpuBuffer outBuffer = outPacket.GetGpuBuffer();
                 GlTexture texture = gpuHelper.CreateSourceTexture(outBuffer);
                 outFrame = new ImageFrame(outBuffer.Format.ImageFormatFor(), outBuffer.Width, outBuffer.Height, ImageFrame.GlDefaultAlignmentBoundary);
                 gpuHelper.BindFramebuffer(texture);
@@ -76,7 +75,7 @@ namespace Mediapipe.Net.Calculators
             if (outFrame == null)
                 throw new MediapipeNetException("!! FATAL - Frame is null on current GL context run!");
 
-            return outFrame;
+            // return outFrame;
         }
 
         protected override void DisposeManaged()

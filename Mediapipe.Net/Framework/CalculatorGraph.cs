@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 using Google.Protobuf;
 using Mediapipe.Net.Core;
-using Mediapipe.Net.Framework.OldPacket;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Gpu;
@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Framework
     public unsafe class CalculatorGraph : MpResourceHandle
     {
         public delegate void* NativePacketCallback(void* graphPtr, void* packetPtr);
-        public delegate Status PacketCallback<TPacket, TValue>(TPacket? packet) where TPacket : Packet<TValue>;
+        public delegate Status PacketCallback(Packet? packet);
 
         public CalculatorGraph() : base()
         {
@@ -80,14 +80,14 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status ObserveOutputStream<TPacket, TValue>(string streamName, PacketCallback<TPacket, TValue> packetCallback, bool observeTimestampBounds, out GCHandle callbackHandle) where TPacket : Packet<TValue>
+        public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, bool observeTimestampBounds, out GCHandle callbackHandle)
         {
             NativePacketCallback nativePacketCallback = (_, packetPtr) =>
             {
                 Status status;
                 try
                 {
-                    var packet = (TPacket?)Activator.CreateInstance(typeof(TPacket), (IntPtr)packetPtr, false);
+                    var packet = new Packet(packetPtr, false);
                     status = packetCallback(packet);
                     packet?.Dispose();
                 }
@@ -102,15 +102,15 @@ namespace Mediapipe.Net.Framework
             return ObserveOutputStream(streamName, nativePacketCallback, observeTimestampBounds);
         }
 
-        public Status ObserveOutputStream<TPacket, TValue>(string streamName, PacketCallback<TPacket, TValue> packetCallback, out GCHandle callbackHandle) where TPacket : Packet<TValue>
+        public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, out GCHandle callbackHandle)
             => ObserveOutputStream(streamName, packetCallback, false, out callbackHandle);
 
-        public StatusOrPoller<T> AddOutputStreamPoller<T>(string streamName, bool observeTimestampBounds = false)
+        public StatusOrPoller AddOutputStreamPoller(string streamName, bool observeTimestampBounds = false)
         {
             UnsafeNativeMethods.mp_CalculatorGraph__AddOutputStreamPoller__PKc_b(MpPtr, streamName, observeTimestampBounds, out var statusOrPollerPtr).Assert();
 
             GC.KeepAlive(this);
-            return new StatusOrPoller<T>(statusOrPollerPtr);
+            return new StatusOrPoller(statusOrPollerPtr);
         }
 
         public Status Run() => Run(new SidePackets());
@@ -152,7 +152,7 @@ namespace Mediapipe.Net.Framework
 
         public bool HasError() => SafeNativeMethods.mp_CalculatorGraph__HasError(MpPtr) > 0;
 
-        public Status AddPacketToInputStream<T>(string streamName, Packet<T> packet)
+        public Status AddPacketToInputStream(string streamName, Packet packet)
         {
             UnsafeNativeMethods.mp_CalculatorGraph__AddPacketToInputStream__PKc_Ppacket(MpPtr, streamName, packet.MpPtr, out var statusPtr).Assert();
             packet.Dispose(); // respect move semantics

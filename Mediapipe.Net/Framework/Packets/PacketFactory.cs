@@ -92,5 +92,13 @@ namespace Mediapipe.Net.Framework.Packets
             gpuBuffer.Dispose(); // respect move semantics
             return new Packet(ptr);
         }
+
+        public static Packet GpuBufferPacket(GpuBuffer gpuBuffer, Timestamp timestamp)
+        {
+            UnsafeNativeMethods.mp__MakeGpuBufferPacket_At__Rgb_Rts(gpuBuffer.MpPtr, timestamp.MpPtr, out var ptr).Assert();
+            GC.KeepAlive(timestamp);
+            gpuBuffer.Dispose(); // respect move semantics
+            return new Packet(ptr);
+        }
     }
 }

@@ -6,7 +6,7 @@ using System;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework.OldPacket
+namespace Mediapipe.Net.Framework.Packets
 {
     /// <summary>
     /// Map of side packets.
@@ -25,7 +25,7 @@ namespace Mediapipe.Net.Framework.OldPacket
 
         /// TODO: force T to be Packet
         /// <remarks>Make sure that the type of the returned packet value is correct</remarks>
-        public T? At<T>(string key)
+        public Packet? At(string key)
         {
             UnsafeNativeMethods.mp_SidePacket__at__PKc(MpPtr, key, out var packetPtr).Assert();
 
@@ -34,11 +34,10 @@ namespace Mediapipe.Net.Framework.OldPacket
 
             GC.KeepAlive(this);
 
-            // Oh gosh²... the Activator²...
-            return (T?)Activator.CreateInstance(typeof(T), (IntPtr)packetPtr, true);
+            return new Packet(packetPtr, true);
         }
 
-        public void Emplace<T>(string key, Packet<T> packet)
+        public void Emplace(string key, Packet packet)
         {
             UnsafeNativeMethods.mp_SidePacket__emplace__PKc_Rp(MpPtr, key, packet.MpPtr).Assert();
             packet.Dispose(); // respect move semantics

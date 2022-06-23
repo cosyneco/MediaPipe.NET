@@ -4,7 +4,7 @@
 
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.OldPacket;
+using Mediapipe.Net.Framework.Packets;
 
 namespace Mediapipe.Net.Calculators
 {
@@ -13,27 +13,26 @@ namespace Mediapipe.Net.Calculators
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public abstract class CpuCalculator<TPacket, T> : Calculator<TPacket, T>
-        where TPacket : Packet<T>
+    public abstract class CpuCalculator<TPacket, T> : Calculator
     {
-        private readonly OutputStreamPoller<ImageFrame> framePoller;
+        private readonly OutputStreamPoller framePoller;
 
         protected CpuCalculator(string graphPath, string? secondaryOutputStream = null)
             : base(graphPath, secondaryOutputStream)
         {
-            framePoller = Graph.AddOutputStreamPoller<ImageFrame>(OUTPUT_VIDEO_STREAM).Value();
+            framePoller = Graph.AddOutputStreamPoller(OUTPUT_VIDEO_STREAM).Value();
         }
 
-        protected override ImageFrame? SendFrame(ImageFrame frame)
+        protected override void SendFrame(ImageFrame frame)
         {
-            using ImageFramePacket packet = new ImageFramePacket(frame, new Timestamp(CurrentFrame));
+            using Packet packet = PacketFactory.ImageFramePacket(frame, new Timestamp(CurrentFrame));
             Graph.AddPacketToInputStream(INPUT_VIDEO_STREAM, packet).AssertOk();
 
-            ImageFramePacket outPacket = new ImageFramePacket();
+            Packet outPacket = new Packet();
             if (framePoller.Next(outPacket))
             {
-                ImageFrame outFrame = outPacket.Get();
-                return outFrame;
+                ImageFrame outFrame = outPacket.GetImageFrame();
+                // return outFrame;
             }
             else
             {
@@ -41,7 +40,7 @@ namespace Mediapipe.Net.Calculators
                 outPacket.Dispose();
             }
 
-            return null;
+            // return null;
         }
 
         protected override void DisposeManaged()

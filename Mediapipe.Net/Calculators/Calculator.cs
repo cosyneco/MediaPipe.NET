@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.OldPacket;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 
 namespace Mediapipe.Net.Calculators
@@ -16,11 +16,7 @@ namespace Mediapipe.Net.Calculators
     /// <summary>
     /// The base for any calculator.
     /// </summary>
-    /// <typeparam name="TI">The type of
-    /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
-    /// <typeparam name="T">The type of secondary output.</typeparam>
-    public abstract class Calculator<TPacket, T> : Disposable
-        where TPacket : Packet<T>
+    public abstract class Calculator : Disposable
     {
         protected const string INPUT_VIDEO_STREAM = "input_video";
         protected const string OUTPUT_VIDEO_STREAM = "output_video";
@@ -35,7 +31,7 @@ namespace Mediapipe.Net.Calculators
         /// <summary>
         /// Triggered every time the calculator returns a secondary output.
         /// </summary>
-        public event EventHandler<T>? OnResult;
+        public event EventHandler<Packet>? OnResult;
 
         protected Calculator(string graphPath, string? secondaryOutputStream = null)
         {
@@ -46,13 +42,12 @@ namespace Mediapipe.Net.Calculators
 
             if (SecondaryOutputStream != null)
             {
-                Graph.ObserveOutputStream<TPacket, T>(SecondaryOutputStream, (packet) =>
+                Graph.ObserveOutputStream(SecondaryOutputStream, (packet) =>
                 {
                     if (packet == null)
                         return Status.Ok();
 
-                    T secondaryOutput = packet.Get();
-                    OnResult?.Invoke(this, secondaryOutput);
+                    OnResult?.Invoke(this, packet);
                     return Status.Ok();
                 }, out GCHandle handle).AssertOk();
                 observeStreamHandle = handle;
@@ -65,7 +60,7 @@ namespace Mediapipe.Net.Calculators
         /// <remarks>You need to call this method before sending frames to it.</remarks>
         public void Run() => Graph.StartRun(SidePackets).AssertOk();
 
-        protected abstract ImageFrame? SendFrame(ImageFrame frame);
+        protected abstract void SendFrame(ImageFrame frame);
 
         /// <summary>
         /// Sends an <see cref="ImageFrame"/> for the calculator to process.
@@ -73,16 +68,14 @@ namespace Mediapipe.Net.Calculators
         /// <remarks>If the input <see cref="ImageFrame"/> doesn't get disposed after being sent, MediaPipe will crash.</remarks>
         /// <param name="frame">The frame that MediaPipe should process.</param>
         /// <param name="disposeSourceFrame">Whether or not to dispose the source frame.</param>
-        /// <returns>An <see cref="ImageFrame"/> with the contents of the source <see cref="ImageFrame"/> and the MediaPipe solution drawn.</returns>
-        public ImageFrame? Send(ImageFrame frame, bool disposeSourceFrame = true)
+        public void Send(ImageFrame frame, bool disposeSourceFrame = true)
         {
             lock (frame)
             {
-                ImageFrame? outFrame = SendFrame(frame);
+                SendFrame(frame);
                 CurrentFrame++;
                 if (disposeSourceFrame)
                     frame.Dispose();
-                return outFrame;
             }
         }
 
