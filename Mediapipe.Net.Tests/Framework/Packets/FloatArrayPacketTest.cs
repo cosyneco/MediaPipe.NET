@@ -4,7 +4,7 @@
 
 using System;
 using Mediapipe.Net.Framework;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.Packets;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket
