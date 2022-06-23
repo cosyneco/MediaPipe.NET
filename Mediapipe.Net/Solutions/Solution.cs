@@ -32,8 +32,7 @@ namespace Mediapipe.Net.Solutions
 
         protected Solution(
             string graphPath,
-            // SomeType calculatorParams,
-            IEnumerable<(string, PacketType)> outputs,
+            IDictionary<string, PacketType> outputs,
             SidePackets? sidePackets)
         {
             GraphPath = graphPath;

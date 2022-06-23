@@ -20,22 +20,25 @@ namespace Mediapipe.Net.Solutions
         private static readonly string output = "multi_face_landmarks";
         public static readonly PacketType PacketType = PacketType.NormalizedLandmarkListVector;
 
-        private static SidePackets toSidePackets(int numFaces, bool staticImageMode, bool refineLandmarks)
+        private static readonly IDictionary<string, PacketType> outputs = new Dictionary<string, PacketType>()
+        {
+            { output, PacketType }
+        };
+
+        private static SidePackets toSidePackets(bool staticImageMode, int numFaces, bool refineLandmarks)
         {
             SidePackets sidePackets = new();
-            sidePackets.Emplace("num_faces", PacketFactory.IntPacket(numFaces));
             sidePackets.Emplace("use_prev_landmarks", PacketFactory.BoolPacket(!staticImageMode));
+            sidePackets.Emplace("num_faces", PacketFactory.IntPacket(numFaces));
             sidePackets.Emplace("with_attention", PacketFactory.BoolPacket(refineLandmarks));
             return sidePackets;
         }
 
         public FaceMeshCpuSolution(
-            int maxNumFaces = 1,
             bool staticImageMode = false,
+            int maxNumFaces = 1,
             bool refineLandmarks = false
-        // float minDetectionConfidence = 0.5f,
-        // float minTrackingConfidence = 0.5f
-        ) : base(graphPath, "image", new (string, PacketType)[] { (output, PacketType) }, toSidePackets(maxNumFaces, staticImageMode, refineLandmarks))
+        ) : base(graphPath, "image", outputs, toSidePackets(staticImageMode, maxNumFaces, refineLandmarks))
         {
         }
 
