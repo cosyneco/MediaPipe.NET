@@ -9,7 +9,7 @@ using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework.NewPacket
+namespace Mediapipe.Net.Framework.Packet
 {
     public unsafe partial class Packet : MpResourceHandle
     {

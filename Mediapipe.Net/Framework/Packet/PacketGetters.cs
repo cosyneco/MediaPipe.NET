@@ -12,7 +12,7 @@ using Mediapipe.Net.Graphs.InstantMotionTracking;
 using Mediapipe.Net.Native;
 using Mediapipe.Net.Util;
 
-namespace Mediapipe.Net.Framework.NewPacket
+namespace Mediapipe.Net.Framework.Packet
 {
     public unsafe partial class Packet : MpResourceHandle
     {

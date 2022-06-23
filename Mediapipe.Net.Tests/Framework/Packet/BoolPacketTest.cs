@@ -3,7 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using Mediapipe.Net.Framework;
-using Mediapipe.Net.Framework.NewPacket;
+using Mediapipe.Net.Framework.Packet;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket

@@ -8,7 +8,7 @@ using Mediapipe.Net.Gpu;
 using Mediapipe.Net.Graphs.InstantMotionTracking;
 using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework.NewPacket
+namespace Mediapipe.Net.Framework.Packet
 {
     public static unsafe class PacketFactory
     {
