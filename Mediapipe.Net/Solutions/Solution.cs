@@ -25,7 +25,7 @@ namespace Mediapipe.Net.Solutions
         protected readonly CalculatorGraph Graph;
         protected readonly SidePackets? SidePackets;
 
-        protected readonly IDictionary<string, Packet> GraphOutputs;
+        protected readonly IDictionary<string, object?> GraphOutputs;
         private readonly IDictionary<string, GCHandle> observeStreamHandles;
 
         protected long SimulatedTimestamp = 0;
@@ -33,22 +33,22 @@ namespace Mediapipe.Net.Solutions
         protected Solution(
             string graphPath,
             // SomeType calculatorParams,
-            IEnumerable<string> outputs,
+            IEnumerable<(string, PacketType)> outputs,
             SidePackets? sidePackets)
         {
             GraphPath = graphPath;
             Graph = new CalculatorGraph(File.ReadAllText(GraphPath));
             SidePackets = sidePackets;
 
-            GraphOutputs = new Dictionary<string, Packet>();
+            GraphOutputs = new Dictionary<string, object?>();
 
             observeStreamHandles = new Dictionary<string, GCHandle>();
-            foreach (string output in outputs)
+            foreach ((string output, PacketType packetType) in outputs)
             {
                 Graph.ObserveOutputStream(output, (packet) =>
                 {
-                    Console.WriteLine($"Packet: {packet.DebugTypeName()})");
-                    GraphOutputs.Add(output, packet);
+                    packet.PacketType = packetType;
+                    GraphOutputs.Add(output, packet.Get());
                     return Status.Ok();
                 }, out GCHandle handle).AssertOk();
                 observeStreamHandles.Add(output, handle);
@@ -62,7 +62,7 @@ namespace Mediapipe.Net.Solutions
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
-        protected IDictionary<string, Packet> Process(IDictionary<string, Packet> inputs)
+        protected IDictionary<string, object?> Process(IDictionary<string, Packet> inputs)
         {
             // Set the timestamp increment to 16666 us to simulate 60 fps video input (?)
             // That's what the Python API does so ¯\_(ツ)_/¯
@@ -70,8 +70,11 @@ namespace Mediapipe.Net.Solutions
             SimulatedTimestamp += 16666;
 
             // Dispose of the previous packets before processing
-            foreach (Packet packet in GraphOutputs.Values)
-                packet.Dispose();
+            foreach (object? obj in GraphOutputs.Values)
+            {
+                if (obj is IDisposable disposable)
+                    disposable.Dispose();
+            }
             GraphOutputs.Clear();
 
             foreach (KeyValuePair<string, Packet> input in inputs)
@@ -84,7 +87,7 @@ namespace Mediapipe.Net.Solutions
             return GraphOutputs;
         }
 
-        protected abstract IDictionary<string, Packet> ProcessFrame(ImageFrame frame);
+        protected abstract IDictionary<string, object?> ProcessFrame(ImageFrame frame);
 
         /// <summary>
         /// Closes all the input sources and the graph.

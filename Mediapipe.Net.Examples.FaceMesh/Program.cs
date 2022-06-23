@@ -82,17 +82,17 @@ namespace Mediapipe.Net.Examples.FaceMesh
                     return;
 
                 var frame = camera.GetFrame();
-                Console.WriteLine($"Frame: {frame.Width}x{frame.Height}");
-
                 converter ??= new FrameConverter(frame, PixelFormat.Rgba);
-
                 Frame cFrame = converter.Convert(frame);
 
                 using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
-                List<NormalizedLandmarkList> landmarks = calculator.Compute(imgframe);
-                Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {frameCount++}");
+                List<NormalizedLandmarkList>? landmarks = calculator.Compute(imgframe);
+                if (landmarks == null)
+                    Console.WriteLine("Got null landmarks");
+                else
+                    Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {frameCount++}");
             }
         }
 

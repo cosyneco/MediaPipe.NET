@@ -26,7 +26,7 @@ namespace Mediapipe.Net.Solutions
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
 
-        protected GpuSolution(string graphPath, string gpuBufferInput, IEnumerable<string> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
+        protected GpuSolution(string graphPath, string gpuBufferInput, IEnumerable<(string, PacketType)> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
         {
             GpuBufferInput = gpuBufferInput;
 
@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Solutions
             gpuHelper.InitializeForTest(Graph.GetGpuResources());
         }
 
-        protected override IDictionary<string, Packet> ProcessFrame(ImageFrame frame)
+        protected override IDictionary<string, object?> ProcessFrame(ImageFrame frame)
         {
             Dictionary<string, Packet> inputs = new();
 

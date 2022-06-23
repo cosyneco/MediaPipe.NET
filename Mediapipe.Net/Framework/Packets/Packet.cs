@@ -13,6 +13,8 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public unsafe partial class Packet : MpResourceHandle
     {
+        public PacketType PacketType { get; internal set; }
+
         internal Packet() : base()
         {
             UnsafeNativeMethods.mp_Packet__(out var ptr).Assert();
@@ -32,7 +34,10 @@ namespace Mediapipe.Net.Framework.Packets
             UnsafeNativeMethods.mp_Packet__At__Rt(MpPtr, timestamp.MpPtr, out var packetPtr).Assert();
             GC.KeepAlive(timestamp);
 
-            return new Packet((IntPtr)packetPtr, true);
+            return new Packet((IntPtr)packetPtr, true)
+            {
+                PacketType = PacketType
+            };
         }
 
         public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr) > 0;
@@ -70,6 +75,39 @@ namespace Mediapipe.Net.Framework.Packets
         }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_Packet__delete(Ptr);
+
+        public object? Get()
+        {
+            return PacketType switch
+            {
+                PacketType.Bool => GetBool(),
+                PacketType.Int => GetInt(),
+                PacketType.Float => GetFloat(),
+                PacketType.FloatArray => GetFloatArray(),
+                PacketType.String => GetString(),
+                PacketType.StringAsByteArray => GetStringAsByteArray(),
+                PacketType.ImageFrame => GetImageFrame(),
+                PacketType.Anchor3dVector => GetAnchor3dVector(),
+                PacketType.GpuBuffer => GetGpuBuffer(),
+                PacketType.ClassificationList => GetClassificationList(),
+                PacketType.ClassificationListVector => GetClassificationListVector(),
+                PacketType.Detection => GetDetection(),
+                PacketType.DetectionVector => GetDetectionVector(),
+                PacketType.FaceGeometry => GetFaceGeometry(),
+                PacketType.FaceGeometryVector => GetFaceGeometryVector(),
+                PacketType.FrameAnnotation => GetFrameAnnotation(),
+                PacketType.LandmarkList => GetLandmarkList(),
+                PacketType.LandmarkListVector => GetLandmarkListVector(),
+                PacketType.NormalizedLandmarkList => GetNormalizedLandmarkList(),
+                PacketType.NormalizedLandmarkListVector => GetNormalizedLandmarkListVector(),
+                PacketType.Rect => GetRect(),
+                PacketType.RectVector => GetRectVector(),
+                PacketType.NormalizedRect => GetNormalizedRect(),
+                PacketType.NormalizedRectVector => GetNormalizedRectVector(),
+                PacketType.TimedModelMatrixProtoList => GetTimedModelMatrixProtoList(),
+                _ => throw new NotImplementedException(),
+            };
+        }
 
         #region FloatArray
         public int FloatArrayLength { get; init; }

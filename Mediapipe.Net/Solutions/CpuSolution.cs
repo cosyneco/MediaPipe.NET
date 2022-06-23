@@ -18,12 +18,12 @@ namespace Mediapipe.Net.Solutions
     {
         public readonly string ImageFrameInput;
 
-        protected CpuSolution(string graphPath, string imageFrameInput, IEnumerable<string> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
+        protected CpuSolution(string graphPath, string imageFrameInput, IEnumerable<(string, PacketType)> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
         {
             ImageFrameInput = imageFrameInput;
         }
 
-        protected override IDictionary<string, Packet> ProcessFrame(ImageFrame frame)
+        protected override IDictionary<string, object?> ProcessFrame(ImageFrame frame)
         {
             Dictionary<string, Packet> inputs = new();
             Timestamp timestamp = new Timestamp(SimulatedTimestamp);

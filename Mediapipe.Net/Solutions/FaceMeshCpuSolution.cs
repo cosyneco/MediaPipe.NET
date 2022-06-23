@@ -2,7 +2,6 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using System.Collections.Generic;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
@@ -15,10 +14,11 @@ namespace Mediapipe.Net.Solutions
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public class FaceMeshCpuSolution : CpuSolution, IComputingSolution<List<NormalizedLandmarkList>>
+    public class FaceMeshCpuSolution : CpuSolution, IComputingSolution<List<NormalizedLandmarkList>?>
     {
         private static readonly string graphPath = "mediapipe/modules/face_landmark/face_landmark_front_cpu.pbtxt";
         private static readonly string output = "multi_face_landmarks";
+        public static readonly PacketType PacketType = PacketType.NormalizedLandmarkListVector;
 
         private static SidePackets toSidePackets(int numFaces, bool staticImageMode, bool refineLandmarks)
         {
@@ -35,23 +35,18 @@ namespace Mediapipe.Net.Solutions
             bool refineLandmarks = false
         // float minDetectionConfidence = 0.5f,
         // float minTrackingConfidence = 0.5f
-        ) : base(graphPath, "image", new string[] { output }, toSidePackets(maxNumFaces, staticImageMode, refineLandmarks))
+        ) : base(graphPath, "image", new (string, PacketType)[] { (output, PacketType) }, toSidePackets(maxNumFaces, staticImageMode, refineLandmarks))
         {
         }
 
         public List<NormalizedLandmarkList>? Compute(ImageFrame frame)
         {
-            IDictionary<string, Packet> graphOutputs = ProcessFrame(frame);
+            IDictionary<string, object?> graphOutputs = ProcessFrame(frame);
+
             if (graphOutputs.ContainsKey(output))
-            {
-                Packet packet = graphOutputs[output];
-                Console.WriteLine($"Packet: {packet.DebugTypeName()}");
-                return packet.GetNormalizedLandmarkListVector();
-            }
+                return (List<NormalizedLandmarkList>?)graphOutputs[output];
             else
-            {
                 return null;
-            }
         }
     }
 }
