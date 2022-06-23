@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Framework
     public unsafe class CalculatorGraph : MpResourceHandle
     {
         public delegate void* NativePacketCallback(void* graphPtr, void* packetPtr);
-        public delegate Status PacketCallback(Packet? packet);
+        public delegate Status PacketCallback(Packet packet);
 
         public CalculatorGraph() : base()
         {
@@ -89,7 +89,7 @@ namespace Mediapipe.Net.Framework
                 {
                     var packet = new Packet(packetPtr, false);
                     status = packetCallback(packet);
-                    packet?.Dispose();
+                    // packet.Dispose();
                 }
                 catch (Exception e)
                 {
