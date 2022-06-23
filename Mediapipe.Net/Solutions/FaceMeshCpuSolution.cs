@@ -14,7 +14,7 @@ namespace Mediapipe.Net.Solutions
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public class FaceMeshCpuSolution : CpuSolution
+    public class FaceMeshCpuSolution : CpuSolution, IComputingSolution<List<NormalizedLandmarkList>>
     {
         private static readonly string graphPath = "mediapipe/modules/face_landmark/face_landmark_front_cpu.pbtxt";
         private static readonly string output = "multi_face_landmarks";
@@ -38,7 +38,7 @@ namespace Mediapipe.Net.Solutions
         {
         }
 
-        public List<NormalizedLandmarkList> ComputeFaceMesh(ImageFrame frame)
+        public List<NormalizedLandmarkList> Compute(ImageFrame frame)
         {
             IDictionary<string, Packet> graphOutputs = ProcessFrame(frame);
             Packet packet = graphOutputs[output];
