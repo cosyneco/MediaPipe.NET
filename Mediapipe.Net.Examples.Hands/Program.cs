@@ -3,7 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Threading;
 using CommandLine;
 using FFmpeg.AutoGen;
 using Mediapipe.Net.External;
