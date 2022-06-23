@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
@@ -38,11 +39,19 @@ namespace Mediapipe.Net.Solutions
         {
         }
 
-        public List<NormalizedLandmarkList> Compute(ImageFrame frame)
+        public List<NormalizedLandmarkList>? Compute(ImageFrame frame)
         {
             IDictionary<string, Packet> graphOutputs = ProcessFrame(frame);
-            Packet packet = graphOutputs[output];
-            return packet.GetNormalizedLandmarkListVector();
+            if (graphOutputs.ContainsKey(output))
+            {
+                Packet packet = graphOutputs[output];
+                Console.WriteLine($"Packet: {packet.DebugTypeName()}");
+                return packet.GetNormalizedLandmarkListVector();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

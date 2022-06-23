@@ -62,7 +62,12 @@ namespace Mediapipe.Net.Framework.Packets
             return typeName ?? "";
         }
 
-        public string? DebugTypeName() => MarshalStringFromNative(UnsafeNativeMethods.mp_Packet__DebugTypeName);
+        public string? DebugTypeName()
+        {
+            string? typeName = MarshalStringFromNative(UnsafeNativeMethods.mp_Packet__DebugTypeName);
+
+            return typeName ?? "";
+        }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_Packet__delete(Ptr);
 

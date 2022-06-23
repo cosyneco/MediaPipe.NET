@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using CommandLine;
 using FFmpeg.AutoGen;
-using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;
+using Mediapipe.Net.Solutions;
 using Mediapipe.Net.Util;
 using SeeShark;
 using SeeShark.Device;
@@ -21,13 +21,15 @@ namespace Mediapipe.Net.Examples.FaceMesh
     {
         private static Camera? camera;
         private static FrameConverter? converter;
-        private static FaceMeshCpuCalculator? calculator;
+        private static FaceMeshCpuSolution? calculator;
         private static ResourceManager? resourceManager;
 
         public static void Main(string[] args)
         {
             // Get and parse command line arguments
-            Options parsed = Parser.Default.ParseArguments<Options>(args).Value;
+            Options? parsed = Parser.Default.ParseArguments<Options>(args).Value;
+            if (parsed == null)
+                return;
 
             (int, int)? videoSize = null;
             if (parsed.Width != null && parsed.Height != null)
@@ -70,14 +72,17 @@ namespace Mediapipe.Net.Examples.FaceMesh
                 }
             }
 
-            calculator = new FaceMeshCpuCalculator();
-            calculator.OnResult += handleLandmarks;
-            calculator.Run();
+            calculator = new FaceMeshCpuSolution();
 
             Console.CancelKeyPress += (sender, eventArgs) => exit();
+            int frameCount = 0;
             while (true)
             {
+                if (calculator == null)
+                    return;
+
                 var frame = camera.GetFrame();
+                Console.WriteLine($"Frame: {frame.Width}x{frame.Height}");
 
                 converter ??= new FrameConverter(frame, PixelFormat.Rgba);
 
@@ -86,13 +91,9 @@ namespace Mediapipe.Net.Examples.FaceMesh
                 using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
-                using ImageFrame? img = calculator.Send(imgframe);
+                List<NormalizedLandmarkList> landmarks = calculator.Compute(imgframe);
+                Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {frameCount++}");
             }
-        }
-
-        private static void handleLandmarks(object? sender, List<NormalizedLandmarkList> landmarks)
-        {
-            Console.WriteLine($"Got a list of {landmarks[0].Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
         }
 
         // Dispose everything on exit

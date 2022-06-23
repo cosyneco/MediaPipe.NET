@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -46,6 +47,7 @@ namespace Mediapipe.Net.Solutions
             {
                 Graph.ObserveOutputStream(output, (packet) =>
                 {
+                    Console.WriteLine($"Packet: {packet.DebugTypeName()})");
                     GraphOutputs.Add(output, packet);
                     return Status.Ok();
                 }, out GCHandle handle).AssertOk();
