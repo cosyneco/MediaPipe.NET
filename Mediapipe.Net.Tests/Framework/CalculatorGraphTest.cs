@@ -3,7 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using Mediapipe.Net.Framework;
-using Mediapipe.Net.Framework.OldPacket;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
 using NUnit.Framework;
@@ -93,7 +93,7 @@ output_stream: ""out""
         public void Initialize_ShouldReturnOk_When_CalledWithConfigAndSidePacket_And_ConfigIsNotSet()
         {
             using var sidePackets = new SidePackets();
-            sidePackets.Emplace("flag", new BoolPacket(true));
+            sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
 
             using var graph = new CalculatorGraph();
             var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
@@ -106,7 +106,7 @@ output_stream: ""out""
         public void Initialize_ShouldReturnInternalError_When_CalledWithConfigAndSidePacket_And_ConfigIsSet()
         {
             using var sidePackets = new SidePackets();
-            sidePackets.Emplace("flag", new BoolPacket(true));
+            sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
 
             using var graph = new CalculatorGraph(valid_config_text);
             var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
