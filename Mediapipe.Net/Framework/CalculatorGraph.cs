@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 
 using Google.Protobuf;
 using Mediapipe.Net.Core;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Gpu;

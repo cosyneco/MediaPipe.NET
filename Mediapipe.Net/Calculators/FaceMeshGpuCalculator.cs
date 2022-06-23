@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.Versioning;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators

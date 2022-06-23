@@ -2,7 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 
 namespace Mediapipe.Net.Calculators
 {

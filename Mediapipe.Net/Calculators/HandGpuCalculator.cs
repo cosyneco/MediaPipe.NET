@@ -3,7 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System.Runtime.Versioning;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Calculators

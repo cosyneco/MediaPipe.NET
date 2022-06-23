@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Framework.Port;
 
 namespace Mediapipe.Net.Calculators

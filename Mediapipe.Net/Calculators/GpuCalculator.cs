@@ -6,7 +6,7 @@ using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 

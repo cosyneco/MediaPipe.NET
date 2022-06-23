@@ -4,7 +4,7 @@
 
 using System;
 using Mediapipe.Net.Core;
-using Mediapipe.Net.Framework.Packet;
+using Mediapipe.Net.Framework.OldPacket;
 using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework
