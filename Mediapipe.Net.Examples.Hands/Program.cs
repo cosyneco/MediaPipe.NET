@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Threading;
 using CommandLine;
 using FFmpeg.AutoGen;
 using Mediapipe.Net.External;
@@ -72,32 +73,51 @@ namespace Mediapipe.Net.Examples.Hands
 
             calculator = new HandsCpuSolution();
 
+            camera.OnFrame += onFrameEventHandler;
+            camera.StartCapture();
+
             Console.CancelKeyPress += (sender, eventArgs) => exit();
-            int frameCount = 0;
-            while (true)
+
+            GC.KeepAlive(resourceManager);
+        }
+
+        private static int frameCount = 0;
+        private static void onFrameEventHandler(object? sender, FrameEventArgs e)
+        {
+            if (calculator == null)
+                return;
+
+            Frame frame = e.Frame;
+            if (frame.Width == 0 || frame.Height == 0)
+                return;
+
+            converter ??= new FrameConverter(frame, PixelFormat.Rgba);
+            Frame cFrame = converter.Convert(frame);
+
+            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
+
+            HandsOutput handsOutput = calculator.Compute(imgframe);
+
+            if (handsOutput.MultiHandLandmarks != null)
             {
-                if (calculator == null)
-                    return;
-
-                var frame = camera.GetFrame();
-                converter ??= new FrameConverter(frame, PixelFormat.Rgba);
-                Frame cFrame = converter.Convert(frame);
-
-                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
-                    cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
-
-                HandsOutput handsOutput = calculator.Compute(imgframe);
-                Console.WriteLine($"Got hands output with {handsOutput.MultiHandLandmarks?[0].Landmark.Count} landmarks"
-                    + $" and {handsOutput.MultiHandedness?.Count} handednesses at frame {frameCount++}");
-
-                GC.KeepAlive(resourceManager);
+                var landmarks = handsOutput.MultiHandLandmarks[0].Landmark;
+                Console.WriteLine($"Got hands output with {landmarks.Count} landmarks"
+                    + $" at frame {frameCount}");
             }
+            else
+            {
+                Console.WriteLine("No hand landmarks");
+            }
+
+            frameCount++;
         }
 
         // Dispose everything on exit
         private static void exit()
         {
             Console.WriteLine("Exiting...");
+            camera?.StopCapture();
             camera?.Dispose();
             converter?.Dispose();
             calculator?.Dispose();

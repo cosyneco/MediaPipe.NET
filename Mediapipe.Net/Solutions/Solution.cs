@@ -47,7 +47,8 @@ namespace Mediapipe.Net.Solutions
                 Graph.ObserveOutputStream(output, (packet) =>
                 {
                     packet.PacketType = packetType;
-                    GraphOutputs.Add(output, packet.Get());
+                    lock (GraphOutputs)
+                        GraphOutputs.Add(output, packet.Get());
                     return Status.Ok();
                 }, out GCHandle handle).AssertOk();
                 observeStreamHandles.Add(output, handle);
@@ -66,7 +67,7 @@ namespace Mediapipe.Net.Solutions
             // Set the timestamp increment to 16666 us to simulate 60 fps video input (?)
             // That's what the Python API does so ¯\_(ツ)_/¯
             // Might have to find something better?
-            SimulatedTimestamp += 16666;
+            SimulatedTimestamp += 10000;
 
             // Dispose of the previous packets before processing
             foreach (object? obj in GraphOutputs.Values)
