@@ -100,6 +100,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
         private static void exit()
         {
             Console.WriteLine("Exiting...");
+            camera?.StopCapture();
             camera?.Dispose();
             converter?.Dispose();
             calculator?.Dispose();
