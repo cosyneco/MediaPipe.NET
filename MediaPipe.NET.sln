@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.Face
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.Hands", "Mediapipe.Net.Examples.Hands\Mediapipe.Net.Examples.Hands.csproj", "{E08C6A15-263B-4886-8DE4-265959501988}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.FaceMeshGpu", "Mediapipe.Net.Examples.FaceMeshGpu\Mediapipe.Net.Examples.FaceMeshGpu.csproj", "{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{E08C6A15-263B-4886-8DE4-265959501988}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E08C6A15-263B-4886-8DE4-265959501988}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E08C6A15-263B-4886-8DE4-265959501988}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
