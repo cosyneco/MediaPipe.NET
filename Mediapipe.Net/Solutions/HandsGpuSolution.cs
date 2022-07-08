@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System.Collections.Generic;
+using System.Runtime.Versioning;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Protobuf;
@@ -10,13 +11,14 @@ using Mediapipe.Net.Framework.Protobuf;
 namespace Mediapipe.Net.Solutions
 {
     /// <summary>
-    /// Hands solution running on the CPU.
+    /// Hands solution running on the GPU.
     /// </summary>
     /// <typeparam name="TPacket">The type of packet the calculator returns the secondary output in.</typeparam>
     /// <typeparam name="T">The type of secondary output.</typeparam>
-    public class HandsCpuSolution : CpuSolution, IComputingSolution<HandsOutput>
+    [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
+    public class HandsGpuSolution : GpuSolution, IComputingSolution<HandsOutput>
     {
-        private static readonly string graphPath = "mediapipe/modules/hand_landmark/hand_landmark_tracking_cpu.pbtxt";
+        private static readonly string graphPath = "mediapipe/modules/hand_landmark/hand_landmark_tracking_gpu.pbtxt";
 
         private static readonly IDictionary<string, PacketType> outputs = new Dictionary<string, PacketType>()
         {
@@ -36,7 +38,7 @@ namespace Mediapipe.Net.Solutions
             return sidePackets;
         }
 
-        public HandsCpuSolution(
+        public HandsGpuSolution(
             bool staticImageMode = false,
             int maxNumHands = 2,
             int modelComplexity = 1
