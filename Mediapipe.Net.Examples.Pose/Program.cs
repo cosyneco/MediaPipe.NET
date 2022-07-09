@@ -14,7 +14,7 @@ using SeeShark;
 using SeeShark.Device;
 using SeeShark.FFmpeg;
 
-namespace Mediapipe.Net.Examples.BlazePose
+namespace Mediapipe.Net.Examples.Pose
 {
     public static class Program
     {

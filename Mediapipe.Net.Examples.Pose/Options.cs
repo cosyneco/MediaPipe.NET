@@ -4,7 +4,7 @@
 
 using CommandLine;
 
-namespace Mediapipe.Net.Examples.BlazePose
+namespace Mediapipe.Net.Examples.Pose
 {
     public class Options
     {
