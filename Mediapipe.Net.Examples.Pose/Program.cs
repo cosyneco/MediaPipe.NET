@@ -5,10 +5,9 @@
 using System;
 using CommandLine;
 using FFmpeg.AutoGen;
-using Mediapipe.Net.Calculators;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Framework.Protobuf;
+using Mediapipe.Net.Solutions;
 using Mediapipe.Net.Util;
 using SeeShark;
 using SeeShark.Device;
@@ -20,8 +19,8 @@ namespace Mediapipe.Net.Examples.Pose
     {
         private static Camera? camera;
         private static FrameConverter? converter;
-        private static readonly BlazePoseCpuCalculator calculator =
-            new BlazePoseCpuCalculator(modelComplexity: 2, smoothLandmarks: false);
+        private static readonly PoseCpuSolution calculator =
+            new PoseCpuSolution(modelComplexity: 2, smoothLandmarks: false);
 
         private static ResourceManager? resourceManager;
 
@@ -69,32 +68,42 @@ namespace Mediapipe.Net.Examples.Pose
                 }
             }
 
-            calculator.OnResult += handleLandmarks;
-            calculator.Run();
-
             camera.OnFrame += onFrameEventHandler;
             camera.StartCapture();
 
             Console.CancelKeyPress += (sender, eventArgs) => exit();
         }
 
-
+        private static int frameCount = 0;
         private static void onFrameEventHandler(object? sender, FrameEventArgs e)
         {
-            var frame = e.Frame;
+            if (calculator == null)
+                return;
 
-            converter ??= new FrameConverter(frame, PixelFormat.Rgb24);
+            Frame frame = e.Frame;
+            if (frame.Width == 0 || frame.Height == 0)
+                return;
+
+            converter ??= new FrameConverter(frame, PixelFormat.Rgba);
             Frame cFrame = converter.Convert(frame);
 
-            using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgb,
+            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
                 cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
-            using ImageFrame? img = calculator.Send(imgframe);
-        }
+            PoseOutput handsOutput = calculator.Compute(imgframe);
 
-        private static void handleLandmarks(object? sender, NormalizedLandmarkList landmarks)
-        {
-            Console.WriteLine($"Got a list of {landmarks.Landmark.Count} landmarks at frame {calculator?.CurrentFrame}");
+            if (handsOutput.PoseLandmarks != null)
+            {
+                var landmarks = handsOutput.PoseLandmarks.Landmark;
+                Console.WriteLine($"Got pose output with {landmarks.Count} landmarks"
+                    + $" at frame {frameCount}");
+            }
+            else
+            {
+                Console.WriteLine("No pose landmarks");
+            }
+
+            frameCount++;
         }
 
         // Dispose everything on exit
