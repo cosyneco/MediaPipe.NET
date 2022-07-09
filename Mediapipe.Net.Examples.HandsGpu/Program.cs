@@ -14,7 +14,7 @@ using SeeShark;
 using SeeShark.Device;
 using SeeShark.FFmpeg;
 
-namespace Mediapipe.Net.Examples.Hands
+namespace Mediapipe.Net.Examples.HandsGpu
 {
     [SupportedOSPlatform("Linux")]
     public static class Program

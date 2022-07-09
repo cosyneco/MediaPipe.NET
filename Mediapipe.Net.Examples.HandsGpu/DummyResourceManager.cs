@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using Mediapipe.Net.Util;
 
-namespace Mediapipe.Net.Examples.Hands
+namespace Mediapipe.Net.Examples.HandsGpu
 {
     public class DummyResourceManager : ResourceManager
     {

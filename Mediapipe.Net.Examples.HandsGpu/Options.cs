@@ -4,7 +4,7 @@
 
 using CommandLine;
 
-namespace Mediapipe.Net.Examples.Hands
+namespace Mediapipe.Net.Examples.HandsGpu
 {
     public class Options
     {

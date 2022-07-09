@@ -37,7 +37,6 @@ namespace Mediapipe.Net.Examples.Pose
             else if (parsed.Width == null && parsed.Height != null)
                 Console.Error.WriteLine("Specifying height requires to specify width");
 
-            // FFmpegManager.SetupFFmpeg("/usr/lib");
             FFmpegManager.SetupFFmpeg(@"C:\ffmpeg\v5.0_x64\", @"/usr/lib");
             Glog.Initialize("stuff");
             if (parsed.UseResourceManager)
