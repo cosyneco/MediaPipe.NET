@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.Pose
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.PoseGpu", "Mediapipe.Net.Examples.PoseGpu\Mediapipe.Net.Examples.PoseGpu.csproj", "{99300875-BA40-4A4D-898C-5A128921E1F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Examples.OsuFrameworkVisualTests", "Mediapipe.Net.Examples.OsuFrameworkVisualTests\Mediapipe.Net.Examples.OsuFrameworkVisualTests.csproj", "{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{99300875-BA40-4A4D-898C-5A128921E1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99300875-BA40-4A4D-898C-5A128921E1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99300875-BA40-4A4D-898C-5A128921E1F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
