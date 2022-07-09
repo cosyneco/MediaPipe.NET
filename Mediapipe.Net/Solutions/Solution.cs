@@ -2,7 +2,6 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -25,7 +24,7 @@ namespace Mediapipe.Net.Solutions
         protected readonly CalculatorGraph Graph;
         protected readonly SidePackets? SidePackets;
 
-        protected readonly IDictionary<string, object?> GraphOutputs;
+        protected readonly SolutionOutputs SolutionOutputs;
         private readonly IDictionary<string, GCHandle> observeStreamHandles;
 
         protected long SimulatedTimestamp = 0;
@@ -39,16 +38,15 @@ namespace Mediapipe.Net.Solutions
             Graph = new CalculatorGraph(File.ReadAllText(GraphPath));
             SidePackets = sidePackets;
 
-            GraphOutputs = new Dictionary<string, object?>();
-
+            SolutionOutputs = new SolutionOutputs();
             observeStreamHandles = new Dictionary<string, GCHandle>();
             foreach ((string output, PacketType packetType) in outputs)
             {
                 Graph.ObserveOutputStream(output, (packet) =>
                 {
                     packet.PacketType = packetType;
-                    lock (GraphOutputs)
-                        GraphOutputs.Add(output, packet.Get());
+                    lock (SolutionOutputs)
+                        SolutionOutputs.Put(packet.Timestamp().Microseconds, output, packet.Get());
                     return Status.Ok();
                 }, out GCHandle handle).AssertOk();
                 observeStreamHandles.Add(output, handle);
@@ -64,19 +62,6 @@ namespace Mediapipe.Net.Solutions
         /// <returns></returns>
         protected IDictionary<string, object?> Process(IDictionary<string, Packet> inputs)
         {
-            // Set the timestamp increment to 16666 us to simulate 60 fps video input (?)
-            // That's what the Python API does so ¯\_(ツ)_/¯
-            // Might have to find something better?
-            SimulatedTimestamp += 10000;
-
-            // Dispose of the previous packets before processing
-            foreach (object? obj in GraphOutputs.Values)
-            {
-                if (obj is IDisposable disposable)
-                    disposable.Dispose();
-            }
-            GraphOutputs.Clear();
-
             foreach (KeyValuePair<string, Packet> input in inputs)
             {
                 if (input.Value != null)
@@ -84,7 +69,15 @@ namespace Mediapipe.Net.Solutions
             }
 
             Graph.WaitUntilIdle();
-            return GraphOutputs;
+            SolutionOutputs.Finish(SimulatedTimestamp);
+            var solutionOutput = SolutionOutputs.GetSolutionOutput(SimulatedTimestamp);
+
+            // Set the timestamp increment to 16666 us to simulate 60 fps video input (?)
+            // That's what the Python API does so ¯\_(ツ)_/¯
+            // Might have to find something better?
+            SimulatedTimestamp += 10000;
+
+            return solutionOutput;
         }
 
         protected abstract IDictionary<string, object?> ProcessFrame(ImageFrame frame);
