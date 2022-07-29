@@ -18,8 +18,8 @@ using osu.Framework.Graphics.Textures;
 using SeeShark;
 using SeeShark.Device;
 using SixLabors.ImageSharp.PixelFormats;
-using Image = SixLabors.ImageSharp.Image;
 using Anchor = osu.Framework.Graphics.Anchor;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
