@@ -85,7 +85,7 @@ namespace Mediapipe.Net.Examples.FaceMesh
                 converter ??= new FrameConverter(frame, PixelFormat.Rgba);
                 Frame cFrame = converter.Convert(frame);
 
-                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                using ImageFrame imgframe = new ImageFrame(ImageFormat.Types.Format.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
                 List<NormalizedLandmarkList>? landmarks = calculator.Compute(imgframe);

@@ -7,6 +7,7 @@ using CommandLine;
 using FFmpeg.AutoGen;
 using Mediapipe.Net.External;
 using Mediapipe.Net.Framework.Format;
+using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Solutions;
 using Mediapipe.Net.Util;
 using SeeShark;
@@ -86,7 +87,7 @@ namespace Mediapipe.Net.Examples.Pose
             converter ??= new FrameConverter(frame, PixelFormat.Rgba);
             Frame cFrame = converter.Convert(frame);
 
-            ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+            ImageFrame imgframe = new ImageFrame(ImageFormat.Types.Format.Srgba,
                 cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
             PoseOutput handsOutput = calculator.Compute(imgframe);

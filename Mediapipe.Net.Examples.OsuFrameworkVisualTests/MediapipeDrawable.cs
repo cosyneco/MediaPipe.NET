@@ -19,6 +19,7 @@ using SeeShark;
 using SeeShark.Device;
 using SixLabors.ImageSharp.PixelFormats;
 using Image = SixLabors.ImageSharp.Image;
+using Anchor = osu.Framework.Graphics.Anchor;
 
 namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
 {
@@ -72,7 +73,7 @@ namespace Mediapipe.Net.Examples.OsuFrameworkVisualTests
                 converter ??= new FrameConverter(frame, PixelFormat.Rgba);
                 Frame cFrame = converter.Convert(frame);
 
-                using ImageFrame imgframe = new ImageFrame(ImageFormat.Srgba,
+                using ImageFrame imgframe = new ImageFrame(ImageFormat.Types.Format.Srgba,
                     cFrame.Width, cFrame.Height, cFrame.WidthStep, cFrame.RawData);
 
                 List<NormalizedLandmarkList>? landmarkList = calculator.Compute(imgframe);
