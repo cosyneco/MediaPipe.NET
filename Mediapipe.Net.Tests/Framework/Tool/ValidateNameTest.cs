@@ -112,8 +112,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         {
             ParseTagAndName(input, out var tag, out var name);
 
-            Assert.AreEqual(tag, expectedTag);
-            Assert.AreEqual(name, expectedName);
+            Assert.AreEqual(expectedTag, tag);
+            Assert.AreEqual(expectedName, name);
         }
 
         [TestCase(":humphrey")]
@@ -128,8 +128,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
 
 #pragma warning disable IDE0058
             Assert.Throws<ArgumentException>(() => { ParseTagAndName(input, out tag, out name); });
-            Assert.AreEqual(tag, "UNTOUCHED");
-            Assert.AreEqual(name, "untouched");
+            Assert.AreEqual("UNTOUCHED", tag);
+            Assert.AreEqual("untouched", name);
 #pragma warning restore IDE0058
         }
 
@@ -156,9 +156,9 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         {
             ParseTagIndexName(input, out var tag, out var index, out var name);
 
-            Assert.AreEqual(tag, expectedTag);
-            Assert.AreEqual(index, expectedIndex);
-            Assert.AreEqual(name, expectedName);
+            Assert.AreEqual(expectedTag, tag);
+            Assert.AreEqual(expectedIndex, index);
+            Assert.AreEqual(expectedName, name);
         }
 
         [TestCase("")]
@@ -205,9 +205,9 @@ namespace Mediapipe.Net.Tests.Framework.Tool
 
 #pragma warning disable IDE0058
             Assert.Throws<ArgumentException>(() => { ParseTagIndexName(input, out tag, out index, out name); });
-            Assert.AreEqual(tag, "UNTOUCHED");
-            Assert.AreEqual(index, -1);
-            Assert.AreEqual(name, "untouched");
+            Assert.AreEqual("UNTOUCHED", tag);
+            Assert.AreEqual(-1, index);
+            Assert.AreEqual("untouched", name);
 #pragma warning restore IDE0058
         }
 
@@ -235,8 +235,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         {
             ParseTagIndex(input, out var tag, out var index);
 
-            Assert.AreEqual(tag, expectedTag);
-            Assert.AreEqual(index, expectedIndex);
+            Assert.AreEqual(expectedTag, tag);
+            Assert.AreEqual(expectedIndex, index);
         }
 
         [TestCase("a")]
@@ -270,8 +270,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
 
 #pragma warning disable IDE0058
             Assert.Throws<ArgumentException>(() => { ParseTagIndex(input, out tag, out index); });
-            Assert.AreEqual(tag, "UNTOUCHED");
-            Assert.AreEqual(index, -1);
+            Assert.AreEqual("UNTOUCHED", tag);
+            Assert.AreEqual(-1, index);
 #pragma warning restore IDE0058
         }
 

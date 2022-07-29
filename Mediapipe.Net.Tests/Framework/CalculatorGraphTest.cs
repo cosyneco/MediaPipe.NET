@@ -43,8 +43,8 @@ output_stream: ""out""
         {
             using var graph = new CalculatorGraph(valid_config_text);
             var config = graph.Config();
-            Assert.AreEqual(config.InputStream[0], "in");
-            Assert.AreEqual(config.OutputStream[0], "out");
+            Assert.AreEqual("in", config.InputStream[0]);
+            Assert.AreEqual("out", config.OutputStream[0]);
         }
         #endregion
 
@@ -77,8 +77,8 @@ output_stream: ""out""
             }
 
             var config = graph.Config();
-            Assert.AreEqual(config.InputStream[0], "in");
-            Assert.AreEqual(config.OutputStream[0], "out");
+            Assert.AreEqual("in", config.InputStream[0]);
+            Assert.AreEqual("out", config.OutputStream[0]);
         }
 
         [Test]
@@ -86,7 +86,7 @@ output_stream: ""out""
         {
             using var graph = new CalculatorGraph(valid_config_text);
             using var status = graph.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text));
-            Assert.AreEqual(status.Code, Status.StatusCode.Internal);
+            Assert.AreEqual(Status.StatusCode.Internal, status.Code);
         }
 
         [Test]
@@ -112,7 +112,7 @@ output_stream: ""out""
             var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
 
             using var status = graph.Initialize(config, sidePackets);
-            Assert.AreEqual(status.Code, Status.StatusCode.Internal);
+            Assert.AreEqual(Status.StatusCode.Internal, status.Code);
         }
         #endregion
 
@@ -137,7 +137,7 @@ output_stream: ""out""
             using var graph = new CalculatorGraph(valid_config_text);
             Assert.True(graph.StartRun().Ok());
             graph.Cancel();
-            Assert.AreEqual(graph.WaitUntilDone().Code, Status.StatusCode.Cancelled);
+            Assert.AreEqual(Status.StatusCode.Cancelled, graph.WaitUntilDone().Code);
         }
         #endregion
     }

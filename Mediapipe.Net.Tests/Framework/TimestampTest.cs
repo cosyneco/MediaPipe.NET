@@ -32,7 +32,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Value_ShouldReturnValue()
         {
             using var timestamp = new Timestamp(10);
-            Assert.AreEqual(timestamp.Value, 10);
+            Assert.AreEqual(10, timestamp.Value);
         }
         #endregion
 
@@ -41,7 +41,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Seconds_ShouldReturnValueInSeconds()
         {
             using var timestamp = new Timestamp(1_000_000);
-            Assert.AreEqual(timestamp.Seconds, 1d, 1e-9);
+            Assert.AreEqual(1d, timestamp.Seconds, 1e-9);
         }
         #endregion
 
@@ -50,7 +50,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void Microseconds_ShouldReturnValueInMicroseconds()
         {
             using var timestamp = new Timestamp(1_000_000);
-            Assert.AreEqual(timestamp.Microseconds, 1_000_000);
+            Assert.AreEqual(1_000_000, timestamp.Microseconds);
         }
         #endregion
 
@@ -142,14 +142,14 @@ namespace Mediapipe.Net.Tests.Framework
         public void DebugString_ShouldReturnDebugString()
         {
             using var timestamp = new Timestamp(1);
-            Assert.AreEqual(timestamp.DebugString, "1");
+            Assert.AreEqual("1", timestamp.DebugString);
         }
 
         [Test]
         public void DebugString_ShouldReturnDebugString_When_TimestampIsUnset()
         {
             using var timestamp = Timestamp.Unset();
-            Assert.AreEqual(timestamp.DebugString, "Timestamp::Unset()");
+            Assert.AreEqual("Timestamp::Unset()", timestamp.DebugString);
         }
         #endregion
 
@@ -159,7 +159,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = new Timestamp(1);
             using var nextTimestamp = timestamp.NextAllowedInStream();
-            Assert.AreEqual(nextTimestamp.Microseconds, 2);
+            Assert.AreEqual(2, nextTimestamp.Microseconds);
         }
 
         [Test]
@@ -167,7 +167,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = Timestamp.PostStream();
             using var nextTimestamp = timestamp.NextAllowedInStream();
-            Assert.AreEqual(nextTimestamp, Timestamp.OneOverPostStream());
+            Assert.AreEqual(Timestamp.OneOverPostStream(), nextTimestamp);
         }
         #endregion
 
@@ -177,7 +177,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = new Timestamp(1);
             using var nextTimestamp = timestamp.PreviousAllowedInStream();
-            Assert.AreEqual(nextTimestamp.Microseconds, 0);
+            Assert.AreEqual(0, nextTimestamp.Microseconds);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace Mediapipe.Net.Tests.Framework
         {
             using var timestamp = Timestamp.PreStream();
             using var nextTimestamp = timestamp.PreviousAllowedInStream();
-            Assert.AreEqual(nextTimestamp, Timestamp.Unstarted());
+            Assert.AreEqual(Timestamp.Unstarted(), nextTimestamp);
         }
         #endregion
 
@@ -194,7 +194,7 @@ namespace Mediapipe.Net.Tests.Framework
         public void FromSeconds_ShouldReturnTimestamp()
         {
             using var timestamp = Timestamp.FromSeconds(1d);
-            Assert.AreEqual(timestamp.Microseconds, 1_000_000);
+            Assert.AreEqual(1_000_000, timestamp.Microseconds);
         }
         #endregion
     }

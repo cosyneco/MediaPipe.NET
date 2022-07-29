@@ -22,10 +22,6 @@ namespace Mediapipe.Net.Gpu
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_GpuBuffer__delete(Ptr);
 
-        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        public GlTextureBuffer GetGlTextureBuffer()
-            => new GlTextureBuffer(SafeNativeMethods.mp_GpuBuffer__GetGlTextureBufferSharedPtr(MpPtr), false);
-
         public GpuBufferFormat Format => SafeNativeMethods.mp_GpuBuffer__format(MpPtr);
 
         public int Width => SafeNativeMethods.mp_GpuBuffer__width(MpPtr);

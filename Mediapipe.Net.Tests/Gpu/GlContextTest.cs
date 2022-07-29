@@ -3,7 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 using NUnit.Framework;
 
@@ -28,10 +27,9 @@ namespace Mediapipe.Net.Tests.Gpu
 
             glCalculatorHelper.RunInGlContext(() =>
             {
-                using var glContext = GlContext.GetCurrent();
+                using GlContext? glContext = GlContext.GetCurrent();
                 Assert.NotNull(glContext);
                 Assert.True(glContext?.IsCurrent());
-                return Status.Ok();
             }).AssertOk();
         }
         #endregion
@@ -56,9 +54,9 @@ namespace Mediapipe.Net.Tests.Gpu
                 Assert.True(glContext.EglDisplay != null);
                 Assert.True(glContext.EglConfig != null);
                 Assert.True(glContext.EglContext != null);
-                Assert.AreEqual(glContext.GlMajorVersion, 3);
-                Assert.AreEqual(glContext.GlMinorVersion, 2);
-                Assert.AreEqual(glContext.GlFinishCount, 0);
+                Assert.AreEqual(3, glContext.GlMajorVersion);
+                Assert.AreEqual(2, glContext.GlMinorVersion);
+                Assert.AreEqual(0, glContext.GlFinishCount);
             }
             else if (OperatingSystem.IsMacOS())
             {

@@ -136,6 +136,14 @@ namespace Mediapipe.Net.Framework.Packets
             GC.KeepAlive(this);
             return new StatusOrGpuBuffer(statusOrGpuBufferPtr);
         }
+
+        public StatusOr<string> ConsumeString()
+        {
+            UnsafeNativeMethods.mp_Packet__ConsumeString(MpPtr, out var statusOrStringPtr).Assert();
+
+            GC.KeepAlive(this);
+            return new StatusOrString(statusOrStringPtr);
+        }
         #endregion
 
         #region Validators

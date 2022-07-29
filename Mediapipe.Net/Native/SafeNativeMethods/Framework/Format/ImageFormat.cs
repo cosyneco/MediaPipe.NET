@@ -4,7 +4,7 @@
 
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
-using Mediapipe.Net.Framework.Format;
+using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Native
 {
@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Native
             void* imageFrame, uint alignmentBoundary, out bool value);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern ImageFormat mp_ImageFrame__Format(void* imageFrame);
+        public static extern ImageFormat.Types.Format mp_ImageFrame__Format(void* imageFrame);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern int mp_ImageFrame__Width(void* imageFrame);

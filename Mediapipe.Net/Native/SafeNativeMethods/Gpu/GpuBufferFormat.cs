@@ -4,7 +4,7 @@
 
 using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
-using Mediapipe.Net.Framework.Format;
+using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Native
@@ -12,9 +12,9 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class SafeNativeMethods : NativeMethods
     {
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern ImageFormat mp__ImageFormatForGpuBufferFormat__ui(GpuBufferFormat format);
+        public static extern ImageFormat.Types.Format mp__ImageFormatForGpuBufferFormat__ui(GpuBufferFormat format);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern ImageFormat mp__GpuBufferFormatForImageFormat__ui(ImageFormat format);
+        public static extern ImageFormat.Types.Format mp__GpuBufferFormatForImageFormat__ui(ImageFormat.Types.Format format);
     }
 }

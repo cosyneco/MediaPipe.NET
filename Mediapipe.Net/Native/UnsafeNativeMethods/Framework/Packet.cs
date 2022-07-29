@@ -32,6 +32,9 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_Packet__RegisteredTypeName(void* packet, out sbyte* str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern MpReturnCode mp_Packet__ConsumeString(void* packet, out void* statusOrValue);
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__DebugTypeName(void* packet, out sbyte* str);
         #endregion
 

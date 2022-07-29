@@ -10,11 +10,13 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode google_protobuf__SetLogHandler__PF(
-            Protobuf.ProtobufLogHandler logHandler);
+        public static extern MpReturnCode google_protobuf__SetLogHandler__PF(Protobuf.LogHandler logHandler);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_api_SerializedProtoArray__delete(void* serializedProtoVectorData);
+        public static extern MpReturnCode google_protobuf__ResetLogHandler();
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern void mp_api_SerializedProtoArray__delete(void* serializedProtoVectorData, int size);
 
         #region MessageProto
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

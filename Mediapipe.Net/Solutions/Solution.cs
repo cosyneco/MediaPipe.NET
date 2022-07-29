@@ -10,7 +10,6 @@ using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
-using Mediapipe.Net.Framework.Port;
 
 namespace Mediapipe.Net.Solutions
 {
@@ -49,7 +48,6 @@ namespace Mediapipe.Net.Solutions
                     packet.PacketType = packetType;
                     lock (GraphOutputs)
                         GraphOutputs.Add(output, packet.Get());
-                    return Status.Ok();
                 }, out GCHandle handle).AssertOk();
                 observeStreamHandles.Add(output, handle);
             }

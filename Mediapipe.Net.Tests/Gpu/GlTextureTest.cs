@@ -14,8 +14,8 @@ namespace Mediapipe.Net.Tests.Gpu
         public void Ctor_ShouldInstantiateGlTexture_When_CalledWithNoArguments()
         {
             using var glTexture = new GlTexture();
-            Assert.AreEqual(glTexture.Width, 0);
-            Assert.AreEqual(glTexture.Height, 0);
+            Assert.AreEqual(0, glTexture.Width);
+            Assert.AreEqual(0, glTexture.Height);
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace Mediapipe.Net.Tests.Gpu
         public void Target_ShouldReturnTarget()
         {
             using var glTexture = new GlTexture();
-            Assert.AreEqual(glTexture.Target, Gl.GL_TEXTURE_2D);
+            Assert.AreEqual(Gl.GL_TEXTURE_2D, glTexture.Target);
         }
         #endregion
     }

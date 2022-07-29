@@ -3,7 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Format;
@@ -14,8 +13,8 @@ namespace Mediapipe.Net.Gpu
 {
     public unsafe class GlCalculatorHelper : MpResourceHandle
     {
-        public delegate void* NativeGlStatusFunction();
-        public delegate Status GlStatusFunction();
+        public delegate Status.StatusArgs NativeGlStatusFunction();
+        public delegate void GlFunction();
 
         public GlCalculatorHelper() : base()
         {
@@ -45,34 +44,20 @@ namespace Mediapipe.Net.Gpu
             return new Status(statusPtr);
         }
 
-        public Status RunInGlContext(GlStatusFunction glStatusFunc)
+        public Status RunInGlContext(GlFunction glFunction)
         {
-            Status? tmpStatus = null;
-
-            NativeGlStatusFunction nativeGlStatusFunc = () =>
+            return RunInGlContext(() =>
             {
                 try
                 {
-                    tmpStatus = glStatusFunc();
+                    glFunction();
+                    return Status.StatusArgs.Ok();
                 }
                 catch (Exception e)
                 {
-                    tmpStatus = Status.FailedPrecondition(e.ToString());
+                    return Status.StatusArgs.Internal(e.ToString());
                 }
-                return tmpStatus.MpPtr;
-            };
-
-            // Was previously `GCHandleType.Pinned`. It had to be changed because
-            // the `NativeGlStatusFunction` delegate type is non-blittable.
-            // Using `GCHandleType.Normal` should be fine as it seems that all we
-            // need to do is to make sure that the delegate doesn't get garbage-collected.
-            var nativeGlStatusFuncHandle = GCHandle.Alloc(nativeGlStatusFunc, GCHandleType.Normal);
-            var status = RunInGlContext(nativeGlStatusFunc);
-            nativeGlStatusFuncHandle.Free();
-
-            if (tmpStatus != null)
-                tmpStatus.Dispose();
-            return status;
+            });
         }
 
         public GlTexture CreateSourceTexture(ImageFrame imageFrame)

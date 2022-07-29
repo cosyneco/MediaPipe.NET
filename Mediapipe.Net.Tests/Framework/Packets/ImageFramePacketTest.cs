@@ -6,6 +6,7 @@ using System;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
+using Mediapipe.Net.Framework.Protobuf;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket
@@ -26,8 +27,8 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
             using var statusOrImageFrame = packet.ConsumeImageFrame();
             Assert.True(statusOrImageFrame.Ok());
 
-            using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format, ImageFormat.Unknown);
+            using ImageFrame? imageFrame = statusOrImageFrame.Value();
+            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Unknown);
         }
 
         [Test]
@@ -47,7 +48,7 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format, ImageFormat.Unknown);
+            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Unknown);
             Assert.AreEqual(packet.Timestamp(), timestamp);
         }
         #endregion
@@ -74,9 +75,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void Get_ShouldReturnImageFrame_When_DataIsNotEmpty()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Sbgra, 10, 10));
+            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
             using var imageFrame = packet.GetImageFrame();
-            Assert.AreEqual(imageFrame.Format, ImageFormat.Sbgra);
+            Assert.AreEqual(imageFrame.Format, ImageFormat.Types.Format.Sbgra);
             Assert.AreEqual(imageFrame.Width, 10);
             Assert.AreEqual(imageFrame.Height, 10);
         }
@@ -86,14 +87,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void Consume_ShouldReturnImageFrame()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Sbgra, 10, 10));
+            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
             using var statusOrImageFrame = packet.ConsumeImageFrame();
             Assert.True(statusOrImageFrame.Ok());
 
-            using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Format, ImageFormat.Sbgra);
-            Assert.AreEqual(imageFrame.Width, 10);
-            Assert.AreEqual(imageFrame.Height, 10);
+            using ImageFrame? imageFrame = statusOrImageFrame.Value();
+            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Sbgra);
+            Assert.AreEqual(imageFrame?.Width, 10);
+            Assert.AreEqual(imageFrame?.Height, 10);
         }
         #endregion
 

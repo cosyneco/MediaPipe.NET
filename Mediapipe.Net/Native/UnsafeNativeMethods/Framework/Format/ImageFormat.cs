@@ -3,7 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System.Runtime.InteropServices;
-using Mediapipe.Net.Framework.Format;
+using Mediapipe.Net.Framework.Protobuf;
 
 namespace Mediapipe.Net.Native
 {
@@ -14,11 +14,11 @@ namespace Mediapipe.Net.Native
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_ui(
-            ImageFormat format, int width, int height, uint alignmentBoundary, out void* imageFrame);
+            ImageFormat.Types.Format format, int width, int height, uint alignmentBoundary, out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_ImageFrame__ui_i_i_i_Pui8(
-            ImageFormat format, int width, int height, int widthStep, byte* pixelData,
+            ImageFormat.Types.Format format, int width, int height, int widthStep, byte* pixelData,
             out void* imageFrame);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

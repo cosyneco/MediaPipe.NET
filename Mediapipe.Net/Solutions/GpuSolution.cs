@@ -8,7 +8,6 @@ using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
-using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 
 namespace Mediapipe.Net.Solutions
@@ -50,8 +49,6 @@ namespace Mediapipe.Net.Solutions
                 Timestamp timestamp = new Timestamp(SimulatedTimestamp);
                 Packet packet = PacketFactory.GpuBufferPacket(gpuBuffer, timestamp);
                 inputs.Add(GpuBufferInput, packet);
-
-                return Status.Ok();
             }).AssertOk();
 
             return Process(inputs);
@@ -74,8 +71,6 @@ namespace Mediapipe.Net.Solutions
                 }
                 Gl.Flush();
                 texture.Release();
-
-                return Status.Ok();
             }).AssertOk();
 
             if (outFrame == null)

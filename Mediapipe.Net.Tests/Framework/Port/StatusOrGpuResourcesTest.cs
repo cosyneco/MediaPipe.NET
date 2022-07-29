@@ -15,7 +15,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         public void Status_ShouldReturnOk_When_StatusIsOk()
         {
             using var statusOrGpuResources = GpuResources.Create();
-            Assert.AreEqual(statusOrGpuResources.Status.Code, Status.StatusCode.Ok);
+            Assert.AreEqual(Status.StatusCode.Ok, statusOrGpuResources.Status.Code);
         }
         #endregion
 

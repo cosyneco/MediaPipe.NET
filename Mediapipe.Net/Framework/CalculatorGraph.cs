@@ -17,8 +17,8 @@ namespace Mediapipe.Net.Framework
 {
     public unsafe class CalculatorGraph : MpResourceHandle
     {
-        public delegate void* NativePacketCallback(void* graphPtr, void* packetPtr);
-        public delegate Status PacketCallback(Packet packet);
+        public delegate Status.StatusArgs NativePacketCallback(void* graphPtr, int streamId, void* packetPtr);
+        public delegate void PacketCallback(Packet packet);
 
         public CalculatorGraph() : base()
         {
@@ -26,19 +26,15 @@ namespace Mediapipe.Net.Framework
             Ptr = ptr;
         }
 
-        public CalculatorGraph(string textFormatConfig) : base()
-        {
-            UnsafeNativeMethods.mp_CalculatorGraph__PKc(textFormatConfig, out var ptr).Assert();
-            Ptr = ptr;
-        }
-
-        public CalculatorGraph(byte[] serializedConfig) : base()
+        private CalculatorGraph(byte[] serializedConfig) : base()
         {
             UnsafeNativeMethods.mp_CalculatorGraph__PKc_i(serializedConfig, serializedConfig.Length, out var ptr).Assert();
             Ptr = ptr;
         }
 
         public CalculatorGraph(CalculatorGraphConfig config) : this(config.ToByteArray()) { }
+
+        public CalculatorGraph(string textFormatConfig) : this(CalculatorGraphConfig.Parser.ParseFromTextFormat(textFormatConfig)) { }
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_CalculatorGraph__delete(Ptr);
 
@@ -72,9 +68,9 @@ namespace Mediapipe.Net.Framework
             return config;
         }
 
-        public Status ObserveOutputStream(string streamName, NativePacketCallback nativePacketCallback, bool observeTimestampBounds = false)
+        public Status ObserveOutputStream(string streamName, int streamId, NativePacketCallback nativePacketCallback, bool observeTimestampBounds = false)
         {
-            UnsafeNativeMethods.mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(MpPtr, streamName, nativePacketCallback, observeTimestampBounds, out var statusPtr).Assert();
+            UnsafeNativeMethods.mp_CalculatorGraph__ObserveOutputStream__PKc_PF_b(MpPtr, streamName, streamId, nativePacketCallback, observeTimestampBounds, out var statusPtr).Assert();
 
             GC.KeepAlive(this);
             return new Status(statusPtr);
@@ -82,24 +78,25 @@ namespace Mediapipe.Net.Framework
 
         public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, bool observeTimestampBounds, out GCHandle callbackHandle)
         {
-            NativePacketCallback nativePacketCallback = (_, packetPtr) =>
+            NativePacketCallback nativePacketCallback = (void* graphPtr, int streamId, void* packetPtr) =>
             {
-                Status status;
                 try
                 {
                     Packet packet = new Packet(packetPtr, false);
-                    status = packetCallback(packet);
+                    packetCallback(packet);
+                    // This packet is not being disposed in MediaPipeUnityPlugin?
                     packet.Dispose();
+                    return Status.StatusArgs.Ok();
                 }
                 catch (Exception e)
                 {
-                    status = Status.FailedPrecondition(e.ToString());
+                    return Status.StatusArgs.Internal(e.ToString());
                 }
-                return status.MpPtr;
             };
             callbackHandle = GCHandle.Alloc(nativePacketCallback, GCHandleType.Normal);
 
-            return ObserveOutputStream(streamName, nativePacketCallback, observeTimestampBounds);
+            // Thought: why have a streamId at all if we just put 0 in there?
+            return ObserveOutputStream(streamName, 0, nativePacketCallback, observeTimestampBounds);
         }
 
         public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, out GCHandle callbackHandle)

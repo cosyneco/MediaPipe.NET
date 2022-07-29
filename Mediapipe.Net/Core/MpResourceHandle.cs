@@ -10,7 +10,17 @@ namespace Mediapipe.Net.Core
 {
     public unsafe abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        protected void* Ptr;
+        private void* ptr = null;
+        protected void* Ptr
+        {
+            get => ptr;
+            set
+            {
+                if (value != null && OwnsResource)
+                    throw new InvalidOperationException($"This object owns another resource");
+                ptr = value;
+            }
+        }
 
         protected MpResourceHandle(bool isOwner = true) : this(null, isOwner) { }
 
@@ -34,10 +44,12 @@ namespace Mediapipe.Net.Core
             if (OwnsResource)
                 DeleteMpPtr();
 
+            ReleaseMpPtr();
             TransferOwnership();
         }
 
-        public bool OwnsResource => IsOwner && Ptr != null;
+        protected bool IsResourcePresent => Ptr != null;
+        public bool OwnsResource => IsOwner && IsResourcePresent;
         #endregion
 
         protected override void DisposeUnmanaged()
@@ -62,10 +74,13 @@ namespace Mediapipe.Net.Core
         protected abstract void DeleteMpPtr();
 
         protected delegate MpReturnCode StringOutFunc(void* ptr, out sbyte* strPtr);
-        protected string MarshalStringFromNative(StringOutFunc func)
+        protected string? MarshalStringFromNative(StringOutFunc func)
         {
             func(MpPtr, out sbyte* strPtr).Assert();
             GC.KeepAlive(this);
+
+            if (strPtr == null)
+                return null;
 
             string str = new string(strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
