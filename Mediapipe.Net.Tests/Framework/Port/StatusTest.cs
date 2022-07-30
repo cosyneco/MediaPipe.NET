@@ -15,14 +15,14 @@ namespace Mediapipe.Net.Tests.Framework.Port
         public void Code_ShouldReturnStatusCode_When_StatusIsOk()
         {
             using var status = Status.Ok();
-            Assert.AreEqual(status.Code, Status.StatusCode.Ok);
+            Assert.AreEqual(Status.StatusCode.Ok, status.Code);
         }
 
         [Test]
         public void Code_ShouldReturnStatusCode_When_StatusIsFailedPrecondition()
         {
             using var status = Status.FailedPrecondition();
-            Assert.AreEqual(status.Code, Status.StatusCode.FailedPrecondition);
+            Assert.AreEqual(Status.StatusCode.FailedPrecondition, status.Code);
         }
         #endregion
 
@@ -49,14 +49,14 @@ namespace Mediapipe.Net.Tests.Framework.Port
         public void RawCode_ShouldReturnRawCode_When_StatusIsOk()
         {
             using var status = Status.Ok();
-            Assert.AreEqual(status.RawCode, 0);
+            Assert.AreEqual(0, status.RawCode);
         }
 
         [Test]
         public void RawCode_ShouldReturnRawCode_When_StatusIsFailedPrecondition()
         {
             using var status = Status.FailedPrecondition();
-            Assert.AreEqual(status.RawCode, 9);
+            Assert.AreEqual(9, status.RawCode);
         }
         #endregion
 
@@ -108,8 +108,64 @@ namespace Mediapipe.Net.Tests.Framework.Port
         {
             var message = "Some error";
             using var status = Status.FailedPrecondition(message);
-            Assert.AreEqual(status.ToString(), $"FAILED_PRECONDITION: {message}");
+            Assert.AreEqual($"FAILED_PRECONDITION: {message}", status.ToString());
         }
-        #endregion
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsAborted()
+        {
+            var message = "Some error";
+            using Status status = Status.Aborted(message);
+            Assert.AreEqual($"ABORTED: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsOutOfRange()
+        {
+            string message = "Some error";
+            using Status status = Status.OutOfRange(message);
+            Assert.AreEqual($"OUT_OF_RANGE: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsUnimplemented()
+        {
+            var message = "Some error";
+            using Status status = Status.Unimplemented(message);
+            Assert.AreEqual($"UNIMPLEMENTED: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsInternal()
+        {
+            var message = "Some error";
+            using Status status = Status.Internal(message);
+            Assert.AreEqual($"INTERNAL: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsUnavailable()
+        {
+            var message = "Some error";
+            using Status status = Status.Unavailable(message);
+            Assert.AreEqual($"UNAVAILABLE: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsDataLoss()
+        {
+            var message = "Some error";
+            using Status status = Status.DataLoss(message);
+            Assert.AreEqual($"DATA_LOSS: {message}", status.ToString());
+        }
+
+        [Test]
+        public void ToString_ShouldReturnMessage_When_StatusIsUnauthenticated()
+        {
+            var message = "Some error";
+            using Status status = Status.Unauthenticated(message);
+            Assert.AreEqual($"UNAUTHENTICATED: {message}", status.ToString());
+        }
     }
+    #endregion
 }

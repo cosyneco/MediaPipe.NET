@@ -21,5 +21,19 @@ namespace Mediapipe.Net.Native
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void std_string__swap__Rstr(void* src, void* dst);
         #endregion
+
+        #region StatusOrString
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern void mp_StatusOrString__delete(void* statusOrString);
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern MpReturnCode mp_StatusOrString__status(void* statusOrString, out void* status);
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern MpReturnCode mp_StatusOrString__value(void* statusOrString, out sbyte* value);
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern MpReturnCode mp_StatusOrString__bytearray(void* statusOrString, out sbyte* value, out int size);
+        #endregion
     }
 }

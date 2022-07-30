@@ -16,6 +16,6 @@ namespace Mediapipe.Net.Framework.Port
         public virtual T? ValueOr(T? defaultValue = default) => Ok() ? Value() : defaultValue;
 
         /// <exception cref="MediapipeNetException">Thrown when status is not ok</exception>
-        public abstract T Value();
+        public abstract T? Value();
     }
 }

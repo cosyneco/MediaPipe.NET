@@ -12,6 +12,31 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": ".NET Core Test with debugger (that one crashing test)",
+            "type": "process",
+            "isBackground": true,
+            "command": "dotnet",
+            "args": [
+                "test",
+                "--logger",
+                "console;verbosity=detailed"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/Mediapipe.Net.Tests",
+                "env": {
+                    "VSTEST_HOST_DEBUG": "1"
+                },
+            },
+            "group": "test",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
     ]
 }

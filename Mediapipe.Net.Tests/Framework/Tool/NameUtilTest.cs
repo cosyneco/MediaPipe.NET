@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         public void GetUnusedNodeName_ShouldReturnUniqueName(string configJson, string nameBase, string uniqueName)
         {
             var config = CalculatorGraphConfig.Parser.ParseJson(configJson);
-            Assert.AreEqual(GetUnusedNodeName(config, nameBase), uniqueName);
+            Assert.AreEqual(uniqueName, GetUnusedNodeName(config, nameBase));
         }
 
         [TestCase("{}", "base", "base")]
@@ -28,7 +28,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         public void GetUnusedSidePacketName_ShouldReturnUniqueName(string configJson, string nameBase, string uniqueName)
         {
             var config = CalculatorGraphConfig.Parser.ParseJson(configJson);
-            Assert.AreEqual(GetUnusedSidePacketName(config, nameBase), uniqueName);
+            Assert.AreEqual(uniqueName, GetUnusedSidePacketName(config, nameBase));
         }
 
         [TestCase(@"{""node"":[{""name"":""x""}]}", 0, "x")]
@@ -43,7 +43,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         public void CanonicalNodeName_ShouldReturnCanonicalNodeName_When_NodeIdIsValid(string configJson, int nodeId, string name)
         {
             var config = CalculatorGraphConfig.Parser.ParseJson(configJson);
-            Assert.AreEqual(CanonicalNodeName(config, nodeId), name);
+            Assert.AreEqual(name, CanonicalNodeName(config, nodeId));
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         [TestCase("TAG:1:x", "x")]
         public void ParseNameFromStream_ShouldReturnName_When_InputIsValid(string stream, string name)
         {
-            Assert.AreEqual(ParseNameFromStream(stream), name);
+            Assert.AreEqual(name, ParseNameFromStream(stream));
         }
 
         [TestCase(":stream")]
@@ -99,8 +99,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         {
             var output = ParseTagIndex(tagIndex);
 
-            Assert.AreEqual(output.Item1, tag);
-            Assert.AreEqual(output.Item2, index);
+            Assert.AreEqual(tag, output.Item1);
+            Assert.AreEqual(index, output.Item2);
         }
 
         [TestCase("tag")]
@@ -121,8 +121,8 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         {
             var output = ParseTagIndexFromStream(stream);
 
-            Assert.AreEqual(output.Item1, tag);
-            Assert.AreEqual(output.Item2, index);
+            Assert.AreEqual(tag, output.Item1);
+            Assert.AreEqual(index, output.Item2);
         }
 
         [TestCase(":stream")]
@@ -141,7 +141,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         [TestCase("TAG", 1, "TAG:1")]
         public void CatTag_ShouldReturnTag(string tag, int index, string output)
         {
-            Assert.AreEqual(CatTag(tag, index), output);
+            Assert.AreEqual(output, CatTag(tag, index));
         }
 
         [TestCase("", -1, "x", "x")]
@@ -150,7 +150,7 @@ namespace Mediapipe.Net.Tests.Framework.Tool
         [TestCase("TAG", 1, "x", "TAG:1:x")]
         public void CatStream_ShouldReturnStream(string tag, int index, string name, string output)
         {
-            Assert.AreEqual(CatStream((tag, index), name), output);
+            Assert.AreEqual(output, CatStream((tag, index), name));
         }
     }
 }

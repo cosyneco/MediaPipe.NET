@@ -10,10 +10,10 @@ using Mediapipe.Net.Util;
 namespace Mediapipe.Net.External
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct SerializedProto
+    internal unsafe readonly struct SerializedProto
     {
-        public sbyte* StrPtr;
-        public int Length;
+        public readonly sbyte* StrPtr;
+        public readonly int Length;
 
         // TODO: That Dispose() method is looking very sus...
         // Might wanna investigate if it's better as a child of Disposable.

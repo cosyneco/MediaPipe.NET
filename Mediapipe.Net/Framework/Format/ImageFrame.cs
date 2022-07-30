@@ -3,8 +3,8 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
+using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Format
@@ -22,15 +22,15 @@ namespace Mediapipe.Net.Framework.Format
 
         public ImageFrame(void* imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
 
-        public ImageFrame(ImageFormat format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
-        public ImageFrame(ImageFormat format, int width, int height, uint alignmentBoundary) : base()
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height, uint alignmentBoundary) : base()
         {
             UnsafeNativeMethods.mp_ImageFrame__ui_i_i_ui(format, width, height, alignmentBoundary, out var ptr).Assert();
             Ptr = ptr;
         }
 
-        public unsafe ImageFrame(ImageFormat format, int width, int height, int widthStep, byte[] pixelData) : base()
+        public unsafe ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, byte[] pixelData) : base()
         {
             fixed (byte* pixelDataPtr = pixelData)
             {
@@ -42,7 +42,7 @@ namespace Mediapipe.Net.Framework.Format
             }
         }
 
-        public ImageFrame(ImageFormat format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : base()
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : base()
         {
             fixed (byte* pixelDataPtr = pixelData)
             {
@@ -56,6 +56,111 @@ namespace Mediapipe.Net.Framework.Format
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
 
+        /// <returns>
+        /// The number of channels for a <paramref name="format" />.
+        /// If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        /// Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public static int NumberOfChannelsForFormat(ImageFormat.Types.Format format)
+        {
+            switch (format)
+            {
+                case ImageFormat.Types.Format.Srgb:
+                case ImageFormat.Types.Format.Srgb48:
+                    return 3;
+                case ImageFormat.Types.Format.Srgba:
+                case ImageFormat.Types.Format.Srgba64:
+                case ImageFormat.Types.Format.Sbgra:
+                    return 4;
+                case ImageFormat.Types.Format.Gray8:
+                case ImageFormat.Types.Format.Gray16:
+                    return 1;
+                case ImageFormat.Types.Format.Vec32F1:
+                    return 1;
+                case ImageFormat.Types.Format.Vec32F2:
+                    return 2;
+                case ImageFormat.Types.Format.Lab8:
+                    return 3;
+                case ImageFormat.Types.Format.Ycbcr420P:
+                case ImageFormat.Types.Format.Ycbcr420P10:
+                case ImageFormat.Types.Format.Unknown:
+                default:
+                    return 0;
+            }
+        }
+
+        /// <returns>
+        /// The channel size for a <paramref name="format" />.
+        /// If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        /// Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public static int ChannelSizeForFormat(ImageFormat.Types.Format format)
+        {
+            switch (format)
+            {
+                case ImageFormat.Types.Format.Srgb:
+                case ImageFormat.Types.Format.Srgba:
+                case ImageFormat.Types.Format.Sbgra:
+                    return sizeof(byte);
+                case ImageFormat.Types.Format.Srgb48:
+                case ImageFormat.Types.Format.Srgba64:
+                    return sizeof(ushort);
+                case ImageFormat.Types.Format.Gray8:
+                    return sizeof(byte);
+                case ImageFormat.Types.Format.Gray16:
+                    return sizeof(ushort);
+                case ImageFormat.Types.Format.Vec32F1:
+                case ImageFormat.Types.Format.Vec32F2:
+                    // sizeof float may be wrong since it's platform-dependent, but we assume that it's constant across all supported platforms.
+                    return sizeof(float);
+                case ImageFormat.Types.Format.Lab8:
+                    return sizeof(byte);
+                case ImageFormat.Types.Format.Ycbcr420P:
+                case ImageFormat.Types.Format.Ycbcr420P10:
+                case ImageFormat.Types.Format.Unknown:
+                default:
+                    return 0;
+            }
+        }
+
+        /// <returns>
+        ///   The depth of each channel in bytes for a <paramref name="format" />.
+        ///   If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public static int ByteDepthForFormat(ImageFormat.Types.Format format)
+        {
+            switch (format)
+            {
+                case ImageFormat.Types.Format.Srgb:
+                case ImageFormat.Types.Format.Srgba:
+                case ImageFormat.Types.Format.Sbgra:
+                    return 1;
+                case ImageFormat.Types.Format.Srgb48:
+                case ImageFormat.Types.Format.Srgba64:
+                    return 2;
+                case ImageFormat.Types.Format.Gray8:
+                    return 1;
+                case ImageFormat.Types.Format.Gray16:
+                    return 2;
+                case ImageFormat.Types.Format.Vec32F1:
+                case ImageFormat.Types.Format.Vec32F2:
+                    return 4;
+                case ImageFormat.Types.Format.Lab8:
+                    return 1;
+                case ImageFormat.Types.Format.Ycbcr420P:
+                case ImageFormat.Types.Format.Ycbcr420P10:
+                case ImageFormat.Types.Format.Unknown:
+                default:
+                    return 0;
+            }
+        }
         public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
 
         public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr) > 0;
@@ -68,61 +173,46 @@ namespace Mediapipe.Net.Framework.Format
             return value;
         }
 
-        public ImageFormat Format => SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
+        public ImageFormat.Types.Format Format => SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
 
         public int Width => SafeNativeMethods.mp_ImageFrame__Width(MpPtr);
 
         public int Height => SafeNativeMethods.mp_ImageFrame__Height(MpPtr);
 
-        public int ChannelSize
-        {
-            get
-            {
-                var code = SafeNativeMethods.mp_ImageFrame__ChannelSize(MpPtr, out var value);
+        /// <returns>
+        /// The channel size.
+        /// If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        /// Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int ChannelSize => ChannelSizeForFormat(Format);
 
-                GC.KeepAlive(this);
-                return valueOrFormatException(code, value);
-            }
-        }
+        /// <returns>
+        /// The Number of channels.
+        /// If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        /// Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int NumberOfChannels => NumberOfChannelsForFormat(Format);
 
-        public int NumberOfChannels
-        {
-            get
-            {
-                var code = SafeNativeMethods.mp_ImageFrame__NumberOfChannels(MpPtr, out var value);
-
-                GC.KeepAlive(this);
-                return valueOrFormatException(code, value);
-            }
-        }
-
-        public int ByteDepth
-        {
-            get
-            {
-                var code = SafeNativeMethods.mp_ImageFrame__ByteDepth(MpPtr, out var value);
-
-                GC.KeepAlive(this);
-                return valueOrFormatException(code, value);
-            }
-        }
+        /// <returns>
+        /// The depth of each image channel in bytes.
+        /// If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        /// Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int ByteDepth => ByteDepthForFormat(Format);
 
         public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
 
         public byte* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
 
-        public int PixelDataSize => SafeNativeMethods.mp_ImageFrame__PixelDataSize(MpPtr);
+        public int PixelDataSize => Height * WidthStep;
 
-        public int PixelDataSizeStoredContiguously
-        {
-            get
-            {
-                var code = SafeNativeMethods.mp_ImageFrame__PixelDataSizeStoredContiguously(MpPtr, out var value);
-
-                GC.KeepAlive(this);
-                return valueOrFormatException(code, value);
-            }
-        }
+        public int PixelDataSizeStoredContiguously => Width * Height * ByteDepth * NumberOfChannels;
 
         public void SetToZero()
         {
@@ -136,140 +226,30 @@ namespace Mediapipe.Net.Framework.Format
             GC.KeepAlive(this);
         }
 
-        public byte[] CopyToByteBuffer(int bufferSize)
-            => copyToBuffer<byte>(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui8_i, bufferSize);
+        public void CopyToBuffer(byte[] buffer)
+            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui8_i, buffer);
 
-        public ushort[] CopyToUshortBuffer(int bufferSize)
-            => copyToBuffer<ushort>(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui16_i, bufferSize);
+        public void CopyToBuffer(ushort[] buffer)
+            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui16_i, buffer);
 
-        public float[] CopyToFloatBuffer(int bufferSize)
-            => copyToBuffer<float>(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pf_i, bufferSize);
-
-
-        /// <summary>
-        ///   Get the value of a specific channel only.
-        ///   It's useful when only one channel is used (e.g. Hair Segmentation mask).
-        /// </summary>
-        /// <param name="channelNumber">
-        ///   Specify from which channel the data will be retrieved.
-        ///   For example, if the format is RGB, 0 means R channel, 1 means G channel, and 2 means B channel.
-        /// </param>
-        /// <param name="colors" >
-        ///   The array to which the output data will be written.
-        /// </param>
-        public byte[] GetChannel(int channelNumber, bool flipVertically, byte[] colors)
-        {
-            var format = Format;
-
-            switch (format)
-            {
-                case ImageFormat.Srgb:
-                    if (channelNumber < 0 || channelNumber > 3)
-                        throw new ArgumentException($"There are only 3 channels, but No. {channelNumber} is specified");
-                    readChannel(MutablePixelData, channelNumber, 3, Width, Height, WidthStep, flipVertically, colors);
-                    return colors;
-                case ImageFormat.Srgba:
-                    if (channelNumber < 0 || channelNumber > 4)
-                        throw new ArgumentException($"There are only 4 channels, but No. {channelNumber} is specified");
-                    readChannel(MutablePixelData, channelNumber, 4, Width, Height, WidthStep, flipVertically, colors);
-                    return colors;
-                default:
-                    throw new NotImplementedException($"Currently only SRGB and SRGBA format are supported: {format}");
-            }
-        }
-
-        /// <summary>
-        ///   Get the value of a specific channel only.
-        ///   It's useful when only one channel is used (e.g. Hair Segmentation mask).
-        /// </summary>
-        /// <param name="channelNumber">
-        ///   Specify from which channel the data will be retrieved.
-        ///   For example, if the format is RGB, 0 means R channel, 1 means G channel, and 2 means B channel.
-        /// </param>
-        public byte[] GetChannel(int channelNumber, bool flipVertically)
-            => GetChannel(channelNumber, flipVertically, new byte[Width * Height]);
+        public void CopyToBuffer(float[] buffer)
+            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pf_i, buffer);
 
         private delegate MpReturnCode CopyToBufferHandler<T>(void* ptr, T* buffer, int bufferSize)
             where T : unmanaged;
 
-        private T[] copyToBuffer<T>(CopyToBufferHandler<T> handler, int bufferSize)
+        private void copyToBuffer<T>(CopyToBufferHandler<T> handler, T[] buffer)
             where T : unmanaged
         {
-            var buffer = new T[bufferSize];
-
             unsafe
             {
                 fixed (T* bufferPtr = buffer)
                 {
-                    handler(MpPtr, bufferPtr, bufferSize).Assert();
+                    handler(MpPtr, bufferPtr, buffer.Length).Assert();
                 }
             }
 
             GC.KeepAlive(this);
-            return buffer;
-        }
-
-        private T valueOrFormatException<T>(MpReturnCode code, T value)
-        {
-            try
-            {
-                code.Assert();
-                return value;
-            }
-            catch (MediapipeException)
-            {
-                throw new FormatException($"Invalid image format: {Format}");
-            }
-        }
-
-        /// <remarks>
-        /// In the source array, pixels are laid out left to right, top to bottom,
-        /// but in the returned array, left to right, top to bottom.
-        /// </remarks>
-        private static void readChannel(byte* ptr, int channelNumber, int channelCount, int width, int height, int widthStep, bool flipVertically, byte[] colors)
-        {
-            if (colors.Length != width * height)
-                throw new ArgumentException("colors length is invalid");
-            var padding = widthStep - channelCount * width;
-
-            unsafe
-            {
-                fixed (byte* dest = colors)
-                {
-                    var pSrc = ptr;
-                    pSrc += channelNumber;
-
-                    if (flipVertically)
-                    {
-                        var pDest = dest + colors.Length - 1;
-
-                        for (int i = 0; i < height; i++)
-                        {
-                            for (int j = 0; j < width; j++)
-                            {
-                                *pDest-- = *pSrc;
-                                pSrc += channelCount;
-                            }
-                            pSrc += padding;
-                        }
-                    }
-                    else
-                    {
-                        var pDest = dest + width * (height - 1);
-
-                        for (int i = 0; i < height; i++)
-                        {
-                            for (int j = 0; j < width; j++)
-                            {
-                                *pDest++ = *pSrc;
-                                pSrc += channelCount;
-                            }
-                            pSrc += padding;
-                            pDest -= 2 * width;
-                        }
-                    }
-                }
-            }
         }
     }
 }

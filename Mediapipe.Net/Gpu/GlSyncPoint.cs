@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Gpu
     {
         private SharedPtrHandle? sharedPtrHandle;
 
-        public GlSyncPoint(void* ptr) : base(ptr)
+        public GlSyncPoint(void* ptr) : base()
         {
             sharedPtrHandle = new SharedGlSyncPointPtr(ptr);
             Ptr = sharedPtrHandle.Get();

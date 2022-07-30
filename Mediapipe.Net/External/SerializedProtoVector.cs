@@ -10,19 +10,13 @@ using Mediapipe.Net.Native;
 namespace Mediapipe.Net.External
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct SerializedProtoVector
+    internal unsafe readonly struct SerializedProtoVector
     {
-        public SerializedProto* Data;
-        public int Size;
+        public readonly SerializedProto* Data;
+        public readonly int Size;
 
-        // TODO: This is looking just as sus as SerializedProto.Dispose().
-        // Should be investigated in the same way.
-        public void Dispose()
-        {
-            for (int i = 0; i < Size; i++)
-                Data[i].Dispose();
-            UnsafeNativeMethods.mp_api_SerializedProtoArray__delete(Data);
-        }
+        // The array element freeing loop has been moved to MediaPipe.NET.Runtime.
+        public void Dispose() => UnsafeNativeMethods.mp_api_SerializedProtoArray__delete(Data, Size);
 
         public List<T> Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {

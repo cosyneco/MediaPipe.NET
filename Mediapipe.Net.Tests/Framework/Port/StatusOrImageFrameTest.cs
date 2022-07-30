@@ -6,6 +6,7 @@ using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
+using Mediapipe.Net.Framework.Protobuf;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.Port
@@ -18,7 +19,7 @@ namespace Mediapipe.Net.Tests.Framework.Port
         {
             using var statusOrImageFrame = initializeSubject();
             Assert.True(statusOrImageFrame.Ok());
-            Assert.AreEqual(statusOrImageFrame.Status.Code, Status.StatusCode.Ok);
+            Assert.AreEqual(Status.StatusCode.Ok, statusOrImageFrame.Status.Code);
         }
         #endregion
 
@@ -48,15 +49,15 @@ namespace Mediapipe.Net.Tests.Framework.Port
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame.Width, 10);
-            Assert.AreEqual(imageFrame.Height, 10);
+            Assert.AreEqual(10, imageFrame.Width);
+            Assert.AreEqual(10, imageFrame.Height);
             Assert.True(statusOrImageFrame.IsDisposed);
         }
         #endregion
 
         private static StatusOrImageFrame initializeSubject()
         {
-            var imageFrame = new ImageFrame(ImageFormat.Sbgra, 10, 10);
+            var imageFrame = new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10);
             var packet = PacketFactory.ImageFramePacket(imageFrame, new Timestamp(1));
 
             return (StatusOrImageFrame)packet.ConsumeImageFrame();
