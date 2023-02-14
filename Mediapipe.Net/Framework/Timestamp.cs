@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework
 {
     public unsafe class Timestamp : MpResourceHandle, IEquatable<Timestamp>
     {
-        public Timestamp(void* ptr) : base(ptr) { }
+        public Timestamp(IntPtr ptr) : base(ptr) { }
 
         public Timestamp(long value) : base()
         {

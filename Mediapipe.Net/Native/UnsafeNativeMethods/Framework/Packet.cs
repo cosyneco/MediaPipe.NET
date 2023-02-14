@@ -27,16 +27,16 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp_Packet__Timestamp(IntPtr packet, out IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__DebugString(IntPtr packet, out sbyte* str);
+        public static extern MpReturnCode mp_Packet__DebugString(IntPtr packet, out IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__RegisteredTypeName(IntPtr packet, out sbyte* str);
+        public static extern MpReturnCode mp_Packet__RegisteredTypeName(IntPtr packet, out IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__ConsumeString(IntPtr packet, out IntPtr statusOrValue);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__DebugTypeName(IntPtr packet, out sbyte* str);
+        public static extern MpReturnCode mp_Packet__DebugTypeName(IntPtr packet, out IntPtr str);
         #endregion
 
         #region Bool
@@ -123,10 +123,10 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp__MakeStringPacket_At__PKc_i_Rt(byte[] bytes, int size, IntPtr timestamp, out IntPtr packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetString(IntPtr packet, out sbyte* str);
+        public static extern MpReturnCode mp_Packet__GetString(IntPtr packet, out IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetByteString(IntPtr packet, out sbyte* str, out int size);
+        public static extern MpReturnCode mp_Packet__GetByteString(IntPtr packet, out IntPtr str, out int size);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__ValidateAsString(IntPtr packet, out IntPtr status);

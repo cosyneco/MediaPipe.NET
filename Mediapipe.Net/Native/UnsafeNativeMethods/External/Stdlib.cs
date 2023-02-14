@@ -10,34 +10,34 @@ namespace Mediapipe.Net.Native
     internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void delete_array__PKc(sbyte* str);
+        public static extern void delete_array__PKc(IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void delete_array__Pf(IntPtr str);
 
         #region String
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__delete(void* str);
+        public static extern void std_string__delete(IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out void* str);
+        public static extern MpReturnCode std_string__PKc_i(byte[] bytes, int size, out IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void std_string__swap__Rstr(void* src, void* dst);
+        public static extern void std_string__swap__Rstr(IntPtr src, IntPtr dst);
         #endregion
 
         #region StatusOrString
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern void mp_StatusOrString__delete(void* statusOrString);
+        public static extern void mp_StatusOrString__delete(IntPtr statusOrString);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrString__status(void* statusOrString, out void* status);
+        public static extern MpReturnCode mp_StatusOrString__status(IntPtr statusOrString, out IntPtr status);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrString__value(void* statusOrString, out sbyte* value);
+        public static extern MpReturnCode mp_StatusOrString__value(IntPtr statusOrString, out IntPtr value);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_StatusOrString__bytearray(void* statusOrString, out sbyte* value, out int size);
+        public static extern MpReturnCode mp_StatusOrString__bytearray(IntPtr statusOrString, out IntPtr value, out int size);
         #endregion
     }
 }

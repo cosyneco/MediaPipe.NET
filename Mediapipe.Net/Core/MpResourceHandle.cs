@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Runtime.InteropServices;
 using Mediapipe.Net.Native;
 using static Mediapipe.Net.Native.MpReturnCodeExtension;
 
@@ -73,16 +74,16 @@ namespace Mediapipe.Net.Core
         /// <remarks>In most cases, this method should not be called directly.</remarks>
         protected abstract void DeleteMpPtr();
 
-        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out sbyte* strPtr);
+        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out IntPtr strPtr);
         protected string? MarshalStringFromNative(StringOutFunc func)
         {
-            func(MpPtr, out sbyte* strPtr).Assert();
+            func(MpPtr, out IntPtr strPtr).Assert();
             GC.KeepAlive(this);
 
-            if (strPtr == null)
+            if (strPtr == IntPtr.Zero)
                 return null;
 
-            string str = new string(strPtr);
+            var str = Marshal.PtrToStringAnsi(strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return str;

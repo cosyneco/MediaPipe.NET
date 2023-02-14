@@ -23,21 +23,20 @@ namespace Mediapipe.Net.Framework.Packets
 
         public int Size => SafeNativeMethods.mp_SidePacket__size(MpPtr);
 
-        /// TODO: force T to be Packet
-        /// <remarks>Make sure that the type of the returned packet value is correct</remarks>
-        public Packet? At(string key)
+        public TPacket? At<TPacket, TValue>(string key) where TPacket : Packet<TValue>, new()
         {
-            UnsafeNativeMethods.mp_SidePacket__at__PKc(MpPtr, key, out var packetPtr).Assert();
+            UnsafeNativeMethods.mp_SidePacket__at__PKc(MpPtr, key, out var packetPtr);
 
-            if (packetPtr == null)
-                return default; // null
+            if (packetPtr == IntPtr.Zero)
+            {
+                return default;
+            }
 
             GC.KeepAlive(this);
-
-            return new Packet(packetPtr, true);
+            return Packet<TValue>.Create<TPacket>(packetPtr, true);
         }
 
-        public void Emplace(string key, Packet packet)
+        public void Emplace<T>(string key, Packet<T> packet)
         {
             UnsafeNativeMethods.mp_SidePacket__emplace__PKc_Rp(MpPtr, key, packet.MpPtr).Assert();
             packet.Dispose(); // respect move semantics
