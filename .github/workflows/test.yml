@@ -28,10 +28,10 @@ jobs:
           - { name: Linux, runner: ubuntu-latest, runtime: linux-x64 }
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup .NET 6
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
 
