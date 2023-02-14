@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Runtime.InteropServices;
 
 namespace Mediapipe.Net.Native
@@ -10,6 +11,9 @@ namespace Mediapipe.Net.Native
     {
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern void delete_array__PKc(sbyte* str);
+
+        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
+        public static extern void delete_array__Pf(IntPtr str);
 
         #region String
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

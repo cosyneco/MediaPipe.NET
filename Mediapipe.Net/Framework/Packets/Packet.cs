@@ -11,6 +11,53 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
+    public abstract class Packet<T> : MpResourceHandle
+    {
+        protected Packet() : base() { }
+
+        protected Packet(bool isOwner) : base(isOwner)
+        {
+            if (isOwner)
+            {
+                unsafe
+                {
+                    UnsafeNativeMethods.mp_Packet__(out var ptr).Assert();
+                    Ptr = ptr;
+                }
+            }
+        }
+
+        protected Packet(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+        public static TPacket? Create<TPacket>(IntPtr packetPtr, bool isOwner) where TPacket : Packet<T>, new()
+        {
+            return Activator.CreateInstance(typeof(TPacket), packetPtr, isOwner) as TPacket;
+        }
+
+        public void SwitchNativePtr(IntPtr nativePtr)
+        {
+            if (IsOwner)
+                throw new InvalidOperationException("This operation is only permitted when the packet instance is referenced");
+
+            Ptr = nativePtr;
+        }
+
+        public abstract T Get();
+
+        public abstract StatusOr<T> Consume();
+
+        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr) > 0;
+
+        public Status ValidateAsProtoMessageLite()
+        {
+            UnsafeNativeMethods.mp_Packet__ValidateAsProtoMessageLite(MpPtr, out var statusPtr).Assert();
+
+            GC.KeepAlive(this);
+            return new Status(statusPtr);
+        }
+    }
+
+    [Obsolete("Non-generic Packets are no longer supported. Use the generic version instead.")]
     public unsafe partial class Packet : MpResourceHandle
     {
         public PacketType PacketType { get; internal set; }
