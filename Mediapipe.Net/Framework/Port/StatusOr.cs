@@ -3,12 +3,13 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using Mediapipe.Net.Core;
+using System;
 
 namespace Mediapipe.Net.Framework.Port
 {
     public unsafe abstract class StatusOr<T> : MpResourceHandle
     {
-        public StatusOr(void* ptr) : base(ptr) { }
+        public StatusOr(IntPtr ptr) : base(ptr) { }
 
         public abstract Status Status { get; }
         public virtual bool Ok() => Status.Ok();

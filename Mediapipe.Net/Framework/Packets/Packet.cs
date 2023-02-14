@@ -40,7 +40,7 @@ namespace Mediapipe.Net.Framework.Packets
             Ptr = nativePtr;
         }
 
-        public abstract T Get();
+        public abstract T? Get();
 
         public abstract StatusOr<T> Consume();
 
@@ -56,7 +56,7 @@ namespace Mediapipe.Net.Framework.Packets
 
         // This was marked as a TODO on MPU.
         // I'm not sure if this is the correct approach
-        public abstract T ValidateAsType();
+        public abstract Status ValidateAsType();
 
         public Timestamp Timestamp()
         {
