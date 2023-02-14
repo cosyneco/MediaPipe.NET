@@ -42,7 +42,7 @@ namespace Mediapipe.Net.Framework.ValidatedGraphConfig
 
         public bool Initialized() => SafeNativeMethods.mp_ValidatedGraphConfig__Initialized(MpPtr) > 0;
 
-        public Status ValidateRequiredSidePackets(SidePackets sidePackets)
+        public Status ValidateRequiredSidePackets(SidePacket sidePackets)
         {
             UnsafeNativeMethods.mp_ValidatedGraphConfig__ValidateRequiredSidePackets__Rsp(MpPtr, sidePackets.MpPtr, out var statusPtr).Assert();
 

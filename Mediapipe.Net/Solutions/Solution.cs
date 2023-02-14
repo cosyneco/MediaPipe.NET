@@ -22,7 +22,7 @@ namespace Mediapipe.Net.Solutions
     {
         protected readonly string GraphPath;
         protected readonly CalculatorGraph Graph;
-        protected readonly SidePackets? SidePackets;
+        protected readonly SidePacket? SidePackets;
 
         protected readonly IDictionary<string, object?> GraphOutputs;
         private readonly IDictionary<string, GCHandle> observeStreamHandles;
@@ -32,7 +32,7 @@ namespace Mediapipe.Net.Solutions
         protected Solution(
             string graphPath,
             IDictionary<string, PacketType> outputs,
-            SidePackets? sidePackets)
+            SidePacket? sidePackets)
         {
             GraphPath = graphPath;
             Graph = new CalculatorGraph(File.ReadAllText(GraphPath));

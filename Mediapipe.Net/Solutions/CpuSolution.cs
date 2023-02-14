@@ -18,7 +18,7 @@ namespace Mediapipe.Net.Solutions
     {
         public readonly string ImageFrameInput;
 
-        protected CpuSolution(string graphPath, string imageFrameInput, IDictionary<string, PacketType> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
+        protected CpuSolution(string graphPath, string imageFrameInput, IDictionary<string, PacketType> outputs, SidePacket? sidePackets) : base(graphPath, outputs, sidePackets)
         {
             ImageFrameInput = imageFrameInput;
         }

@@ -25,9 +25,9 @@ namespace Mediapipe.Net.Solutions
             { output, PacketType }
         };
 
-        private static SidePackets toSidePackets(bool staticImageMode, int numFaces, bool refineLandmarks)
+        private static SidePacket toSidePackets(bool staticImageMode, int numFaces, bool refineLandmarks)
         {
-            SidePackets sidePackets = new();
+            SidePacket sidePackets = new();
             sidePackets.Emplace("use_prev_landmarks", PacketFactory.BoolPacket(!staticImageMode));
             sidePackets.Emplace("num_faces", PacketFactory.IntPacket(numFaces));
             sidePackets.Emplace("with_attention", PacketFactory.BoolPacket(refineLandmarks));

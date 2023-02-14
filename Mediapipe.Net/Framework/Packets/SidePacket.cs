@@ -11,9 +11,9 @@ namespace Mediapipe.Net.Framework.Packets
     /// <summary>
     /// Map of side packets.
     /// </summary>
-    public unsafe class SidePackets : MpResourceHandle
+    public unsafe class SidePacket : MpResourceHandle
     {
-        public SidePackets() : base()
+        public SidePacket() : base()
         {
             UnsafeNativeMethods.mp_SidePacket__(out var ptr).Assert();
             Ptr = ptr;

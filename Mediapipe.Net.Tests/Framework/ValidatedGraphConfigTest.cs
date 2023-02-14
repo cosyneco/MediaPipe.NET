@@ -170,7 +170,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(pass_through_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -186,7 +186,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(pass_through_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     sidePackets.Emplace("in", PacketFactory.IntPacket(0));
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
@@ -203,7 +203,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(flow_limiter_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -219,7 +219,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -235,7 +235,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
                     sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));
@@ -253,7 +253,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
                     sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));
@@ -272,7 +272,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
                     sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));

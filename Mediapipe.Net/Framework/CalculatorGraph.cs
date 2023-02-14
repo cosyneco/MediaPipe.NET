@@ -47,7 +47,7 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status Initialize(CalculatorGraphConfig config, SidePackets sidePackets)
+        public Status Initialize(CalculatorGraphConfig config, SidePacket sidePackets)
         {
             var bytes = config.ToByteArray();
             UnsafeNativeMethods.mp_CalculatorGraph__Initialize__PKc_i_Rsp(MpPtr, bytes, bytes.Length, sidePackets.MpPtr, out var statusPtr).Assert();
@@ -110,9 +110,9 @@ namespace Mediapipe.Net.Framework
             return new StatusOrPoller(statusOrPollerPtr);
         }
 
-        public Status Run(SidePackets? sidePacket = null)
+        public Status Run(SidePacket? sidePacket = null)
         {
-            sidePacket ??= new SidePackets();
+            sidePacket ??= new SidePacket();
             UnsafeNativeMethods.mp_CalculatorGraph__Run__Rsp(MpPtr, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(sidePacket);
@@ -120,9 +120,9 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status StartRun(SidePackets? sidePacket = null)
+        public Status StartRun(SidePacket? sidePacket = null)
         {
-            sidePacket ??= new SidePackets();
+            sidePacket ??= new SidePacket();
             UnsafeNativeMethods.mp_CalculatorGraph__StartRun__Rsp(MpPtr, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(sidePacket);

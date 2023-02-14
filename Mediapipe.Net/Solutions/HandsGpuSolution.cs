@@ -29,9 +29,9 @@ namespace Mediapipe.Net.Solutions
 
         public static readonly PacketType PacketType = PacketType.NormalizedLandmarkListVector;
 
-        private static SidePackets toSidePackets(bool staticImageMode, int maxNumHands, int modelComplexity)
+        private static SidePacket toSidePackets(bool staticImageMode, int maxNumHands, int modelComplexity)
         {
-            SidePackets sidePackets = new();
+            SidePacket sidePackets = new();
             sidePackets.Emplace("use_prev_landmarks", PacketFactory.BoolPacket(!staticImageMode));
             sidePackets.Emplace("num_hands", PacketFactory.IntPacket(maxNumHands));
             sidePackets.Emplace("model_complexity", PacketFactory.IntPacket(modelComplexity));

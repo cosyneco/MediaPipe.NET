@@ -92,7 +92,7 @@ output_stream: ""out""
         [Test]
         public void Initialize_ShouldReturnOk_When_CalledWithConfigAndSidePacket_And_ConfigIsNotSet()
         {
-            using var sidePackets = new SidePackets();
+            using var sidePackets = new SidePacket();
             sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
 
             using var graph = new CalculatorGraph();
@@ -105,7 +105,7 @@ output_stream: ""out""
         [Test]
         public void Initialize_ShouldReturnInternalError_When_CalledWithConfigAndSidePacket_And_ConfigIsSet()
         {
-            using var sidePackets = new SidePackets();
+            using var sidePackets = new SidePacket();
             sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
 
             using var graph = new CalculatorGraph(valid_config_text);

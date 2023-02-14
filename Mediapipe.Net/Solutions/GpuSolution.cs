@@ -25,7 +25,7 @@ namespace Mediapipe.Net.Solutions
         private readonly GpuResources gpuResources;
         private readonly GlCalculatorHelper gpuHelper;
 
-        protected GpuSolution(string graphPath, string gpuBufferInput, IDictionary<string, PacketType> outputs, SidePackets? sidePackets) : base(graphPath, outputs, sidePackets)
+        protected GpuSolution(string graphPath, string gpuBufferInput, IDictionary<string, PacketType> outputs, SidePacket? sidePackets) : base(graphPath, outputs, sidePackets)
         {
             GpuBufferInput = gpuBufferInput;
 

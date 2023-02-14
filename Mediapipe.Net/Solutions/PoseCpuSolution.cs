@@ -25,14 +25,14 @@ namespace Mediapipe.Net.Solutions
             { "segmentation_mask", PacketType.ImageFrame },
         };
 
-        private static SidePackets toSidePackets(
+        private static SidePacket toSidePackets(
             bool staticImageMode,
             int modelComplexity,
             bool smoothLandmarks,
             bool enableSegmentation,
             bool smoothSegmentation)
         {
-            SidePackets sidePackets = new();
+            SidePacket sidePackets = new();
             sidePackets.Emplace("use_prev_landmarks", PacketFactory.BoolPacket(!staticImageMode));
             sidePackets.Emplace("model_complexity", PacketFactory.IntPacket(modelComplexity));
             sidePackets.Emplace("smooth_landmarks", PacketFactory.BoolPacket(smoothLandmarks && !staticImageMode));
