@@ -11,8 +11,8 @@
 
   <ItemGroup Label="Package References">
     <PackageReference Include="CommandLineParser" Version="2.9.0-preview1" />
-    <PackageReference Include="Mediapipe.Net.Framework.Protobuf" Version="1.0.0-alpha2" />
-    <PackageReference Include="Mediapipe.Net.Runtime.CPU" Version="1.0.0-alpha2" />
+    <PackageReference Include="Mediapipe.Net.Framework.Protobuf" Version="0.9.1-mpu-0.9.1-20230214" />
+    <PackageReference Include="Mediapipe.Net.Runtime.CPU" Version="0.9.1-mpu-0.9.1-20230214" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="ppy.osu.Framework" Version="2022.707.0" />
