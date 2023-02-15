@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Core
 {
     public unsafe abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        private IntPtr Ptr = IntPtr.Zero;
+        private IntPtr ptr = IntPtr.Zero;
         protected IntPtr Ptr
         {
             get => Ptr;
@@ -19,7 +19,7 @@ namespace Mediapipe.Net.Core
             {
                 if (value != IntPtr.Zero && OwnsResource)
                     throw new InvalidOperationException($"This object owns another resource");
-                Ptr = value;
+                ptr = value;
             }
         }
 
