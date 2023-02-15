@@ -14,7 +14,7 @@ namespace Mediapipe.Net.Core
         private IntPtr ptr = IntPtr.Zero;
         protected IntPtr Ptr
         {
-            get => Ptr;
+            get => ptr;
             set
             {
                 if (value != IntPtr.Zero && OwnsResource)
@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Core
             get
             {
                 ThrowIfDisposed();
-                return Ptr;
+                return ptr;
             }
         }
 
@@ -49,7 +49,7 @@ namespace Mediapipe.Net.Core
             TransferOwnership();
         }
 
-        protected bool IsResourcePresent => Ptr != IntPtr.Zero;
+        protected bool IsResourcePresent => ptr != IntPtr.Zero;
         public bool OwnsResource => IsOwner && IsResourcePresent;
         #endregion
 
@@ -66,7 +66,7 @@ namespace Mediapipe.Net.Core
         /// Forgets the pointer address.
         /// After calling this method, <see ref="OwnsResource" /> will return false.
         /// </summary>
-        protected void ReleaseMpPtr() => Ptr = IntPtr.Zero;
+        protected void ReleaseMpPtr() => ptr = IntPtr.Zero;
 
         /// <summary>
         /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.
