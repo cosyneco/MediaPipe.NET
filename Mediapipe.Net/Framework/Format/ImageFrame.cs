@@ -14,13 +14,15 @@ namespace Mediapipe.Net.Framework.Format
         public static readonly uint DefaultAlignmentBoundary = 16;
         public static readonly uint GlDefaultAlignmentBoundary = 4;
 
+        public delegate void Deleter(IntPtr ptr);
+
         public ImageFrame() : base()
         {
             UnsafeNativeMethods.mp_ImageFrame__(out var ptr).Assert();
             Ptr = ptr;
         }
 
-        public ImageFrame(void* imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
+        public ImageFrame(IntPtr imageFramePtr, bool isOwner = true) : base(imageFramePtr, isOwner) { }
 
         public ImageFrame(ImageFormat.Types.Format format, int width, int height) : this(format, width, height, DefaultAlignmentBoundary) { }
 
@@ -30,38 +32,28 @@ namespace Mediapipe.Net.Framework.Format
             Ptr = ptr;
         }
 
-        public unsafe ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, byte[] pixelData) : base()
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, IntPtr pixelData, Deleter deleter) : base()
         {
-            fixed (byte* pixelDataPtr = pixelData)
+            unsafe
             {
-                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8(
-                    format, width, height, widthStep,
-                    pixelDataPtr,
-                    out var ptr).Assert();
+                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8_PF(format, width, height, widthStep, pixelData, deleter, out var ptr).Assert();
                 Ptr = ptr;
             }
         }
 
-        public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : base()
+        protected override void DeleteMpPtr()
         {
-            fixed (byte* pixelDataPtr = pixelData)
-            {
-                UnsafeNativeMethods.mp_ImageFrame__ui_i_i_i_Pui8(
-                    format, width, height, widthStep,
-                    pixelDataPtr,
-                    out var ptr).Assert();
-                Ptr = ptr;
-            }
+            UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
         }
 
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
+        private static void voidDeleter(IntPtr _) { }
 
         /// <returns>
-        /// The number of channels for a <paramref name="format" />.
-        /// If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
+        ///   The number of channels for a <paramref name="format" />.
+        ///   If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
         /// </returns>
         /// <remarks>
-        /// Unlike the original implementation, this API won't signal SIGABRT.
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
         /// </remarks>
         public static int NumberOfChannelsForFormat(ImageFormat.Types.Format format)
         {
@@ -92,11 +84,11 @@ namespace Mediapipe.Net.Framework.Format
         }
 
         /// <returns>
-        /// The channel size for a <paramref name="format" />.
-        /// If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
+        ///   The channel size for a <paramref name="format" />.
+        ///   If channels don't make sense in the <paramref name="format" />, returns <c>0</c>.
         /// </returns>
         /// <remarks>
-        /// Unlike the original implementation, this API won't signal SIGABRT.
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
         /// </remarks>
         public static int ChannelSizeForFormat(ImageFormat.Types.Format format)
         {
@@ -161,9 +153,16 @@ namespace Mediapipe.Net.Framework.Format
                     return 0;
             }
         }
-        public bool IsEmpty => SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr) > 0;
 
-        public bool IsContiguous => SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr) > 0;
+        public bool IsEmpty()
+        {
+            return SafeNativeMethods.mp_ImageFrame__IsEmpty(MpPtr);
+        }
+
+        public bool IsContiguous()
+        {
+            return SafeNativeMethods.mp_ImageFrame__IsContiguous(MpPtr);
+        }
 
         public bool IsAligned(uint alignmentBoundary)
         {
@@ -173,46 +172,83 @@ namespace Mediapipe.Net.Framework.Format
             return value;
         }
 
-        public ImageFormat.Types.Format Format => SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
+        public ImageFormat.Types.Format Format()
+        {
+            return SafeNativeMethods.mp_ImageFrame__Format(MpPtr);
+        }
 
-        public int Width => SafeNativeMethods.mp_ImageFrame__Width(MpPtr);
+        public int Width()
+        {
+            return SafeNativeMethods.mp_ImageFrame__Width(MpPtr);
+        }
 
-        public int Height => SafeNativeMethods.mp_ImageFrame__Height(MpPtr);
-
-        /// <returns>
-        /// The channel size.
-        /// If channels don't make sense, returns <c>0</c>.
-        /// </returns>
-        /// <remarks>
-        /// Unlike the original implementation, this API won't signal SIGABRT.
-        /// </remarks>
-        public int ChannelSize => ChannelSizeForFormat(Format);
-
-        /// <returns>
-        /// The Number of channels.
-        /// If channels don't make sense, returns <c>0</c>.
-        /// </returns>
-        /// <remarks>
-        /// Unlike the original implementation, this API won't signal SIGABRT.
-        /// </remarks>
-        public int NumberOfChannels => NumberOfChannelsForFormat(Format);
+        public int Height()
+        {
+            return SafeNativeMethods.mp_ImageFrame__Height(MpPtr);
+        }
 
         /// <returns>
-        /// The depth of each image channel in bytes.
-        /// If channels don't make sense, returns <c>0</c>.
+        ///   The channel size.
+        ///   If channels don't make sense, returns <c>0</c>.
         /// </returns>
         /// <remarks>
-        /// Unlike the original implementation, this API won't signal SIGABRT.
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
         /// </remarks>
-        public int ByteDepth => ByteDepthForFormat(Format);
+        public int ChannelSize()
+        {
+            return ChannelSizeForFormat(Format());
+        }
 
-        public int WidthStep => SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
+        /// <returns>
+        ///   The Number of channels.
+        ///   If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int NumberOfChannels()
+        {
+            return NumberOfChannelsForFormat(Format());
+        }
 
-        public byte* MutablePixelData => SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        /// <returns>
+        ///   The depth of each image channel in bytes.
+        ///   If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int ByteDepth()
+        {
+            return ByteDepthForFormat(Format());
+        }
 
-        public int PixelDataSize => Height * WidthStep;
+        public int WidthStep()
+        {
+            return SafeNativeMethods.mp_ImageFrame__WidthStep(MpPtr);
+        }
 
-        public int PixelDataSizeStoredContiguously => Width * Height * ByteDepth * NumberOfChannels;
+        public IntPtr MutablePixelData()
+        {
+            return SafeNativeMethods.mp_ImageFrame__MutablePixelData(MpPtr);
+        }
+
+        public int PixelDataSize()
+        {
+            return Height() * WidthStep();
+        }
+
+        /// <returns>
+        ///   The total size the pixel data would take if it was stored contiguously (which may not be the case).
+        ///   If channels don't make sense, returns <c>0</c>.
+        /// </returns>
+        /// <remarks>
+        ///   Unlike the original implementation, this API won't signal SIGABRT.
+        /// </remarks>
+        public int PixelDataSizeStoredContiguously()
+        {
+            return Width() * Height() * ByteDepth() * NumberOfChannels();
+        }
 
         public void SetToZero()
         {
@@ -227,25 +263,29 @@ namespace Mediapipe.Net.Framework.Format
         }
 
         public void CopyToBuffer(byte[] buffer)
-            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui8_i, buffer);
+        {
+            copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui8_i, buffer);
+        }
 
         public void CopyToBuffer(ushort[] buffer)
-            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui16_i, buffer);
+        {
+            copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pui16_i, buffer);
+        }
 
         public void CopyToBuffer(float[] buffer)
-            => copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pf_i, buffer);
+        {
+            copyToBuffer(UnsafeNativeMethods.mp_ImageFrame__CopyToBuffer__Pf_i, buffer);
+        }
 
-        private delegate MpReturnCode CopyToBufferHandler<T>(void* ptr, T* buffer, int bufferSize)
-            where T : unmanaged;
+        private delegate MpReturnCode CopyToBufferHandler(IntPtr ptr, IntPtr buffer, int bufferSize);
 
-        private void copyToBuffer<T>(CopyToBufferHandler<T> handler, T[] buffer)
-            where T : unmanaged
+        private void copyToBuffer<T>(CopyToBufferHandler handler, T[] buffer) where T : unmanaged
         {
             unsafe
             {
                 fixed (T* bufferPtr = buffer)
                 {
-                    handler(MpPtr, bufferPtr, buffer.Length).Assert();
+                    handler(MpPtr, (IntPtr)bufferPtr, buffer.Length).Assert();
                 }
             }
 
