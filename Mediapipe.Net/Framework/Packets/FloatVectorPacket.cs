@@ -2,13 +2,11 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Native;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mediapipe.Net.Framework.Packets
 {
@@ -42,6 +40,51 @@ namespace Mediapipe.Net.Framework.Packets
 
     public class FloatVectorPacket : Packet<List<float>>
     {
+        public FloatVectorPacket() : base(true) { }
 
+        public FloatVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+        public FloatVectorPacket(float[] value) : base()
+        {
+            UnsafeNativeMethods.mp__MakeFloatArrayPacket__Pf_i(value, value.Length, out var ptr).Assert();
+            Ptr = ptr;
+        }
+
+        public FloatVectorPacket(List<float> value) : base()
+        {
+            UnsafeNativeMethods.mp__MakeFloatVectorPacket__Pf_i(value.ToArray(), value.Count, out var ptr).Assert();
+            Ptr = ptr;
+        }
+
+        public FloatVectorPacket(List<float> value, Timestamp timestamp) : base()
+        {
+            UnsafeNativeMethods.mp__MakeFloatVectorPacket_At__Pf_i_Rt(value.ToArray(), value.Count, timestamp.MpPtr, out var ptr).Assert();
+            Ptr = ptr;
+        }
+
+        public FloatVectorPacket? At(Timestamp timestamp) => At<FloatVectorPacket>(timestamp);
+
+        public override List<float> Get()
+        {
+            UnsafeNativeMethods.mp_Packet__GetFloatVector(MpPtr, out var floatVec).Assert();
+            GC.KeepAlive(this);
+
+            var result = floatVec.Copy();
+            floatVec.Dispose();
+            return result;
+        }
+
+        public override StatusOr<List<float>> Consume()
+        {
+            throw new NotSupportedException();
+        }
+
+        public override Status ValidateAsType()
+        {
+            UnsafeNativeMethods.mp_Packet__ValidateAsFloatVector(MpPtr, out var statusPtr).Assert();
+
+            GC.KeepAlive(this);
+            return new Status(statusPtr);
+        }
     }
 }
