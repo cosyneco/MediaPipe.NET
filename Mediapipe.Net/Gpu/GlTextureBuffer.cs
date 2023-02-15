@@ -4,6 +4,7 @@
 
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Native;
+using System;
 
 namespace Mediapipe.Net.Gpu
 {
@@ -16,9 +17,9 @@ namespace Mediapipe.Net.Gpu
         ///   However, IL2CPP does not support marshaling delegates that point to instance methods to native code,
         ///   so it receives also the texture name to specify the target instance.
         /// </remarks>
-        public delegate void DeletionCallback(uint name, void* glSyncToken);
+        public delegate void DeletionCallback(uint name, IntPtr glSyncToken);
 
-        public GlTextureBuffer(void* ptr, bool isOwner = true) : base(isOwner)
+        public GlTextureBuffer(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
             sharedPtrHandle = new SharedGlTextureBufferPtr(ptr, isOwner);
             Ptr = sharedPtrHandle.Get();
@@ -31,7 +32,7 @@ namespace Mediapipe.Net.Gpu
         public GlTextureBuffer(uint target, uint name, int width, int height,
             GpuBufferFormat format, DeletionCallback callback, GlContext? glContext) : base()
         {
-            var sharedContextPtr = glContext == null ? null : glContext.SharedPtr;
+            var sharedContextPtr = glContext == null ? IntPtr.Zero : glContext.SharedPtr;
             UnsafeNativeMethods.mp_SharedGlTextureBuffer__ui_ui_i_i_ui_PF_PSgc(
                 target, name, width, height, format, callback, sharedContextPtr, out var ptr).Assert();
 
@@ -58,7 +59,7 @@ namespace Mediapipe.Net.Gpu
             // Do nothing
         }
 
-        public void* SharedPtr => sharedPtrHandle == null ? null : sharedPtrHandle.MpPtr;
+        public IntPtr SharedPtr => sharedPtrHandle == null ? IntPtr.Zero : sharedPtrHandle.MpPtr;
 
         public uint Name() => SafeNativeMethods.mp_GlTextureBuffer__name(MpPtr);
 
@@ -89,11 +90,11 @@ namespace Mediapipe.Net.Gpu
         // TODO: Put it in its own file
         private class SharedGlTextureBufferPtr : SharedPtrHandle
         {
-            public SharedGlTextureBufferPtr(void* ptr, bool isOwner = true) : base(ptr, isOwner) { }
+            public SharedGlTextureBufferPtr(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
             protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_SharedGlTextureBuffer__delete(Ptr);
 
-            public override void* Get() => SafeNativeMethods.mp_SharedGlTextureBuffer__get(MpPtr);
+            public override IntPtr Get() => SafeNativeMethods.mp_SharedGlTextureBuffer__get(MpPtr);
 
             public override void Reset() => UnsafeNativeMethods.mp_SharedGlTextureBuffer__reset(MpPtr);
         }
