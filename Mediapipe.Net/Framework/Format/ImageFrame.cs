@@ -41,6 +41,17 @@ namespace Mediapipe.Net.Framework.Format
             }
         }
 
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData, Deleter deleter) : this(format, width, height, widthStep, spanToBytePtr(pixelData), deleter) { }
+
+
+        private static IntPtr spanToBytePtr(ReadOnlySpan<byte> span)
+        {
+            fixed (byte* ptr = span)
+            {
+                return (IntPtr)ptr;
+            }
+        }
+
         protected override void DeleteMpPtr()
         {
             UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
