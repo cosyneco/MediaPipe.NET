@@ -90,9 +90,6 @@ namespace Mediapipe.Net.Native
         public static extern MpReturnCode mp__MakeFloatArrayPacket_At__Pf_i_Rt(float[] value, int size, IntPtr timestamp, out IntPtr packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Packet__GetFloatArray(IntPtr packet, out float* array);
-
-        [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__GetFloatArray_i(IntPtr packet, int size, out IntPtr value);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]

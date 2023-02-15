@@ -46,7 +46,7 @@ namespace Mediapipe.Net.Framework.Packets
 
         public FloatVectorPacket(float[] value) : base()
         {
-            UnsafeNativeMethods.mp__MakeFloatArrayPacket__Pf_i(value, value.Length, out var ptr).Assert();
+            UnsafeNativeMethods.mp__MakeFloatVectorPacket__Pf_i(value, value.Length, out var ptr).Assert();
             Ptr = ptr;
         }
 
