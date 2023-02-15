@@ -14,6 +14,22 @@ namespace Mediapipe.Net.Framework.Packets
         public ImageFramePacket() : base() { }
         public ImageFramePacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
+        public ImageFramePacket(ImageFrame imageFrame) : base()
+        {
+            UnsafeNativeMethods.mp__MakeImageFramePacket__Pif(imageFrame.MpPtr, out var ptr).Assert();
+            imageFrame.Dispose();
+
+            Ptr = ptr;
+        }
+
+        public ImageFramePacket(ImageFrame imageFrame, Timestamp timestamp) : base()
+        {
+            UnsafeNativeMethods.mp__MakeImageFramePacket_At__Pif_Rt(imageFrame.MpPtr, timestamp.MpPtr, out var ptr).Assert();
+            imageFrame.Dispose();
+
+            Ptr = ptr;
+        }
+
         public ImageFramePacket? At(Timestamp timestamp) => At<ImageFramePacket>(timestamp);
         public override ImageFrame Get()
         {
