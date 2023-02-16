@@ -9,7 +9,9 @@ namespace Mediapipe.Net.Framework.Port
 {
     public class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
     {
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public StatusOrPoller(IntPtr ptr) : base(ptr) { }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         protected override void DeleteMpPtr()
         {

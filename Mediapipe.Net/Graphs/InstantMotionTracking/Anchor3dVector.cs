@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Graphs.InstantMotionTracking
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe struct Anchor3dVector : IDisposable
     {
-        public Anchor3d* Data;
+        public IntPtr Data;
         public int Size;
 
         public void Dispose() => UnsafeNativeMethods.mp_Anchor3dArray__delete(Data);
@@ -20,8 +20,9 @@ namespace Mediapipe.Net.Graphs.InstantMotionTracking
         public List<Anchor3d> ToList()
         {
             var anchors = new List<Anchor3d>(Size);
+            var anchorPtr = (Anchor3d*)Data;
             for (int i = 0; i < Size; i++)
-                anchors.Add(Data[i]);
+                anchors.Add(Marshal.PtrToStructure<Anchor3d>((IntPtr)anchorPtr++));
 
             return anchors;
         }
