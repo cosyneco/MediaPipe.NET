@@ -7,13 +7,16 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {
-    public unsafe class StatusOrPoller : StatusOr<OutputStreamPoller>
+    public class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
     {
-        public StatusOrPoller(void* ptr) : base(ptr) { }
+        public StatusOrPoller(IntPtr ptr) : base(ptr) { }
 
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_StatusOrPoller__delete(Ptr);
+        protected override void DeleteMpPtr()
+        {
+            UnsafeNativeMethods.mp_StatusOrPoller__delete(Ptr);
+        }
 
-        private Status? status;
+        private Status status;
         public override Status Status
         {
             get
@@ -29,14 +32,17 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrPoller__ok(MpPtr) > 0;
+        public override bool Ok()
+        {
+            return SafeNativeMethods.mp_StatusOrPoller__ok(MpPtr);
+        }
 
-        public override OutputStreamPoller Value()
+        public override OutputStreamPoller<T> Value()
         {
             UnsafeNativeMethods.mp_StatusOrPoller__value(MpPtr, out var pollerPtr).Assert();
             Dispose();
 
-            return new OutputStreamPoller(pollerPtr);
+            return new OutputStreamPoller<T>(pollerPtr);
         }
     }
 }

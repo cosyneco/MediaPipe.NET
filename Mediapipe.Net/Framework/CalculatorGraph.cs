@@ -17,8 +17,8 @@ namespace Mediapipe.Net.Framework
 {
     public unsafe class CalculatorGraph : MpResourceHandle
     {
-        public delegate Status.StatusArgs NativePacketCallback(void* graphPtr, int streamId, void* packetPtr);
-        public delegate void PacketCallback(Packet packet);
+        public delegate Status.StatusArgs NativePacketCallback(IntPtr graphPtr, int streamId, IntPtr packetPtr);
+        public delegate void PacketCallback<TPacket, TValue>(TPacket packet) where TPacket : Packet<TValue>;
 
         public CalculatorGraph() : base()
         {
@@ -36,7 +36,10 @@ namespace Mediapipe.Net.Framework
 
         public CalculatorGraph(string textFormatConfig) : this(CalculatorGraphConfig.Parser.ParseFromTextFormat(textFormatConfig)) { }
 
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_CalculatorGraph__delete(Ptr);
+        protected override void DeleteMpPtr()
+        {
+            UnsafeNativeMethods.mp_CalculatorGraph__delete(Ptr);
+        }
 
         public Status Initialize(CalculatorGraphConfig config)
         {
@@ -47,10 +50,10 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status Initialize(CalculatorGraphConfig config, SidePacket sidePackets)
+        public Status Initialize(CalculatorGraphConfig config, SidePacket sidePacket)
         {
             var bytes = config.ToByteArray();
-            UnsafeNativeMethods.mp_CalculatorGraph__Initialize__PKc_i_Rsp(MpPtr, bytes, bytes.Length, sidePackets.MpPtr, out var statusPtr).Assert();
+            UnsafeNativeMethods.mp_CalculatorGraph__Initialize__PKc_i_Rsp(MpPtr, bytes, bytes.Length, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(this);
             return new Status(statusPtr);
@@ -76,16 +79,14 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, bool observeTimestampBounds, out GCHandle callbackHandle)
+        public Status ObserveOutputStream<TPacket, TValue>(string streamName, PacketCallback<TPacket, TValue> packetCallback, bool observeTimestampBounds, out GCHandle callbackHandle) where TPacket : Packet<TValue>, new()
         {
-            NativePacketCallback nativePacketCallback = (void* graphPtr, int streamId, void* packetPtr) =>
+            NativePacketCallback nativePacketCallback = (IntPtr graphPtr, int streamId, IntPtr packetPtr) =>
             {
                 try
                 {
-                    Packet packet = new Packet(packetPtr, false);
+                    var packet = Packet<TValue>.Create<TPacket>(packetPtr, false);
                     packetCallback(packet);
-                    // This packet is not being disposed in MediaPipeUnityPlugin?
-                    packet.Dispose();
                     return Status.StatusArgs.Ok();
                 }
                 catch (Exception e)
@@ -93,26 +94,31 @@ namespace Mediapipe.Net.Framework
                     return Status.StatusArgs.Internal(e.ToString());
                 }
             };
-            callbackHandle = GCHandle.Alloc(nativePacketCallback, GCHandleType.Normal);
+            callbackHandle = GCHandle.Alloc(nativePacketCallback, GCHandleType.Pinned);
 
-            // Thought: why have a streamId at all if we just put 0 in there?
             return ObserveOutputStream(streamName, 0, nativePacketCallback, observeTimestampBounds);
         }
 
-        public Status ObserveOutputStream(string streamName, PacketCallback packetCallback, out GCHandle callbackHandle)
-            => ObserveOutputStream(streamName, packetCallback, false, out callbackHandle);
+        public Status ObserveOutputStream<TPacket, TValue>(string streamName, PacketCallback<TPacket, TValue> packetCallback, out GCHandle callbackHandle) where TPacket : Packet<TValue>, new()
+        {
+            return ObserveOutputStream(streamName, packetCallback, false, out callbackHandle);
+        }
 
-        public StatusOrPoller AddOutputStreamPoller(string streamName, bool observeTimestampBounds = false)
+        public StatusOrPoller<T> AddOutputStreamPoller<T>(string streamName, bool observeTimestampBounds = false)
         {
             UnsafeNativeMethods.mp_CalculatorGraph__AddOutputStreamPoller__PKc_b(MpPtr, streamName, observeTimestampBounds, out var statusOrPollerPtr).Assert();
 
             GC.KeepAlive(this);
-            return new StatusOrPoller(statusOrPollerPtr);
+            return new StatusOrPoller<T>(statusOrPollerPtr);
         }
 
-        public Status Run(SidePacket? sidePacket = null)
+        public Status Run()
         {
-            sidePacket ??= new SidePacket();
+            return Run(new SidePacket());
+        }
+
+        public Status Run(SidePacket sidePacket)
+        {
             UnsafeNativeMethods.mp_CalculatorGraph__Run__Rsp(MpPtr, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(sidePacket);
@@ -120,9 +126,13 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public Status StartRun(SidePacket? sidePacket = null)
+        public Status StartRun()
         {
-            sidePacket ??= new SidePacket();
+            return StartRun(new SidePacket());
+        }
+
+        public Status StartRun(SidePacket sidePacket)
+        {
             UnsafeNativeMethods.mp_CalculatorGraph__StartRun__Rsp(MpPtr, sidePacket.MpPtr, out var statusPtr).Assert();
 
             GC.KeepAlive(sidePacket);
@@ -146,9 +156,12 @@ namespace Mediapipe.Net.Framework
             return new Status(statusPtr);
         }
 
-        public bool HasError() => SafeNativeMethods.mp_CalculatorGraph__HasError(MpPtr) > 0;
+        public bool HasError()
+        {
+            return SafeNativeMethods.mp_CalculatorGraph__HasError(MpPtr);
+        }
 
-        public Status AddPacketToInputStream(string streamName, Packet packet)
+        public Status AddPacketToInputStream<T>(string streamName, Packet<T> packet)
         {
             UnsafeNativeMethods.mp_CalculatorGraph__AddPacketToInputStream__PKc_Ppacket(MpPtr, streamName, packet.MpPtr, out var statusPtr).Assert();
             packet.Dispose(); // respect move semantics
@@ -187,11 +200,20 @@ namespace Mediapipe.Net.Framework
             GC.KeepAlive(this);
         }
 
-        public bool GraphInputStreamsClosed() => SafeNativeMethods.mp_CalculatorGraph__GraphInputStreamsClosed(MpPtr) > 0;
+        public bool GraphInputStreamsClosed()
+        {
+            return SafeNativeMethods.mp_CalculatorGraph__GraphInputStreamsClosed(MpPtr);
+        }
 
-        public bool IsNodeThrottled(int nodeId) => SafeNativeMethods.mp_CalculatorGraph__IsNodeThrottled__i(MpPtr, nodeId) > 0;
+        public bool IsNodeThrottled(int nodeId)
+        {
+            return SafeNativeMethods.mp_CalculatorGraph__IsNodeThrottled__i(MpPtr, nodeId);
+        }
 
-        public bool UnthrottleSources() => SafeNativeMethods.mp_CalculatorGraph__UnthrottleSources(MpPtr) > 0;
+        public bool UnthrottleSources()
+        {
+            return SafeNativeMethods.mp_CalculatorGraph__UnthrottleSources(MpPtr);
+        }
 
         public GpuResources GetGpuResources()
         {
