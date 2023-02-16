@@ -16,7 +16,7 @@ namespace Mediapipe.Net.Native
         public static extern void mp_Timestamp__delete(IntPtr timestamp);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp_Timestamp__DebugString(IntPtr timestamp, out sbyte* str);
+        public static extern MpReturnCode mp_Timestamp__DebugString(IntPtr timestamp, out IntPtr str);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Timestamp__NextAllowedInStream(IntPtr timestamp, out IntPtr nextTimestamp);

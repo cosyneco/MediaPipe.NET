@@ -2,11 +2,11 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
+using System.Collections.Generic;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Graphs.InstantMotionTracking;
 using Mediapipe.Net.Native;
-using System;
-using System.Collections.Generic;
 
 namespace Mediapipe.Net.Framework.Packets
 {

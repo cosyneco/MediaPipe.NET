@@ -85,8 +85,10 @@ namespace Mediapipe.Net.Framework
             {
                 try
                 {
+#pragma warning disable CS8618, 8604
                     var packet = Packet<TValue>.Create<TPacket>(packetPtr, false);
                     packetCallback(packet);
+#pragma warning restore CS8618, 8604
                     return Status.StatusArgs.Ok();
                 }
                 catch (Exception e)

@@ -74,7 +74,7 @@ namespace Mediapipe.Net.Framework.Packets
 
         protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_Packet__delete(Ptr);
 
-        protected TPacket? At<TPacket>(Timestamp ts) where TPacket: Packet<T>, new()
+        protected TPacket? At<TPacket>(Timestamp ts) where TPacket : Packet<T>, new()
         {
             UnsafeNativeMethods.mp_Packet__At__Rt(MpPtr, ts.MpPtr, out var packetPtr).Assert();
             GC.KeepAlive(ts);

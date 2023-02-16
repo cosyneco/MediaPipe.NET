@@ -2,10 +2,10 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using Mediapipe.Net.Framework.Port;
 using Mediapipe.Net.Gpu;
 using Mediapipe.Net.Native;
-using System;
 
 namespace Mediapipe.Net.Framework.Packets
 {

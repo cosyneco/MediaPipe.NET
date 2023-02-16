@@ -2,9 +2,9 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
-using Mediapipe.Net.Framework.Packets;
 using System;
 using System.Runtime.InteropServices;
+using Mediapipe.Net.Framework.Packets;
 
 namespace Mediapipe.Net.Native
 {
