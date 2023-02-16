@@ -40,7 +40,8 @@ namespace Mediapipe.Net.Native
         public static extern IntPtr mp_GlContext__nsgl_pixel_format(IntPtr glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte mp_GlContext__IsCurrent(IntPtr glContext);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool mp_GlContext__IsCurrent(IntPtr glContext);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern int mp_GlContext__gl_major_version(IntPtr glContext);

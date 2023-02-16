@@ -112,7 +112,7 @@ namespace Mediapipe.Net.Framework.Port
         {
             if (ok is bool valueOfOk)
                 return valueOfOk;
-            ok = SafeNativeMethods.absl_Status__ok(MpPtr) > 0;
+            ok = SafeNativeMethods.absl_Status__ok(MpPtr);
             return (bool)ok;
         }
 

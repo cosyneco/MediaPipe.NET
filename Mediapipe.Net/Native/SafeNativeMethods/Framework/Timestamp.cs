@@ -20,12 +20,15 @@ namespace Mediapipe.Net.Native
         public static extern long mp_Timestamp__Microseconds(IntPtr timestamp);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte mp_Timestamp__IsSpecialValue(IntPtr timestamp);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool mp_Timestamp__IsSpecialValue(IntPtr timestamp);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte mp_Timestamp__IsRangeValue(IntPtr timestamp);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool mp_Timestamp__IsRangeValue(IntPtr timestamp);
 
         [Pure, DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern byte mp_Timestamp__IsAllowedInStream(IntPtr timestamp);
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool mp_Timestamp__IsAllowedInStream(IntPtr timestamp);
     }
 }

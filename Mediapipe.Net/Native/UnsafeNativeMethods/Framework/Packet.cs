@@ -42,10 +42,10 @@ namespace Mediapipe.Net.Native
 
         #region Bool
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeBoolPacket__b(bool value, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeBoolPacket__b([MarshalAs(UnmanagedType.I1)] bool value, out IntPtr packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
-        public static extern MpReturnCode mp__MakeBoolPacket_At__b_Rt(bool value, IntPtr timestamp, out IntPtr packet);
+        public static extern MpReturnCode mp__MakeBoolPacket_At__b_Rt([MarshalAs(UnmanagedType.I1)] bool value, IntPtr timestamp, out IntPtr packet);
 
         [DllImport(MEDIAPIPE_LIBRARY, ExactSpelling = true)]
         public static extern MpReturnCode mp_Packet__GetBool(IntPtr packet, out bool value);

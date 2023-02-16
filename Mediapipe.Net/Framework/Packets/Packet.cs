@@ -44,7 +44,7 @@ namespace Mediapipe.Net.Framework.Packets
 
         public abstract StatusOr<T> Consume();
 
-        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr) > 0;
+        public bool IsEmpty() => SafeNativeMethods.mp_Packet__IsEmpty(MpPtr);
 
         public Status ValidateAsProtoMessageLite()
         {
