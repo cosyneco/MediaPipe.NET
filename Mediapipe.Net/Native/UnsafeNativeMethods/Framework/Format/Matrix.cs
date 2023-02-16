@@ -4,15 +4,11 @@
 
 using Mediapipe.Net.External;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Mediapipe.Net.Native.UnsafeNativeMethods.Framework.Format
+namespace Mediapipe.Net.Native
 {
-    internal unsafe class UnsafeNativeMethods : NativeMethods
+    internal unsafe partial class UnsafeNativeMethods : NativeMethods
     {
         #region Packet
 

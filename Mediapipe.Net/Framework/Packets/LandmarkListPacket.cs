@@ -9,7 +9,7 @@ using System;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class LandmarkListPacket : Packet<LandmarkList>
+    public class LandmarkListPacket : Packet<LandmarkList>
     {
         public LandmarkListPacket() : base() { }
         public LandmarkListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class LandmarkListVectorPacket : Packet<List<LandmarkList>>
+    public class LandmarkListVectorPacket : Packet<List<LandmarkList>>
     {
         public LandmarkListVectorPacket() : base(true) { }
         public LandmarkListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
