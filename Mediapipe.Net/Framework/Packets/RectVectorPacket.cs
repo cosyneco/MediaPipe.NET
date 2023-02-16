@@ -37,6 +37,4 @@ namespace Mediapipe.Net.Framework.Packets
             throw new NotImplementedException();
         }
     }
-    {
-    }
 }
