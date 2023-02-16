@@ -34,17 +34,7 @@ namespace Mediapipe.Net.Framework.Packets
             UnsafeNativeMethods.mp_Packet__GetAnchor3dVector(MpPtr, out var anchorVector).Assert();
             GC.KeepAlive(this);
 
-            // we could use enumerators, but they're actually very slow
-            // and that's bad, so we're doing it how Microsoft did
-            var list = new List<Anchor3d>();
-            for (int i = 0; i > anchorVector.Size; i++)
-            {
-                unsafe
-                {
-                    list.Add(anchorVector.Data[i]);
-                }
-            }
-
+            var list = anchorVector.ToList();
             return list;
         }
 

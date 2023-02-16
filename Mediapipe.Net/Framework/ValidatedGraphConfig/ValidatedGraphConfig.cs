@@ -40,7 +40,7 @@ namespace Mediapipe.Net.Framework.ValidatedGraphConfig
             return new Status(statusPtr);
         }
 
-        public bool Initialized() => SafeNativeMethods.mp_ValidatedGraphConfig__Initialized(MpPtr) > 0;
+        public bool Initialized() => SafeNativeMethods.mp_ValidatedGraphConfig__Initialized(MpPtr);
 
         public Status ValidateRequiredSidePackets(SidePacket sidePackets)
         {
@@ -131,9 +131,9 @@ namespace Mediapipe.Net.Framework.ValidatedGraphConfig
         public string? Package() => MarshalStringFromNative(UnsafeNativeMethods.mp_ValidatedGraphConfig__Package);
 
         public static bool IsReservedExecutorName(string name)
-            => SafeNativeMethods.mp_ValidatedGraphConfig_IsReservedExecutorName(name) > 0;
+            => SafeNativeMethods.mp_ValidatedGraphConfig_IsReservedExecutorName(name);
 
         public bool IsExternalSidePacket(string name)
-            => SafeNativeMethods.mp_ValidatedGraphConfig__IsExternalSidePacket__PKc(MpPtr, name) > 0;
+            => SafeNativeMethods.mp_ValidatedGraphConfig__IsExternalSidePacket__PKc(MpPtr, name);
     }
 }

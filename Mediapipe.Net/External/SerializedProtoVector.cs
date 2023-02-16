@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Google.Protobuf;
@@ -12,7 +13,7 @@ namespace Mediapipe.Net.External
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe readonly struct SerializedProtoVector
     {
-        public readonly SerializedProto* Data;
+        public readonly IntPtr Data;
         public readonly int Size;
 
         // The array element freeing loop has been moved to MediaPipe.NET.Runtime.
@@ -21,8 +22,12 @@ namespace Mediapipe.Net.External
         public List<T> Deserialize<T>(MessageParser<T> parser) where T : IMessage<T>
         {
             var protos = new List<T>(Size);
+            var protoPtr = (SerializedProto*)Data;
             for (int i = 0; i < Size; i++)
-                protos.Add(Data[i].Deserialize(parser));
+            {
+                var serializedProto = Marshal.PtrToStructure<SerializedProto>((IntPtr)protoPtr++);
+                protos.Add(serializedProto.Deserialize(parser));
+            }
 
             return protos;
         }
