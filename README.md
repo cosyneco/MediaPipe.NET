@@ -30,10 +30,10 @@ We share the same compatibility matrix with MediaPipeUnityPlugin, so this will c
 
 |                             |   Linux (x86_64)   |   macOS (x86_64)   |   macOS (ARM64)    |  Windows (x86_64)  |      Android       |        iOS         |
 | :-------------------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: | :----------------: |
-|     Linux (AMD64) [^1]      | :heavy_check_mark: |                    |                    |                    | :heavy_check_mark: |                    |
-|          Intel Mac          |                    | :heavy_check_mark: |                    |                    | :heavy_check_mark: | :heavy_check_mark: |
-|         M1 Mac [^2]         |                    |                    | :heavy_check_mark: |                    | :heavy_check_mark: | :heavy_check_mark: |
-| Windows 10 (AMD64) [^3][^4] | :heavy_check_mark: |                    |                    | :heavy_check_mark: | :heavy_check_mark: |                    |
+|     Linux (AMD64) [^1]      | :heavy_check_mark: |                    |                    |                    | :question: |                    |
+|          Intel Mac          |                    | :heavy_check_mark: |                    |                    | :question: | :question: |
+|         M1 Mac [^2]         |                    |                    | :heavy_check_mark: |                    | :question: | :question: |
+| Windows 10 (AMD64) [^3][^4] | :heavy_check_mark: |                    |                    | :heavy_check_mark: | :question: |                    |
 
 [^1]: Tested on Arch Linux.
 [^2]: Experimental, because MediaPipe does not support M1 Mac.
