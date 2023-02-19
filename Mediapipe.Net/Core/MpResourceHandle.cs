@@ -80,9 +80,6 @@ namespace Mediapipe.Net.Core
             func(MpPtr, out IntPtr strPtr).Assert();
             GC.KeepAlive(this);
 
-            if (strPtr == IntPtr.Zero)
-                return null;
-
             var str = Marshal.PtrToStringAnsi(strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 

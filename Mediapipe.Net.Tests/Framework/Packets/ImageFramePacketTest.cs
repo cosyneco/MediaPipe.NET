@@ -5,6 +5,7 @@
 using System;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Format;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Protobuf;
 using NUnit.Framework;
 
@@ -18,16 +19,16 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         {
             var srcImageFrame = new ImageFrame();
 
-            using var packet = PacketFactory.ImageFramePacket(srcImageFrame);
+            using var packet = new ImageFramePacket(srcImageFrame);
             Assert.True(srcImageFrame.IsDisposed);
-            Assert.True(packet.ValidateAsImageFrame().Ok());
+            Assert.True(packet.ValidateAsType().Ok());
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
 
-            using var statusOrImageFrame = packet.ConsumeImageFrame();
+            using var statusOrImageFrame = packet.Consume();
             Assert.True(statusOrImageFrame.Ok());
 
             using ImageFrame? imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Unknown);
+            Assert.AreEqual(imageFrame?.Format(), ImageFormat.Types.Format.Unknown);
         }
 
         [Test]
@@ -39,15 +40,15 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
 
             // Using PacketFactory.ImageFramePacket(srcImageFrame).At(timestamp) fails the test...
             // I have no clue why. We'll have to inspect the native bindings to find out.
-            using var packet = PacketFactory.ImageFramePacket(srcImageFrame, timestamp);
+            using var packet = new ImageFramePacket(srcImageFrame, timestamp);
             Assert.True(srcImageFrame.IsDisposed);
-            Assert.True(packet.ValidateAsImageFrame().Ok());
+            Assert.True(packet.ValidateAsType().Ok());
 
-            using var statusOrImageFrame = packet.ConsumeImageFrame();
+            using var statusOrImageFrame = packet.Consume();
             Assert.True(statusOrImageFrame.Ok());
 
             using var imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Unknown);
+            Assert.AreEqual(imageFrame?.Format(), ImageFormat.Types.Format.Unknown);
             Assert.AreEqual(packet.Timestamp(), timestamp);
         }
         #endregion
@@ -56,14 +57,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame());
+            using var packet = new ImageFramePacket(new ImageFrame());
             Assert.False(packet.IsDisposed);
         }
 
         [Test]
         public void IsDisposed_ShouldReturnTrue_When_AlreadyDisposed()
         {
-            var packet = PacketFactory.ImageFramePacket(new ImageFrame());
+            var packet = new ImageFramePacket(new ImageFrame());
             packet.Dispose();
 
             Assert.True(packet.IsDisposed);
@@ -74,11 +75,11 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void Get_ShouldReturnImageFrame_When_DataIsNotEmpty()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
-            using var imageFrame = packet.GetImageFrame();
-            Assert.AreEqual(imageFrame.Format, ImageFormat.Types.Format.Sbgra);
-            Assert.AreEqual(imageFrame.Width, 10);
-            Assert.AreEqual(imageFrame.Height, 10);
+            using var packet = new ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
+            using var imageFrame = packet.Get();
+            Assert.AreEqual(imageFrame.Format(), ImageFormat.Types.Format.Sbgra);
+            Assert.AreEqual(imageFrame.Width(), 10);
+            Assert.AreEqual(imageFrame.Height(), 10);
         }
         #endregion
 
@@ -86,14 +87,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void Consume_ShouldReturnImageFrame()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
-            using var statusOrImageFrame = packet.ConsumeImageFrame();
+            using var packet = new ImageFramePacket(new ImageFrame(ImageFormat.Types.Format.Sbgra, 10, 10));
+            using var statusOrImageFrame = packet.Consume();
             Assert.True(statusOrImageFrame.Ok());
 
             using ImageFrame? imageFrame = statusOrImageFrame.Value();
-            Assert.AreEqual(imageFrame?.Format, ImageFormat.Types.Format.Sbgra);
-            Assert.AreEqual(imageFrame?.Width, 10);
-            Assert.AreEqual(imageFrame?.Height, 10);
+            Assert.AreEqual(imageFrame?.Format(), ImageFormat.Types.Format.Sbgra);
+            Assert.AreEqual(imageFrame?.Width(), 10);
+            Assert.AreEqual(imageFrame?.Height(), 10);
         }
         #endregion
 
@@ -101,7 +102,7 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void DebugTypeName_ShouldReturnFloat_When_ValueIsSet()
         {
-            using var packet = PacketFactory.ImageFramePacket(new ImageFrame());
+            using var packet = new ImageFramePacket(new ImageFrame());
 
             Assert.AreEqual(packet.DebugTypeName(),
                 OperatingSystem.IsWindows()

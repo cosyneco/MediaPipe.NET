@@ -8,10 +8,22 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class FloatPacket : Packet<float>
+    public class FloatPacket : Packet<float>
     {
         public FloatPacket() : base() { }
         public FloatPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+        public FloatPacket(float value) : base()
+        {
+            UnsafeNativeMethods.mp__MakeFloatPacket__f(value, out var ptr).Assert();
+            Ptr = ptr;
+        }
+
+        public FloatPacket(float value, Timestamp timestamp) : base()
+        {
+            UnsafeNativeMethods.mp__MakeFloatPacket_At__f_Rt(value, timestamp.MpPtr, out var ptr).Assert();
+            Ptr = ptr;
+        }
 
         public FloatPacket? At(Timestamp timestamp) => At<FloatPacket>(timestamp);
         public override float Get()

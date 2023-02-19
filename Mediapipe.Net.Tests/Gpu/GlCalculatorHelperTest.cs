@@ -21,7 +21,7 @@ namespace Mediapipe.Net.Tests.Gpu
             using var glCalculatorHelper = new GlCalculatorHelper();
             unsafe
             {
-                Assert.True(glCalculatorHelper.MpPtr != null);
+                Assert.True(glCalculatorHelper.MpPtr != IntPtr.Zero);
             }
         }
         #endregion
@@ -161,11 +161,11 @@ namespace Mediapipe.Net.Tests.Gpu
             unsafe
             {
                 if (OperatingSystem.IsLinux() || OperatingSystem.IsAndroid())
-                    Assert.True(glContext.EglContext != null);
+                    Assert.True(glContext.EglContext != IntPtr.Zero);
                 else if (OperatingSystem.IsMacOS())
-                    Assert.True(glContext.NsglContext != null);
+                    Assert.True(glContext.NsglContext != IntPtr.Zero);
                 else if (OperatingSystem.IsIOS())
-                    Assert.True(glContext.EaglContext != null);
+                    Assert.True(glContext.EaglContext != IntPtr.Zero);
             }
         }
         #endregion

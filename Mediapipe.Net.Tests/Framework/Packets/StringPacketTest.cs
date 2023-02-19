@@ -4,6 +4,7 @@
 
 using System.Text.RegularExpressions;
 using Mediapipe.Net.Framework;
+using Mediapipe.Net.Framework.Packets;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket
@@ -14,9 +15,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void Ctor_ShouldInstantiatePacket_When_CalledWithString()
         {
-            using var packet = PacketFactory.StringPacket("test");
-            Assert.True(packet.ValidateAsString().Ok());
-            Assert.AreEqual(packet.GetString(), "test");
+            using var packet = new StringPacket("test");
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.AreEqual(packet.Get(), "test");
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
         }
 
@@ -24,9 +25,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void Ctor_ShouldInstantiatePacket_When_CalledWithByteArray()
         {
             var bytes = new byte[] { (byte)'t', (byte)'e', (byte)'s', (byte)'t' };
-            using var packet = PacketFactory.StringPacket(bytes);
-            Assert.True(packet.ValidateAsString().Ok());
-            Assert.AreEqual(packet.GetString(), "test");
+            using var packet = new StringPacket(bytes);
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.AreEqual(packet.Get(), "test");
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
         }
 
@@ -34,10 +35,10 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void Ctor_ShouldInstantiatePacket_When_CalledWithStringAndTimestamp()
         {
             using var timestamp = new Timestamp(1);
-            using var packet = PacketFactory.StringPacket("test").At(timestamp);
-            Assert.True(packet.ValidateAsString().Ok());
-            Assert.AreEqual(packet.GetString(), "test");
-            Assert.AreEqual(packet.Timestamp(), timestamp);
+            using var packet = new StringPacket("test").At(timestamp);
+            Assert.True(packet?.ValidateAsType().Ok());
+            Assert.AreEqual(packet?.Get(), "test");
+            Assert.AreEqual(packet?.Timestamp(), timestamp);
         }
 
         [Test]
@@ -45,10 +46,10 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         {
             var bytes = new byte[] { (byte)'t', (byte)'e', (byte)'s', (byte)'t' };
             using var timestamp = new Timestamp(1);
-            using var packet = PacketFactory.StringPacket(bytes).At(timestamp);
-            Assert.True(packet.ValidateAsString().Ok());
-            Assert.AreEqual(packet.GetString(), "test");
-            Assert.AreEqual(packet.Timestamp(), timestamp);
+            using var packet = new StringPacket(bytes).At(timestamp);
+            Assert.True(packet?.ValidateAsType().Ok());
+            Assert.AreEqual(packet?.Get(), "test");
+            Assert.AreEqual(packet?.Timestamp(), timestamp);
         }
         #endregion
 
@@ -56,14 +57,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
-            using var packet = PacketFactory.StringPacket("");
+            using var packet = new StringPacket("");
             Assert.False(packet.IsDisposed);
         }
 
         [Test]
         public void IsDisposed_ShouldReturnTrue_When_AlreadyDisposed()
         {
-            var packet = PacketFactory.StringPacket("");
+            var packet = new StringPacket("");
             packet.Dispose();
 
             Assert.True(packet.IsDisposed);
@@ -75,9 +76,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void GetByteArray_ShouldReturnByteArray()
         {
             var bytes = new byte[] { (byte)'a', (byte)'b', 0, (byte)'c' };
-            using var packet = PacketFactory.StringPacket(bytes);
-            Assert.AreEqual(packet.GetStringAsByteArray(), bytes);
-            Assert.AreEqual(packet.GetString(), "ab");
+            using var packet = new StringPacket(bytes);
+            Assert.AreEqual(packet?.Get(), bytes);
+            Assert.AreEqual(Timestamp.Unset(), packet?.Timestamp());
         }
         #endregion
 
@@ -85,7 +86,7 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void DebugTypeName_ShouldReturnString_When_ValueIsSet()
         {
-            using var packet = PacketFactory.StringPacket("test");
+            using var packet = new StringPacket("test");
 
             var regex = new Regex("string");
             Assert.True(regex.IsMatch(packet.DebugTypeName() ?? ""));

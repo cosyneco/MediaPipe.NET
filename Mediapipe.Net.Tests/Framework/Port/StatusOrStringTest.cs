@@ -2,6 +2,7 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 using NUnit.Framework;
 
@@ -61,14 +62,14 @@ namespace Mediapipe.Net.Tests
 
         private StatusOrString initializeSubject(string str)
         {
-            using Packet packet = PacketFactory.StringPacket(str);
-            return (StatusOrString)packet.ConsumeString();
+            using var packet = new StringPacket(str);
+            return (StatusOrString)packet.Consume();
         }
 
         private StatusOrString initializeSubject(byte[] bytes)
         {
-            using Packet packet = PacketFactory.StringPacket(bytes);
-            return (StatusOrString)packet.ConsumeString();
+            using var packet = new StringPacket(bytes);
+            return (StatusOrString)packet.Consume();
         }
     }
 }

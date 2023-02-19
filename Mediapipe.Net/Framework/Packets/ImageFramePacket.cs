@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class ImageFramePacket : Packet<ImageFrame>
+    public class ImageFramePacket : Packet<ImageFrame>
     {
         public ImageFramePacket() : base() { }
         public ImageFramePacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

@@ -9,7 +9,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class FrameAnnotationPacket : Packet<FrameAnnotation>
+    public class FrameAnnotationPacket : Packet<FrameAnnotation>
     {
         public FrameAnnotationPacket() : base() { }
         public FrameAnnotationPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

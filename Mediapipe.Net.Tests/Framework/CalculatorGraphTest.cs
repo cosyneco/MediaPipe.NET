@@ -108,7 +108,7 @@ output_stream: ""out""
         [Test]
         public void Initialize_ShouldReturnInternalError_When_CalledWithConfigAndSidePacket_And_ConfigIsSet()
         {
-            using (var graph = new CalculatorGraph())
+            using (var graph = new CalculatorGraph(valid_config_text))
             {
                 using (var status = graph.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text)))
                 {

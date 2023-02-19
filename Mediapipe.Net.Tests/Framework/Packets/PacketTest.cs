@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using Mediapipe.Net.Framework;
+using Mediapipe.Net.Framework.Packets;
 using Mediapipe.Net.Framework.Port;
 using NUnit.Framework;
 
@@ -15,24 +16,24 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void At_ShouldReturnNewPacketWithTimestamp()
         {
             using var timestamp = new Timestamp(1);
-            var packet = PacketFactory.BoolPacket(true).At(timestamp);
+            var packet = new BoolPacket(true).At(timestamp);
 
-            Assert.True(packet.GetBool());
-            Assert.AreEqual(packet.Timestamp(), timestamp);
+            Assert.True(packet?.Get());
+            Assert.AreEqual(packet?.Timestamp(), timestamp);
 
             using (var newTimestamp = new Timestamp(2))
             {
-                var newPacket = packet.At(newTimestamp);
+                var newPacket = packet?.At(newTimestamp);
                 Assert.NotNull(newPacket);
                 if (newPacket == null)
                     return;
 
-                Assert.True(newPacket.GetBool());
+                Assert.True(newPacket.Get());
                 Assert.AreEqual(newPacket.Timestamp(), newTimestamp);
             }
 
-            Assert.True(packet.GetBool());
-            Assert.AreEqual(packet.Timestamp(), timestamp);
+            Assert.True(packet?.Get());
+            Assert.AreEqual(packet?.Timestamp(), timestamp);
         }
         #endregion
 
@@ -40,8 +41,8 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void ValidateAsProtoMessageLite_ShouldReturnInvalidArgument_When_ValueIsBool()
         {
-            using var packet = PacketFactory.BoolPacket(true);
-            Assert.AreEqual(packet.ValidateAsProtoMessageLite().Code, Status.StatusCode.InvalidArgument);
+            using var packet = new BoolPacket(true);
+            Assert.AreEqual(packet?.ValidateAsProtoMessageLite().Code, Status.StatusCode.InvalidArgument);
         }
         #endregion
     }

@@ -10,7 +10,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class StringPacket : Packet<string>
+    public class StringPacket : Packet<string>
     {
         public StringPacket() : base() { }
         public StringPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }

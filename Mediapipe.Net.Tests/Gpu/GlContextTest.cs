@@ -51,20 +51,20 @@ namespace Mediapipe.Net.Tests.Gpu
             using var glContext = getGlContext();
             if (OperatingSystem.IsLinux() || OperatingSystem.IsAndroid())
             {
-                Assert.True(glContext.EglDisplay != null);
-                Assert.True(glContext.EglConfig != null);
-                Assert.True(glContext.EglContext != null);
+                Assert.True(glContext.EglDisplay != IntPtr.Zero);
+                Assert.True(glContext.EglConfig != IntPtr.Zero);
+                Assert.True(glContext.EglContext != IntPtr.Zero);
                 Assert.AreEqual(3, glContext.GlMajorVersion);
                 Assert.AreEqual(2, glContext.GlMinorVersion);
                 Assert.AreEqual(0, glContext.GlFinishCount);
             }
             else if (OperatingSystem.IsMacOS())
             {
-                Assert.True(glContext.NsglContext != null);
+                Assert.True(glContext.NsglContext != IntPtr.Zero);
             }
             else if (OperatingSystem.IsIOS())
             {
-                Assert.True(glContext.EaglContext != null);
+                Assert.True(glContext.EaglContext != IntPtr.Zero);
             }
         }
         #endregion

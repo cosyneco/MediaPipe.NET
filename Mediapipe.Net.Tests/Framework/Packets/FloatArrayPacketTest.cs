@@ -4,6 +4,7 @@
 
 using System;
 using Mediapipe.Net.Framework;
+using Mediapipe.Net.Framework.Packets;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket
@@ -15,9 +16,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void Ctor_ShouldInstantiatePacket_When_CalledWithEmptyArray()
         {
             float[] array = Array.Empty<float>();
-            using var packet = PacketFactory.FloatArrayPacket(array);
-            Assert.True(packet.ValidateAsFloatArray().Ok());
-            Assert.AreEqual(packet.GetFloatArray(), array);
+            using var packet = new FloatArrayPacket(array);
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.AreEqual(packet.Get(), array);
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
         }
 
@@ -25,9 +26,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         public void Ctor_ShouldInstantiatePacket_When_CalledWithArray()
         {
             float[] array = { 0.01f };
-            using var packet = PacketFactory.FloatArrayPacket(array);
-            Assert.True(packet.ValidateAsFloatArray().Ok());
-            Assert.AreEqual(packet.GetFloatArray(), array);
+            using var packet = new FloatArrayPacket(array);
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.AreEqual(packet.Get(), array);
             Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
         }
 
@@ -39,9 +40,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
 
             // Using PacketFactory.FloatArrayPacket(array).At(timestamp) messes up the float values in the array.
             // We get [0.00999999978f, 0.0199999996f] instead of [0.01f, 0.02f]. No clue why that happens.
-            using var packet = PacketFactory.FloatArrayPacket(array, timestamp);
-            Assert.True(packet.ValidateAsFloatArray().Ok());
-            Assert.AreEqual(packet.GetFloatArray(), array);
+            using var packet = new FloatArrayPacket(array, timestamp);
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.AreEqual(packet.Get(), array);
             Assert.AreEqual(packet.Timestamp(), timestamp);
         }
         #endregion
@@ -50,14 +51,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
-            using var packet = PacketFactory.FloatArrayPacket(Array.Empty<float>());
+            using var packet = new FloatArrayPacket(Array.Empty<float>());
             Assert.False(packet.IsDisposed);
         }
 
         [Test]
         public void IsDisposed_ShouldReturnTrue_When_AlreadyDisposed()
         {
-            var packet = PacketFactory.FloatArrayPacket(Array.Empty<float>());
+            var packet = new FloatArrayPacket(Array.Empty<float>());
             packet.Dispose();
 
             Assert.True(packet.IsDisposed);
@@ -68,8 +69,9 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void DebugTypeName_ShouldReturnFloat_When_ValueIsSet()
         {
+            //TODO: Make this compatible with Linux too!
             float[] array = { 0.01f };
-            using var packet = PacketFactory.FloatArrayPacket(array);
+            using var packet = new FloatArrayPacket(array);
 
             Assert.AreEqual(packet.DebugTypeName(),
                 OperatingSystem.IsWindows()

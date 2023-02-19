@@ -8,7 +8,7 @@ using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Packets
 {
-    internal class IntPacket : Packet<int>
+    public class IntPacket : Packet<int>
     {
         public IntPacket() : base() { }
         public IntPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
