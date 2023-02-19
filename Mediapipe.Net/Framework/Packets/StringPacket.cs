@@ -24,6 +24,7 @@ namespace Mediapipe.Net.Framework.Packets
         public StringPacket(byte[] bytes) : base()
         {
             UnsafeNativeMethods.mp__MakeStringPacket__PKc_i(bytes, bytes.Length, out IntPtr ptr).Assert();
+            Ptr = ptr;
         }
 
         public StringPacket(string value, Timestamp timestamp) : base()
