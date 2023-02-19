@@ -43,6 +43,9 @@ namespace Mediapipe.Net.Framework.Format
 
         public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData, Deleter deleter) : this(format, width, height, widthStep, spanToBytePtr(pixelData), deleter) { }
 
+        public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, IntPtr pixelData) : base(format, width, height, widthStep, pixelData, VoidDeleter) { }
+
+        public static void VoidDeleter(IntPtr _) { }
 
         private static IntPtr spanToBytePtr(ReadOnlySpan<byte> span)
         {
