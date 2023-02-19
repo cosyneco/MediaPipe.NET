@@ -77,7 +77,7 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         {
             var bytes = new byte[] { (byte)'a', (byte)'b', 0, (byte)'c' };
             using var packet = new StringPacket(bytes);
-            Assert.AreEqual(packet?.Get(), bytes);
+            Assert.AreEqual(packet?.GetByteArray(), bytes);
             Assert.AreEqual(Timestamp.Unset(), packet?.Timestamp());
         }
         #endregion

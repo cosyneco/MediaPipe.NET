@@ -79,13 +79,12 @@ node {
 ";
 
         private const string face_detection_short_range_common_config_text = @"
-input_stream: ""detection_tensors""
-input_stream: ""transform_matrix""
-
+input_stream: ""image""
+input_stream: ""roi""
 node {
-  calculator: ""FaceDetectionShortRangeCommon""
-  input_stream: ""TENSORS:detection_tensors""
-  input_stream: ""MATRIX:transform_matrix""
+  calculator: ""FaceDetectionShortRange""
+  input_stream: ""IMAGE:image""
+  input_stream: ""ROI:roi""
   output_stream: ""DETECTIONS:detections""
 }
 ";
@@ -327,8 +326,10 @@ node {
                 config.Initialize(originalConfig).AssertOk();
                 var canonicalizedConfig = config.Config();
 
-                Assert.AreEqual(145, originalConfig.CalculateSize());
-                Assert.AreEqual(936, canonicalizedConfig.CalculateSize());
+                Assert.AreEqual(84, originalConfig.CalculateSize());
+                // This is different depending on the runtime
+                // In this case, we're testing for 2167, the size for the CPU runtime, and 2166 for the GPU runtime.
+                Assert.AreEqual(2167, canonicalizedConfig.CalculateSize());
             }
         }
         #endregion
