@@ -79,13 +79,12 @@ node {
 ";
 
         private const string face_detection_short_range_common_config_text = @"
-input_stream: ""detection_tensors""
-input_stream: ""transform_matrix""
-
+input_stream: ""image""
+input_stream: ""roi""
 node {
-  calculator: ""FaceDetectionShortRangeCommon""
-  input_stream: ""TENSORS:detection_tensors""
-  input_stream: ""MATRIX:transform_matrix""
+  calculator: ""FaceDetectionShortRange""
+  input_stream: ""IMAGE:image""
+  input_stream: ""ROI:roi""
   output_stream: ""DETECTIONS:detections""
 }
 ";
@@ -170,7 +169,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(pass_through_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -186,9 +185,9 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(pass_through_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
-                    sidePackets.Emplace("in", PacketFactory.IntPacket(0));
+                    sidePackets.Emplace("in", new IntPacket(0));
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
                         Assert.True(status.Ok());
@@ -203,7 +202,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(flow_limiter_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -219,7 +218,7 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
@@ -235,10 +234,10 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
-                    sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
-                    sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));
+                    sidePackets.Emplace("input_horizontally_flipped", new BoolPacket(false));
+                    sidePackets.Emplace("input_vertically_flipped", new BoolPacket(true));
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
                         Assert.AreEqual(Status.StatusCode.InvalidArgument, status.Code);
@@ -253,11 +252,11 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
-                    sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
-                    sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));
-                    sidePackets.Emplace("input_rotation", PacketFactory.StringPacket("0"));
+                    sidePackets.Emplace("input_horizontally_flipped", new BoolPacket(false));
+                    sidePackets.Emplace("input_vertically_flipped", new BoolPacket(true));
+                    sidePackets.Emplace("input_rotation", new StringPacket("0"));
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
                         Assert.AreEqual(Status.StatusCode.InvalidArgument, status.Code);
@@ -272,11 +271,11 @@ node {
             using (var config = new ValidatedGraphConfig())
             {
                 config.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(image_transformation_config_text)).AssertOk();
-                using (var sidePackets = new SidePackets())
+                using (var sidePackets = new SidePacket())
                 {
-                    sidePackets.Emplace("input_horizontally_flipped", PacketFactory.BoolPacket(false));
-                    sidePackets.Emplace("input_vertically_flipped", PacketFactory.BoolPacket(true));
-                    sidePackets.Emplace("input_rotation", PacketFactory.IntPacket(0));
+                    sidePackets.Emplace("input_horizontally_flipped", new BoolPacket(false));
+                    sidePackets.Emplace("input_vertically_flipped", new BoolPacket(true));
+                    sidePackets.Emplace("input_rotation", new IntPacket(0));
                     using (var status = config.ValidateRequiredSidePackets(sidePackets))
                     {
                         Assert.True(status.Ok());
@@ -327,8 +326,10 @@ node {
                 config.Initialize(originalConfig).AssertOk();
                 var canonicalizedConfig = config.Config();
 
-                Assert.AreEqual(145, originalConfig.CalculateSize());
-                Assert.AreEqual(936, canonicalizedConfig.CalculateSize());
+                Assert.AreEqual(84, originalConfig.CalculateSize());
+                // This is different depending on the runtime
+                // In this case, we're testing for 2167, the size for the CPU runtime, and 2166 for the GPU runtime.
+                Assert.AreEqual(2167, canonicalizedConfig.CalculateSize());
             }
         }
         #endregion

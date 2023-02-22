@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework
 {
     public unsafe class Timestamp : MpResourceHandle, IEquatable<Timestamp>
     {
-        public Timestamp(void* ptr) : base(ptr) { }
+        public Timestamp(IntPtr ptr) : base(ptr) { }
 
         public Timestamp(long value) : base()
         {
@@ -45,11 +45,11 @@ namespace Mediapipe.Net.Framework
 
         public long Microseconds => SafeNativeMethods.mp_Timestamp__Microseconds(MpPtr);
 
-        public bool IsSpecialValue => SafeNativeMethods.mp_Timestamp__IsSpecialValue(MpPtr) > 0;
+        public bool IsSpecialValue => SafeNativeMethods.mp_Timestamp__IsSpecialValue(MpPtr);
 
-        public bool IsRangeValue => SafeNativeMethods.mp_Timestamp__IsRangeValue(MpPtr) > 0;
+        public bool IsRangeValue => SafeNativeMethods.mp_Timestamp__IsRangeValue(MpPtr);
 
-        public bool IsAllowedInStream => SafeNativeMethods.mp_Timestamp__IsAllowedInStream(MpPtr) > 0;
+        public bool IsAllowedInStream => SafeNativeMethods.mp_Timestamp__IsAllowedInStream(MpPtr);
 
         public string? DebugString => MarshalStringFromNative(UnsafeNativeMethods.mp_Timestamp__DebugString);
 

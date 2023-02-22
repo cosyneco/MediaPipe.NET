@@ -92,27 +92,29 @@ output_stream: ""out""
         [Test]
         public void Initialize_ShouldReturnOk_When_CalledWithConfigAndSidePacket_And_ConfigIsNotSet()
         {
-            using var sidePackets = new SidePackets();
-            sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
+            using (var graph = new CalculatorGraph())
+            {
+                using (var status = graph.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text)))
+                {
+                    Assert.True(status.Ok());
+                }
 
-            using var graph = new CalculatorGraph();
-            var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
-
-            using var status = graph.Initialize(config, sidePackets);
-            Assert.True(status.Ok());
+                var config = graph.Config();
+                Assert.AreEqual("in", config.InputStream[0]);
+                Assert.AreEqual("out", config.OutputStream[0]);
+            }
         }
 
         [Test]
         public void Initialize_ShouldReturnInternalError_When_CalledWithConfigAndSidePacket_And_ConfigIsSet()
         {
-            using var sidePackets = new SidePackets();
-            sidePackets.Emplace("flag", PacketFactory.BoolPacket(true));
-
-            using var graph = new CalculatorGraph(valid_config_text);
-            var config = CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text);
-
-            using var status = graph.Initialize(config, sidePackets);
-            Assert.AreEqual(Status.StatusCode.Internal, status.Code);
+            using (var graph = new CalculatorGraph(valid_config_text))
+            {
+                using (var status = graph.Initialize(CalculatorGraphConfig.Parser.ParseFromTextFormat(valid_config_text)))
+                {
+                    Assert.AreEqual(Status.StatusCode.Internal, status.Code);
+                }
+            }
         }
         #endregion
 

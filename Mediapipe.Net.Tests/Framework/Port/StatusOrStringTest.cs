@@ -62,14 +62,14 @@ namespace Mediapipe.Net.Tests
 
         private StatusOrString initializeSubject(string str)
         {
-            using Packet packet = PacketFactory.StringPacket(str);
-            return (StatusOrString)packet.ConsumeString();
+            using var packet = new StringPacket(str);
+            return (StatusOrString)packet.Consume();
         }
 
         private StatusOrString initializeSubject(byte[] bytes)
         {
-            using Packet packet = PacketFactory.StringPacket(bytes);
-            return (StatusOrString)packet.ConsumeString();
+            using var packet = new StringPacket(bytes);
+            return (StatusOrString)packet.Consume();
         }
     }
 }

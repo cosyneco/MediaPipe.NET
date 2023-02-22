@@ -2,8 +2,10 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework;
 using Mediapipe.Net.Framework.Packets;
+using Mediapipe.Net.Framework.Port;
 using NUnit.Framework;
 
 namespace Mediapipe.Net.Tests.Framework.NewPacket
@@ -11,31 +13,29 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
     public class BoolPacketTest
     {
         #region Constructor
-        [Test]
+        [Test, SignalAbort]
         public void Ctor_ShouldInstantiatePacket_When_CalledWithTrue()
         {
-            using var packet = PacketFactory.BoolPacket(true);
-            Assert.True(packet.ValidateAsBool().Ok());
-            Assert.True(packet.GetBool());
-            Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
+            using var packet = new BoolPacket(true);
+            Assert.True(packet.Get());
+            Assert.AreEqual(Timestamp.Unset(), packet.Timestamp());
         }
 
         [Test]
         public void Ctor_ShouldInstantiatePacket_When_CalledWithFalse()
         {
-            using var packet = PacketFactory.BoolPacket(false);
-            Assert.True(packet.ValidateAsBool().Ok());
-            Assert.False(packet.GetBool());
-            Assert.AreEqual(packet.Timestamp(), Timestamp.Unset());
+            using var packet = new BoolPacket(false);
+            Assert.False(packet.Get());
+            Assert.AreEqual(Timestamp.Unset(), packet.Timestamp());
         }
 
         [Test]
         public void Ctor_ShouldInstantiatePacket_When_CalledWithValueAndTimestamp()
         {
             using var timestamp = new Timestamp(1);
-            using var packet = PacketFactory.BoolPacket(true).At(timestamp);
-            Assert.True(packet.ValidateAsBool().Ok());
-            Assert.True(packet.GetBool());
+            using var packet = new BoolPacket(true, timestamp);
+            Assert.True(packet.ValidateAsType().Ok());
+            Assert.True(packet.Get());
             Assert.AreEqual(packet.Timestamp(), timestamp);
         }
         #endregion
@@ -44,14 +44,14 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void IsDisposed_ShouldReturnFalse_When_NotDisposedYet()
         {
-            using var packet = PacketFactory.BoolPacket(true);
+            using var packet = new BoolPacket();
             Assert.False(packet.IsDisposed);
         }
 
         [Test]
         public void IsDisposed_ShouldReturnTrue_When_AlreadyDisposed()
         {
-            var packet = PacketFactory.BoolPacket(true);
+            var packet = new BoolPacket();
             packet.Dispose();
 
             Assert.True(packet.IsDisposed);
@@ -62,7 +62,7 @@ namespace Mediapipe.Net.Tests.Framework.NewPacket
         [Test]
         public void DebugTypeName_ShouldReturnBool_When_ValueIsSet()
         {
-            using var packet = PacketFactory.BoolPacket(true);
+            using var packet = new BoolPacket(true);
             Assert.AreEqual(packet.DebugTypeName(), "bool");
         }
         #endregion

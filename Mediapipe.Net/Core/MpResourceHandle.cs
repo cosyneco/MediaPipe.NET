@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Runtime.InteropServices;
 using Mediapipe.Net.Native;
 using static Mediapipe.Net.Native.MpReturnCodeExtension;
 
@@ -10,32 +11,32 @@ namespace Mediapipe.Net.Core
 {
     public unsafe abstract class MpResourceHandle : Disposable, IMpResourceHandle
     {
-        private void* ptr = null;
-        protected void* Ptr
+        private IntPtr ptr = IntPtr.Zero;
+        protected IntPtr Ptr
         {
             get => ptr;
             set
             {
-                if (value != null && OwnsResource)
+                if (value != IntPtr.Zero && OwnsResource)
                     throw new InvalidOperationException($"This object owns another resource");
                 ptr = value;
             }
         }
 
-        protected MpResourceHandle(bool isOwner = true) : this(null, isOwner) { }
+        protected MpResourceHandle(bool isOwner = true) : this(IntPtr.Zero, isOwner) { }
 
-        protected MpResourceHandle(void* ptr, bool isOwner = true) : base(isOwner)
+        protected MpResourceHandle(IntPtr ptr, bool isOwner = true) : base(isOwner)
         {
             Ptr = ptr;
         }
 
         #region IMpResourceHandle
-        public void* MpPtr
+        public IntPtr MpPtr
         {
             get
             {
                 ThrowIfDisposed();
-                return Ptr;
+                return ptr;
             }
         }
 
@@ -48,7 +49,7 @@ namespace Mediapipe.Net.Core
             TransferOwnership();
         }
 
-        protected bool IsResourcePresent => Ptr != null;
+        protected bool IsResourcePresent => ptr != IntPtr.Zero;
         public bool OwnsResource => IsOwner && IsResourcePresent;
         #endregion
 
@@ -65,7 +66,7 @@ namespace Mediapipe.Net.Core
         /// Forgets the pointer address.
         /// After calling this method, <see ref="OwnsResource" /> will return false.
         /// </summary>
-        protected void ReleaseMpPtr() => Ptr = null;
+        protected void ReleaseMpPtr() => ptr = IntPtr.Zero;
 
         /// <summary>
         /// Release the memory (call `delete` or `delete[]`) whether or not it owns it.
@@ -73,16 +74,13 @@ namespace Mediapipe.Net.Core
         /// <remarks>In most cases, this method should not be called directly.</remarks>
         protected abstract void DeleteMpPtr();
 
-        protected delegate MpReturnCode StringOutFunc(void* ptr, out sbyte* strPtr);
+        protected delegate MpReturnCode StringOutFunc(IntPtr ptr, out IntPtr strPtr);
         protected string? MarshalStringFromNative(StringOutFunc func)
         {
-            func(MpPtr, out sbyte* strPtr).Assert();
+            func(MpPtr, out IntPtr strPtr).Assert();
             GC.KeepAlive(this);
 
-            if (strPtr == null)
-                return null;
-
-            string str = new string(strPtr);
+            var str = Marshal.PtrToStringAnsi(strPtr);
             UnsafeNativeMethods.delete_array__PKc(strPtr);
 
             return str;

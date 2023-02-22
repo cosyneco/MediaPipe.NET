@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.ValidatedGraphConfig
     [StructLayout(LayoutKind.Sequential)]
     internal unsafe readonly struct EdgeInfoVector
     {
-        private readonly void* data;
+        private readonly IntPtr data;
         private readonly int size;
 
         public void Dispose() => UnsafeNativeMethods.mp_api_EdgeInfoArray__delete(data, size);

@@ -48,7 +48,7 @@ namespace Mediapipe.Net.Util
             }
         }
 
-        private bool provideResource(string path, void* output)
+        private bool provideResource(string path, IntPtr output)
         {
             try
             {
