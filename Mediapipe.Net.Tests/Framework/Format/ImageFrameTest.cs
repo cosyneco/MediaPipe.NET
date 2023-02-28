@@ -4,7 +4,6 @@
 
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Format;
 using Mediapipe.Net.Framework.Protobuf;

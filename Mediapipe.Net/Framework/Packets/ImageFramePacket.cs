@@ -36,7 +36,7 @@ namespace Mediapipe.Net.Framework.Packets
             UnsafeNativeMethods.mp_Packet__GetImageFrame(MpPtr, out var imageFramePtr).Assert();
             GC.KeepAlive(this);
 
-            return new ImageFrame(imageFramePtr);
+            return new ImageFrame(imageFramePtr, false);
         }
 
         public override StatusOr<ImageFrame> Consume()
