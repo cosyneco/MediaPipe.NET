@@ -66,17 +66,12 @@ namespace Mediapipe.Tests
         [Test]
         public void Ctor_ShouldInstantiateImageFrame_When_CalledWithPixelData()
         {
-            // The original test for this used NativeArray which only exists in Unity
-            // To emulate this, we're using a byte array and pinning it to get a pointer
-            // Which is the least ideal way to do it since this is not memory-safe.
-            var pixelData = new byte[32];
-            var pixelDataPtr = GCHandle.Alloc(pixelData, GCHandleType.Pinned).AddrOfPinnedObject();
             byte[] srcBytes = new byte[] {
                 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
                 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
             };
 
-            using var imageFrame = new ImageFrame(ImageFormat.Types.Format.Sbgra, 4, 2, 16, pixelDataPtr);
+            using var imageFrame = new ImageFrame(ImageFormat.Types.Format.Sbgra, 4, 2, 16, srcBytes);
             Assert.AreEqual(4, imageFrame.Width());
             Assert.AreEqual(2, imageFrame.Height());
             Assert.False(imageFrame.IsEmpty());
@@ -84,9 +79,6 @@ namespace Mediapipe.Tests
             byte[] bytes = new byte[32];
             imageFrame.CopyToBuffer(bytes);
             Assert.IsEmpty(bytes.Where((x, i) => x != srcBytes[i]));
-
-            // free handle since we don't need it anymore
-            GCHandle.FromIntPtr(pixelDataPtr).Free();
         }
 
 
