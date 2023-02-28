@@ -3,6 +3,7 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
+using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Protobuf;
 using Mediapipe.Net.Native;
@@ -43,8 +44,11 @@ namespace Mediapipe.Net.Framework.Format
 
         public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData, Deleter deleter) : this(format, width, height, widthStep, spanToBytePtr(pixelData), deleter) { }
 
+
+        [Obsolete("Do not use this constructor. There is currently a bug that causes a double-free when this constructor is invoked.")]
         public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, IntPtr pixelData) : this(format, width, height, widthStep, pixelData, VoidDeleter) { }
 
+        [Obsolete("Do not use this constructor. There is currently a bug that causes a double-free when this constructor is invoked.")]
         public ImageFrame(ImageFormat.Types.Format format, int width, int height, int widthStep, ReadOnlySpan<byte> pixelData) : this(format, width, height, widthStep, spanToBytePtr(pixelData), VoidDeleter) { }
 
         public static void VoidDeleter(IntPtr _) { }
@@ -62,6 +66,7 @@ namespace Mediapipe.Net.Framework.Format
             UnsafeNativeMethods.mp_ImageFrame__delete(Ptr);
         }
 
+        [UnmanagedCallersOnly]
         private static void voidDeleter(IntPtr _) { }
 
         /// <returns>
