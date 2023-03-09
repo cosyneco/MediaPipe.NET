@@ -3,7 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Mediapipe.Net.Core;
 using Mediapipe.Net.Framework.Protobuf;
