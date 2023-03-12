@@ -52,4 +52,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: TestResults-${{ matrix.os.name }}
-          path: ${{ matrix.os.runtime }}/*.trx
+          path: ${{ env.TEST_PROJECT_NAME  }}/TestResults/*.trx
