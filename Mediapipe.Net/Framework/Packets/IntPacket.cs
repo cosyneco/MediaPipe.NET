@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class IntPacket : Packet<int>
     {
-        public IntPacket() : base() { }
+        public IntPacket() : base(true) { }
         public IntPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public IntPacket(int value) : base()

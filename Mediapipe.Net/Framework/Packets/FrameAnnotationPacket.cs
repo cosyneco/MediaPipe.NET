@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class FrameAnnotationPacket : Packet<FrameAnnotation>
     {
-        public FrameAnnotationPacket() : base() { }
+        public FrameAnnotationPacket() : base(true) { }
         public FrameAnnotationPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public FrameAnnotationPacket? At(Timestamp timestamp) => At<FrameAnnotationPacket>(timestamp);

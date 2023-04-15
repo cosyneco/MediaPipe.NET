@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class LandmarkListPacket : Packet<LandmarkList>
     {
-        public LandmarkListPacket() : base() { }
+        public LandmarkListPacket() : base(true) { }
         public LandmarkListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public LandmarkListPacket? At(Timestamp timestamp) => At<LandmarkListPacket>(timestamp);

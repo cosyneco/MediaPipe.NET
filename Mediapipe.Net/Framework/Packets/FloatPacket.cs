@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class FloatPacket : Packet<float>
     {
-        public FloatPacket() : base() { }
+        public FloatPacket() : base(true) { }
         public FloatPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public FloatPacket(float value) : base()

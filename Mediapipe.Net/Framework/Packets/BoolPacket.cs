@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class BoolPacket : Packet<bool>
     {
-        public BoolPacket() : base() { }
+        public BoolPacket() : base(true) { }
         public BoolPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
         public BoolPacket(bool value) : base()
         {
