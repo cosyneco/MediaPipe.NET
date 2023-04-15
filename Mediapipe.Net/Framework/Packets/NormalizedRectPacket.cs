@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class NormalizedRectPacket : Packet<NormalizedRect>
     {
-        public NormalizedRectPacket() : base() { }
+        public NormalizedRectPacket() : base(true) { }
         public NormalizedRectPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public NormalizedRectPacket? At(Timestamp timestamp) => At<NormalizedRectPacket>(timestamp);

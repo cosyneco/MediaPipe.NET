@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class ClassificationListVectorPacket : Packet<List<ClassificationList>>
     {
-        public ClassificationListVectorPacket() : base() { }
+        public ClassificationListVectorPacket() : base(true) { }
         public ClassificationListVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public ClassificationListVectorPacket? At(Timestamp timestamp) => At<ClassificationListVectorPacket>(timestamp);

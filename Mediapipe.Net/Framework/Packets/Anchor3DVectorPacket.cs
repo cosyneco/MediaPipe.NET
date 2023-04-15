@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class Anchor3dVectorPacket : Packet<List<Anchor3d>>
     {
-        public Anchor3dVectorPacket() : base() { }
+        public Anchor3dVectorPacket() : base(true) { }
         public Anchor3dVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
         public Anchor3dVectorPacket(Anchor3d[] value) : base()
         {

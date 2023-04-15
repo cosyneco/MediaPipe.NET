@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class MatrixPacket : Packet<MatrixData>
     {
-        public MatrixPacket() : base() { }
+        public MatrixPacket() : base(true) { }
         public MatrixPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public MatrixPacket(MatrixData matrixData) : base()

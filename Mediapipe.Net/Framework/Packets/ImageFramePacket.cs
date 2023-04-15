@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class ImageFramePacket : Packet<ImageFrame>
     {
-        public ImageFramePacket() : base() { }
+        public ImageFramePacket() : base(true) { }
         public ImageFramePacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public ImageFramePacket(ImageFrame imageFrame) : base()

@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class GpuBufferPacket : Packet<GpuBuffer>
     {
-        public GpuBufferPacket() : base() { }
+        public GpuBufferPacket() : base(true) { }
         public GpuBufferPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public GpuBufferPacket? At(Timestamp timestamp) => At<GpuBufferPacket>(timestamp);

@@ -10,7 +10,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class FaceGeometryPacket : Packet<FaceGeometry.FaceGeometry>
     {
-        public FaceGeometryPacket() : base() { }
+        public FaceGeometryPacket() : base(true) { }
         public FaceGeometryPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public FaceGeometryPacket? At(Timestamp timestamp) => At<FaceGeometryPacket>(timestamp);

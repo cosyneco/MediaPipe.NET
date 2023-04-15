@@ -11,7 +11,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class ClassificationListPacket : Packet<ClassificationList>
     {
-        public ClassificationListPacket() : base() { }
+        public ClassificationListPacket() : base(true) { }
         public ClassificationListPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public ClassificationListPacket? At(Timestamp timestamp) => At<ClassificationListPacket>(timestamp);

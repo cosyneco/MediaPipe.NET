@@ -12,7 +12,7 @@ namespace Mediapipe.Net.Framework.Packets
 {
     public class DetectionVectorPacket : Packet<List<Detection>>
     {
-        public DetectionVectorPacket() : base() { }
+        public DetectionVectorPacket() : base(true) { }
         public DetectionVectorPacket(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
         public DetectionVectorPacket? At(Timestamp timestamp) => At<DetectionVectorPacket>(timestamp);
