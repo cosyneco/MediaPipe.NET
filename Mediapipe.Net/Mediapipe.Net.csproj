@@ -11,7 +11,7 @@
   <PropertyGroup Label="Nuget">
     <IsPackable>true</IsPackable>
     <PackageId>Mediapipe.Net</PackageId>
-    <Version>0.9.1</Version>
+    <Version>0.9.2</Version>
     <Authors>homuler;Vignette</Authors>
     <PackageTags>Google;Mediapipe;Tracking;Media Analysis</PackageTags>
     <Title>Mediapipe.Net</Title>
