@@ -7,21 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net", "Mediapipe.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Tests", "Mediapipe.Net.Tests\Mediapipe.Net.Tests.csproj", "{3A992764-030D-4428-B2C2-F9A805E5B69A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.FaceMesh", "Mediapipe.Net.Examples.FaceMesh\Mediapipe.Net.Examples.FaceMesh.csproj", "{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.Hands", "Mediapipe.Net.Examples.Hands\Mediapipe.Net.Examples.Hands.csproj", "{E08C6A15-263B-4886-8DE4-265959501988}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.FaceMeshGpu", "Mediapipe.Net.Examples.FaceMeshGpu\Mediapipe.Net.Examples.FaceMeshGpu.csproj", "{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.Pose", "Mediapipe.Net.Examples.Pose\Mediapipe.Net.Examples.Pose.csproj", "{B380ED00-EC8F-4A08-A69E-D5544C7D62E9}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.PoseGpu", "Mediapipe.Net.Examples.PoseGpu\Mediapipe.Net.Examples.PoseGpu.csproj", "{99300875-BA40-4A4D-898C-5A128921E1F6}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.OsuFrameworkVisualTests", "Mediapipe.Net.Examples.OsuFrameworkVisualTests\Mediapipe.Net.Examples.OsuFrameworkVisualTests.csproj", "{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Examples.HandsGpu", "Mediapipe.Net.Examples.HandsGpu\Mediapipe.Net.Examples.HandsGpu.csproj", "{52AF90A3-E637-44F4-9FE8-15114829DD5D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{17D25CDE-4295-47C0-8506-E494F7E2BFA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,45 +23,13 @@ Global
 		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E08C6A15-263B-4886-8DE4-265959501988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E08C6A15-263B-4886-8DE4-265959501988}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E08C6A15-263B-4886-8DE4-265959501988}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E08C6A15-263B-4886-8DE4-265959501988}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B380ED00-EC8F-4A08-A69E-D5544C7D62E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B380ED00-EC8F-4A08-A69E-D5544C7D62E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B380ED00-EC8F-4A08-A69E-D5544C7D62E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B380ED00-EC8F-4A08-A69E-D5544C7D62E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{99300875-BA40-4A4D-898C-5A128921E1F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99300875-BA40-4A4D-898C-5A128921E1F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99300875-BA40-4A4D-898C-5A128921E1F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99300875-BA40-4A4D-898C-5A128921E1F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34F0FFCF-F81E-4556-BC74-ED9AEBA7F731}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52AF90A3-E637-44F4-9FE8-15114829DD5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52AF90A3-E637-44F4-9FE8-15114829DD5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52AF90A3-E637-44F4-9FE8-15114829DD5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52AF90A3-E637-44F4-9FE8-15114829DD5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{DB2D5CF8-827D-4DCF-A5AF-0C920A8629D9} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
-		{E08C6A15-263B-4886-8DE4-265959501988} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
-		{98C753FA-CEF8-49DC-8FC9-5EA06B61CCA1} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
-		{B380ED00-EC8F-4A08-A69E-D5544C7D62E9} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
-		{99300875-BA40-4A4D-898C-5A128921E1F6} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
-		{52AF90A3-E637-44F4-9FE8-15114829DD5D} = {B6D1A935-0E37-4AB2-8D9A-D0F57AED6533}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {42D1804F-D3DD-421B-81C9-7D2221FF9F78}

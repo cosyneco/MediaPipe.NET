@@ -42,7 +42,7 @@ We share the same compatibility matrix with MediaPipeUnityPlugin, so this will c
 
 ### Examples
 
-Coming soon!
+Check out the Hello world example for an example graph.
 
 ## Copyright
 
