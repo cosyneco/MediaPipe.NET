@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net", "Mediapipe.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Tests", "Mediapipe.Net.Tests\Mediapipe.Net.Tests.csproj", "{3A992764-030D-4428-B2C2-F9A805E5B69A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{17D25CDE-4295-47C0-8506-E494F7E2BFA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{17D25CDE-4295-47C0-8506-E494F7E2BFA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Benchmarks", "Mediapipe.Net.Benchmarks\Mediapipe.Net.Benchmarks.csproj", "{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
