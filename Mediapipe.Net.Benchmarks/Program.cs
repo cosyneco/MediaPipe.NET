@@ -2,10 +2,23 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Running;
 
 namespace Mediapipe.Net.Benchmarks
 {
+    public class Config : ManualConfig
+    {
+        public Config()
+        {
+            AddDiagnoser(MemoryDiagnoser.Default);
+            AddExporter(CsvMeasurementsExporter.Default);
+            AddExporter(PlainExporter.Default);
+        }
+    }
     public class Program
     {
         public static void Main(string[] args)
@@ -15,7 +28,7 @@ namespace Mediapipe.Net.Benchmarks
                 typeof(FloatPacketPerformanceBenchmark), typeof(ImageFramePacketPerformanceBenchmark)
             });
 
-            switcher.Run(args);
+            switcher.Run(args, new Config());
         }
     }
 }
