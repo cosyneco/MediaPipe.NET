@@ -4,12 +4,11 @@
 
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Engines;
-using BenchmarkDotNet.Running;
 using Mediapipe.Net.Framework.Packets;
 
 namespace Mediapipe.Net.Benchmarks
 {
-    [SimpleJob(RunStrategy.ColdStart, launchCount: 50)]
+    [SimpleJob(RunStrategy.Throughput, launchCount: 50)]
     [MinColumn, MaxColumn, MeanColumn, MedianColumn]
     public class FloatPacketPerformanceBenchmark
     {
@@ -24,7 +23,7 @@ namespace Mediapipe.Net.Benchmarks
         }
 
         [Benchmark]
-        public void InstatiateFloatArrayPacket()
+        public void InstantiateFloatArrayPacket()
         {
             var randomArray = new float[10];
             for (var i = 0; i < randomArray.Length; i++)
@@ -37,13 +36,5 @@ namespace Mediapipe.Net.Benchmarks
             packet.ValidateAsType().Ok();
         }
 
-    }
-
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var summary = BenchmarkRunner.Run<FloatPacketPerformanceBenchmark>();
-        }
     }
 }
