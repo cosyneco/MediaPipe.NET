@@ -6,6 +6,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Exporters.Csv;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 
 namespace Mediapipe.Net.Benchmarks
@@ -15,6 +16,7 @@ namespace Mediapipe.Net.Benchmarks
         public Config()
         {
             AddDiagnoser(MemoryDiagnoser.Default);
+            AddLogger(ConsoleLogger.Default);
             AddExporter(CsvMeasurementsExporter.Default);
             AddExporter(PlainExporter.Default);
         }
