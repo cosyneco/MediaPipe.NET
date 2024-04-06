@@ -27,7 +27,9 @@ namespace Mediapipe.Net.Benchmarks
         {
             var switcher = new BenchmarkSwitcher(new[]
             {
-                typeof(FloatPacketPerformanceBenchmark), typeof(ImageFramePacketPerformanceBenchmark)
+                typeof(FloatPacketPerformanceBenchmark),
+                typeof(ImageFramePacketPerformanceBenchmark),
+                typeof(BlazeNetBenchmark)
             });
 
             switcher.Run(args, new Config());
