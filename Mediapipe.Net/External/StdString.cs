@@ -1,29 +1,35 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.Core;
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Core;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.External
+namespace Mediapipe.External
 {
-    public unsafe class StdString : MpResourceHandle
+  public class StdString : MpResourceHandle
+  {
+    public StdString(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+    public StdString(byte[] bytes) : base()
     {
-        public StdString(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
-
-        public StdString(byte[] bytes) : base()
-        {
-            UnsafeNativeMethods.std_string__PKc_i(bytes, bytes.Length, out var ptr).Assert();
-            Ptr = ptr;
-        }
-
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.std_string__delete(Ptr);
-
-        public void Swap(StdString str)
-        {
-            UnsafeNativeMethods.std_string__swap__Rstr(MpPtr, str.MpPtr);
-            GC.KeepAlive(this);
-        }
+      UnsafeNativeMethods.std_string__PKc_i(bytes, bytes.Length, out var ptr).Assert();
+      this.ptr = ptr;
     }
+
+    protected override void DeleteMpPtr()
+    {
+      UnsafeNativeMethods.std_string__delete(ptr);
+    }
+
+    public void Swap(StdString str)
+    {
+      UnsafeNativeMethods.std_string__swap__Rstr(mpPtr, str.mpPtr);
+      GC.KeepAlive(this);
+    }
+  }
 }

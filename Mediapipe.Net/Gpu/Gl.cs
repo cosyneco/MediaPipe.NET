@@ -1,18 +1,26 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
-using Mediapipe.Net.Native;
+using Mediapipe.PInvoke.Native;
+using System;
 
-namespace Mediapipe.Net.Gpu
+namespace Mediapipe.Gpu
 {
-    public class Gl
+  public class Gl
+  {
+    public static uint GL_TEXTURE_2D = 0x0DE1;
+
+    public static void Flush()
     {
-        public const uint GL_TEXTURE_2D = 0x0DE1;
-
-        public static void Flush() => UnsafeNativeMethods.glFlush();
-
-        public unsafe static void ReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, void* pixels)
-            => UnsafeNativeMethods.glReadPixels(x, y, width, height, glFormat, glType, pixels);
+      UnsafeNativeMethods.glFlush();
     }
+
+    public static void ReadPixels(int x, int y, int width, int height, uint glFormat, uint glType, IntPtr pixels)
+    {
+      UnsafeNativeMethods.glReadPixels(x, y, width, height, glFormat, glType, pixels);
+    }
+  }
 }

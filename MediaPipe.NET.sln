@@ -1,15 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.4.33213.308
+VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net", "Mediapipe.Net\Mediapipe.Net.csproj", "{A420A359-464F-47D2-B8D4-893C5A22301D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.Tests", "Mediapipe.Net.Tests\Mediapipe.Net.Tests.csproj", "{3A992764-030D-4428-B2C2-F9A805E5B69A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{17D25CDE-4295-47C0-8506-E494F7E2BFA3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.Benchmarks", "Mediapipe.Net.Benchmarks\Mediapipe.Net.Benchmarks.csproj", "{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net", "Mediapipe.Net\Mediapipe.Net.csproj", "{53BBFBB7-AD22-44F6-95A4-6F338788AC92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,27 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A420A359-464F-47D2-B8D4-893C5A22301D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A420A359-464F-47D2-B8D4-893C5A22301D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A420A359-464F-47D2-B8D4-893C5A22301D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A420A359-464F-47D2-B8D4-893C5A22301D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A992764-030D-4428-B2C2-F9A805E5B69A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17D25CDE-4295-47C0-8506-E494F7E2BFA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F343EAD9-4775-4F3B-B98D-7B54A7BB3225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {42D1804F-D3DD-421B-81C9-7D2221FF9F78}
+		SolutionGuid = {FFEFAD64-81F5-4682-80DA-EF6D327A6409}
 	EndGlobalSection
 EndGlobal

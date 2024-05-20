@@ -2,10 +2,11 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework.Port
+namespace Mediapipe.Framework.Port
 {
     public class StatusOrPoller<T> : StatusOr<OutputStreamPoller<T>>
     {
@@ -15,7 +16,7 @@ namespace Mediapipe.Net.Framework.Port
 
         protected override void DeleteMpPtr()
         {
-            UnsafeNativeMethods.mp_StatusOrPoller__delete(Ptr);
+            UnsafeNativeMethods.mp_StatusOrPoller__delete(ptr);
         }
 
         private Status status;
@@ -23,9 +24,9 @@ namespace Mediapipe.Net.Framework.Port
         {
             get
             {
-                if (status == null || status.IsDisposed)
+                if (status == null || status.isDisposed)
                 {
-                    UnsafeNativeMethods.mp_StatusOrPoller__status(MpPtr, out var statusPtr).Assert();
+                    UnsafeNativeMethods.mp_StatusOrPoller__status(mpPtr, out var statusPtr).Assert();
 
                     GC.KeepAlive(this);
                     status = new Status(statusPtr);
@@ -36,12 +37,12 @@ namespace Mediapipe.Net.Framework.Port
 
         public override bool Ok()
         {
-            return SafeNativeMethods.mp_StatusOrPoller__ok(MpPtr);
+            return SafeNativeMethods.mp_StatusOrPoller__ok(mpPtr);
         }
 
         public override OutputStreamPoller<T> Value()
         {
-            UnsafeNativeMethods.mp_StatusOrPoller__value(MpPtr, out var pollerPtr).Assert();
+            UnsafeNativeMethods.mp_StatusOrPoller__value(mpPtr, out var pollerPtr).Assert();
             Dispose();
 
             return new OutputStreamPoller<T>(pollerPtr);

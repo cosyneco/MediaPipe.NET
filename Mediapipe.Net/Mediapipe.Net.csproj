@@ -1,33 +1,488 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <PropertyGroup Label="Nuget">
-    <IsPackable>true</IsPackable>
-    <PackageId>Mediapipe.Net</PackageId>
-    <Version>0.9.2</Version>
-    <Authors>homuler;Vignette</Authors>
-    <PackageTags>Google;Mediapipe;Tracking;Media Analysis</PackageTags>
-    <Title>Mediapipe.Net</Title>
-    <Description>Pure .NET bindings for MediaPipe</Description>
-    <Copyright>2022 homuler and Vignette</Copyright>
-    <PackageProjectUrl>https://github.com/vignetteapp/MediaPipe.NET</PackageProjectUrl>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
-
-  <ItemGroup Label="Package References">
-    <PackageReference Include="Google.Protobuf" Version="3.21.3" />
-    <PackageReference Include="Mediapipe.Net.Framework.Protobuf" Version="0.9.1" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{53BBFBB7-AD22-44F6-95A4-6F338788AC92}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mediapipe</RootNamespace>
+    <AssemblyName>Mediapipe.Net</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Google.Protobuf, Version=3.26.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.26.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
-
-  <ItemGroup Label="Documents">
-    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Core\BadStatusException.cs" />
+    <Compile Include="Core\DisposableObject.cs" />
+    <Compile Include="Core\InternalException.cs" />
+    <Compile Include="Core\MediaPipeException.cs" />
+    <Compile Include="Core\MediaPipePluginException.cs" />
+    <Compile Include="Core\MpResourceHandle.cs" />
+    <Compile Include="Core\SharedPtrHandle.cs" />
+    <Compile Include="Core\UniquePtrHandle.cs" />
+    <Compile Include="Extension\ImageFormatExtension.cs" />
+    <Compile Include="Extension\ListExtension.cs" />
+    <Compile Include="Extension\ProtoMessageClearExtension.cs" />
+    <Compile Include="Extension\TaskExtension.cs" />
+    <Compile Include="External\Glog.cs" />
+    <Compile Include="External\Protobuf.cs" />
+    <Compile Include="External\SerializedProto.cs" />
+    <Compile Include="External\SerializedProtoVector.cs" />
+    <Compile Include="External\StdString.cs" />
+    <Compile Include="Framework\CalculatorGraph.cs" />
+    <Compile Include="Framework\CalculatorGraphConfigExtension.cs" />
+    <Compile Include="Framework\Formats\Image.cs" />
+    <Compile Include="Framework\Formats\ImageFrame.cs" />
+    <Compile Include="Framework\Formats\Matrix.cs" />
+    <Compile Include="Framework\OutputStreamPoller.cs" />
+    <Compile Include="Framework\Packet\Packet.cs" />
+    <Compile Include="Framework\PacketGetterExtension.cs" />
+    <Compile Include="Framework\PacketValidatorExtension.cs" />
+    <Compile Include="Framework\Packet\PacketMap.cs" />
+    <Compile Include="Framework\Packet\StringPacket.cs" />
+    <Compile Include="Framework\Port\Status.cs" />
+    <Compile Include="Framework\Port\StatusOr.cs" />
+    <Compile Include="Framework\Port\StatusOrImageFrame.cs" />
+    <Compile Include="Framework\Port\StatusOrPoller.cs" />
+    <Compile Include="Framework\Port\StatusOrString.cs" />
+    <Compile Include="Framework\Timestamp.cs" />
+    <Compile Include="Framework\Tool\NameUtil.cs" />
+    <Compile Include="Framework\Tool\ValidateName.cs" />
+    <Compile Include="Framework\ValidatedGraphConfig.cs" />
+    <Compile Include="Gpu\Egl.cs" />
+    <Compile Include="Gpu\Gl.cs" />
+    <Compile Include="Gpu\GlCalculatorHelper.cs" />
+    <Compile Include="Gpu\GlContext.cs" />
+    <Compile Include="Gpu\GlSyncPoint.cs" />
+    <Compile Include="Gpu\GlTexture.cs" />
+    <Compile Include="Gpu\GlTextureBuffer.cs" />
+    <Compile Include="Gpu\GlTextureInfo.cs" />
+    <Compile Include="Gpu\GlVersion.cs" />
+    <Compile Include="Gpu\GpuBuffer.cs" />
+    <Compile Include="Gpu\GpuBufferFormat.cs" />
+    <Compile Include="Gpu\GpuResources.cs" />
+    <Compile Include="Marshal\ImageArray.cs" />
+    <Compile Include="Marshal\NativeCategory.cs" />
+    <Compile Include="Marshal\NativeClassificationResult.cs" />
+    <Compile Include="Marshal\NativeDetectionResult.cs" />
+    <Compile Include="Marshal\NativeKeypoint.cs" />
+    <Compile Include="Marshal\NativeLandmark.cs" />
+    <Compile Include="Marshal\NativeMatrix.cs" />
+    <Compile Include="Marshal\NativeRect.cs" />
+    <Compile Include="Marshal\StructArray.cs" />
+    <Compile Include="MathF.cs" />
+    <Compile Include="PInvoke\MpReturnCode.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Absl_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Absl_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Glog_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Protobuf_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Stdlib_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\External\Stdlib_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\CalculatorGraph_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\CalculatorGraph_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Calculator_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\ImageFrame_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\ImageFrame_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\Image_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\Image_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\Matrix_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Format\Rect_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\OutputStreamPoller_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\OutputStreamPoller_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Packet_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Packet_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Timestamp_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\Timestamp_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\ValidatedGraphConfig_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Framework\ValidatedGraphConfig_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlCalculatorHelper_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlCalculatorHelper_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlContext_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlContext_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlTextureBuffer_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlTextureBuffer_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlTexture_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GlTexture_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\Gl_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\Gl_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuBufferFormat_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuBufferFormat_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuBuffer_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuBuffer_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuResources_Safe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Gpu\GpuResources_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\NativeMethods.cs" />
+    <Compile Include="PInvoke\NativeMethods\Tasks\Components\Containers_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Tasks\TaskRunner_Unsafe.cs" />
+    <Compile Include="PInvoke\NativeMethods\Util\ResourceUtil_Safe.cs" />
+    <Compile Include="PInvoke\UnsafeNativeMethods.cs" />
+    <Compile Include="Protobuf\Calculators\Audio\MfccMelCalculators.cs" />
+    <Compile Include="Protobuf\Calculators\Audio\RationalFactorResampleCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Audio\SpectrogramCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Audio\StabilizedLogCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Audio\TimeSeriesFramerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\ClipVectorSizeCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\ConcatenateVectorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\ConstantSidePacketCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\DequantizeByteArrayCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\FlowLimiterCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\GateCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\GraphProfileCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\PacketClonerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\PacketResamplerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\PacketThinnerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\QuantizeFloatVectorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\SequenceShiftCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Core\SplitVectorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\BilateralFilterCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\FeatureDetectorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\ImageCloneCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\ImageCroppingCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\ImageTransformationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\MaskOverlayCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\OpencvEncodedImageToImageFrameCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\OpencvImageEncoderCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\RecolorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\RotationMode.cs" />
+    <Compile Include="Protobuf\Calculators\Image\ScaleImageCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\SegmentationSmoothingCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\SetAlphaCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Image\WarpAffineCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\ImageToTensorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\InferenceCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\LandmarksToTensorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorConverterCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorsToClassificationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorsToDetectionsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorsToFloatsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorsToLandmarksCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tensor\TensorsToSegmentationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\SsdAnchorsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteConverterCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteCustomOpResolverCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteInferenceCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteTensorsToClassificationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteTensorsToDetectionsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteTensorsToLandmarksCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Tflite\TfliteTensorsToSegmentationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\AnnotationOverlayCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\AssociationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\DetectionLabelIdToTextCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\DetectionsToRectsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\DetectionsToRenderDataCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\FilterDetectionsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LabelsToRenderDataCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LandmarkProjectionCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LandmarksSmoothingCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LandmarksToDetectionCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LandmarksToFloatsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LandmarksToRenderDataCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\Latency.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LocalFileContentsCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\LogicCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\NonMaxSuppressionCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\PacketFrequency.cs" />
+    <Compile Include="Protobuf\Calculators\Util\PacketFrequencyCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\PacketLatencyCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\RectToRenderDataCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\RectToRenderScaleCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\RectTransformationCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\RefineLandmarksFromHeatmapCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\ThresholdingCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\TimedBoxListIdToLabelCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\TimedBoxListToRenderDataCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\TopKScoresCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\VisibilityCopyCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Util\VisibilitySmoothingCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\BoxDetectorCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\BoxTrackerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\FlowPackagerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\FlowToImageCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\MotionAnalysisCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\OpencvVideoEncoderCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\TrackedDetectionManagerCalculator.cs" />
+    <Compile Include="Protobuf\Calculators\Video\VideoPreStreamCalculator.cs" />
+    <Compile Include="Protobuf\Framework\Calculator.cs" />
+    <Compile Include="Protobuf\Framework\CalculatorOptions.cs" />
+    <Compile Include="Protobuf\Framework\CalculatorProfile.cs" />
+    <Compile Include="Protobuf\Framework\Formats\AffineTransformData.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Annotation\Locus.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Annotation\Rasterization.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Classification.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Detection.cs" />
+    <Compile Include="Protobuf\Framework\Formats\ImageFileProperties.cs" />
+    <Compile Include="Protobuf\Framework\Formats\ImageFormat.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Landmark.cs" />
+    <Compile Include="Protobuf\Framework\Formats\LocationData.cs" />
+    <Compile Include="Protobuf\Framework\Formats\MatrixData.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Motion\OpticalFlowFieldData.cs" />
+    <Compile Include="Protobuf\Framework\Formats\ObjectDetection\Anchor.cs" />
+    <Compile Include="Protobuf\Framework\Formats\Rect.cs" />
+    <Compile Include="Protobuf\Framework\Formats\TimeSeriesHeader.cs" />
+    <Compile Include="Protobuf\Framework\MediapipeOptions.cs" />
+    <Compile Include="Protobuf\Framework\PacketFactory.cs" />
+    <Compile Include="Protobuf\Framework\PacketGenerator.cs" />
+    <Compile Include="Protobuf\Framework\StatusHandler.cs" />
+    <Compile Include="Protobuf\Framework\StreamHandler.cs" />
+    <Compile Include="Protobuf\Framework\ThreadPoolExecutor.cs" />
+    <Compile Include="Protobuf\Gpu\CopyCalculator.cs" />
+    <Compile Include="Protobuf\Gpu\GlContextOptions.cs" />
+    <Compile Include="Protobuf\Gpu\GlScalerCalculator.cs" />
+    <Compile Include="Protobuf\Gpu\GlSurfaceSinkCalculator.cs" />
+    <Compile Include="Protobuf\Gpu\GpuOrigin.cs" />
+    <Compile Include="Protobuf\Gpu\ScaleMode.cs" />
+    <Compile Include="Protobuf\Modules\FaceDetection\FaceDetection.cs" />
+    <Compile Include="Protobuf\Modules\HolisticLandmark\Calculators\RoiTrackingCalculator.cs" />
+    <Compile Include="Protobuf\Tasks\Audio\AudioClassifier\Proto\AudioClassifierGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Components\Containers\Proto\Classifications.cs" />
+    <Compile Include="Protobuf\Tasks\Components\Processors\Proto\ClassifierOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Core\Proto\Acceleration.cs" />
+    <Compile Include="Protobuf\Tasks\Core\Proto\BaseOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Core\Proto\ExternalFile.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceDetector\Proto\FaceDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceGeometry\GeometryPipelineCalculator.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\FaceGeometry.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\FaceGeometryGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\Mesh3D.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceBlendshapesGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceLandmarkerGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceLandmarksDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\HandDetector\Proto\HandDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\HandLandmarker\Proto\HandLandmarkerGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\HandLandmarker\Proto\HandLandmarksDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\PoseDetector\Proto\PoseDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\PoseLandmarker\Proto\PoseLandmarkerGraphOptions.cs" />
+    <Compile Include="Protobuf\Tasks\Vision\PoseLandmarker\Proto\PoseLandmarksDetectorGraphOptions.cs" />
+    <Compile Include="Protobuf\Util\AudioDecoder.cs" />
+    <Compile Include="Protobuf\Util\BoxDetector.cs" />
+    <Compile Include="Protobuf\Util\BoxTracker.cs" />
+    <Compile Include="Protobuf\Util\CameraMotion.cs" />
+    <Compile Include="Protobuf\Util\Color.cs" />
+    <Compile Include="Protobuf\Util\FlowPackager.cs" />
+    <Compile Include="Protobuf\Util\FrameSelection.cs" />
+    <Compile Include="Protobuf\Util\FrameSelectionSolutionEvaluator.cs" />
+    <Compile Include="Protobuf\Util\LabelMap.cs" />
+    <Compile Include="Protobuf\Util\MotionAnalysis.cs" />
+    <Compile Include="Protobuf\Util\MotionEstimation.cs" />
+    <Compile Include="Protobuf\Util\MotionModels.cs" />
+    <Compile Include="Protobuf\Util\MotionSaliency.cs" />
+    <Compile Include="Protobuf\Util\PushPullFiltering.cs" />
+    <Compile Include="Protobuf\Util\RegionFlow.cs" />
+    <Compile Include="Protobuf\Util\RegionFlowComputation.cs" />
+    <Compile Include="Protobuf\Util\RenderData.cs" />
+    <Compile Include="Protobuf\Util\ToneEstimation.cs" />
+    <Compile Include="Protobuf\Util\ToneModels.cs" />
+    <Compile Include="Protobuf\Util\TrackedDetectionManagerConfig.cs" />
+    <Compile Include="Protobuf\Util\Tracking.cs" />
+    <Compile Include="Tasks\Audio\AudioClassifier\AudioClassifier.cs" />
+    <Compile Include="Tasks\Audio\AudioClassifier\AudioClassifierOptions.cs" />
+    <Compile Include="Tasks\Audio\Core\BaseAudioTaskApi.cs" />
+    <Compile Include="Tasks\Audio\Core\RunningMode.cs" />
+    <Compile Include="Tasks\Components\Containers\Category.cs" />
+    <Compile Include="Tasks\Components\Containers\ClassificationResult.cs" />
+    <Compile Include="Tasks\Components\Containers\DetectionResult.cs" />
+    <Compile Include="Tasks\Components\Containers\Keypoint.cs" />
+    <Compile Include="Tasks\Components\Containers\Landmark.cs" />
+    <Compile Include="Tasks\Components\Containers\PacketExtension.cs" />
+    <Compile Include="Tasks\Components\Containers\Rect.cs" />
+    <Compile Include="Tasks\Components\Containers\Util.cs" />
+    <Compile Include="Tasks\Core\BaseOptions.cs" />
+    <Compile Include="Tasks\Core\PacketsCallbackTable.cs" />
+    <Compile Include="Tasks\Core\TaskInfo.cs" />
+    <Compile Include="Tasks\Core\TaskOptions.cs" />
+    <Compile Include="Tasks\Core\TaskRunner.cs" />
+    <Compile Include="Tasks\Vision\Core\BaseVisionTaskApi.cs" />
+    <Compile Include="Tasks\Vision\Core\ImageProcessingOptions.cs" />
+    <Compile Include="Tasks\Vision\Core\RunningMode.cs" />
+    <Compile Include="Tasks\Vision\FaceDetector\FaceDetector.cs" />
+    <Compile Include="Tasks\Vision\FaceDetector\FaceDetectorOptions.cs" />
+    <Compile Include="Tasks\Vision\FaceLandmarker\FaceLandmarker.cs" />
+    <Compile Include="Tasks\Vision\FaceLandmarker\FaceLandmarkerOptions.cs" />
+    <Compile Include="Tasks\Vision\FaceLandmarker\FaceLandmarkerResult.cs" />
+    <Compile Include="Tasks\Vision\HandLandmarker\HandLandmarker.cs" />
+    <Compile Include="Tasks\Vision\HandLandmarker\HandLandmarkerOptions.cs" />
+    <Compile Include="Tasks\Vision\HandLandmarker\HandLandmarkerResult.cs" />
+    <Compile Include="Tasks\Vision\PoseLandmarker\PoseLandmarker.cs" />
+    <Compile Include="Tasks\Vision\PoseLandmarker\PoseLandmarkerOptions.cs" />
+    <Compile Include="Tasks\Vision\PoseLandmarker\PoseLandmarkerResult.cs" />
+    <Compile Include="Util\GlobalInstanceTable.cs" />
+    <Compile Include="Util\ResourceManager.cs" />
+    <Compile Include="Util\UnsafeUtil.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Protobuf\Framework\Calculator.cs.meta" />
+    <None Include="Protobuf\Framework\CalculatorOptions.cs.meta" />
+    <None Include="Protobuf\Framework\CalculatorProfile.cs.meta" />
+    <None Include="Protobuf\Framework\Formats.meta" />
+    <None Include="Protobuf\Framework\Formats\AffineTransformData.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Annotation.meta" />
+    <None Include="Protobuf\Framework\Formats\Annotation\Locus.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Annotation\Rasterization.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Classification.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Detection.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\ImageFileProperties.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\ImageFormat.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Landmark.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\LocationData.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\MatrixData.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Motion.meta" />
+    <None Include="Protobuf\Framework\Formats\Motion\OpticalFlowFieldData.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\ObjectDetection.meta" />
+    <None Include="Protobuf\Framework\Formats\ObjectDetection\Anchor.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\Rect.cs.meta" />
+    <None Include="Protobuf\Framework\Formats\TimeSeriesHeader.cs.meta" />
+    <None Include="Protobuf\Framework\MediapipeOptions.cs.meta" />
+    <None Include="Protobuf\Framework\PacketFactory.cs.meta" />
+    <None Include="Protobuf\Framework\PacketGenerator.cs.meta" />
+    <None Include="Protobuf\Framework\StatusHandler.cs.meta" />
+    <None Include="Protobuf\Framework\StreamHandler.cs.meta" />
+    <None Include="Protobuf\Framework\ThreadPoolExecutor.cs.meta" />
+    <None Include="Protobuf\Gpu\CopyCalculator.cs.meta" />
+    <None Include="Protobuf\Gpu\GlContextOptions.cs.meta" />
+    <None Include="Protobuf\Gpu\GlScalerCalculator.cs.meta" />
+    <None Include="Protobuf\Gpu\GlSurfaceSinkCalculator.cs.meta" />
+    <None Include="Protobuf\Gpu\GpuOrigin.cs.meta" />
+    <None Include="Protobuf\Gpu\ScaleMode.cs.meta" />
+    <None Include="Protobuf\Modules\FaceDetection.meta" />
+    <None Include="Protobuf\Modules\FaceDetection\FaceDetection.cs.meta" />
+    <None Include="Protobuf\Modules\FaceGeometry.meta" />
+    <None Include="Protobuf\Modules\FaceGeometry\Protos.meta" />
+    <None Include="Protobuf\Modules\HolisticLandmark.meta" />
+    <None Include="Protobuf\Modules\HolisticLandmark\Calculators.meta" />
+    <None Include="Protobuf\Modules\HolisticLandmark\Calculators\RoiTrackingCalculator.cs.meta" />
+    <None Include="Protobuf\Modules\Objectron.meta" />
+    <None Include="Protobuf\Modules\Objectron\Calculators.meta" />
+    <None Include="Protobuf\Tasks\Audio.meta" />
+    <None Include="Protobuf\Tasks\Audio\AudioClassifier.meta" />
+    <None Include="Protobuf\Tasks\Audio\AudioClassifier\Proto.meta" />
+    <None Include="Protobuf\Tasks\Audio\AudioClassifier\Proto\AudioClassifierGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Components.meta" />
+    <None Include="Protobuf\Tasks\Components\Containers.meta" />
+    <None Include="Protobuf\Tasks\Components\Containers\Proto.meta" />
+    <None Include="Protobuf\Tasks\Components\Containers\Proto\Classifications.cs.meta" />
+    <None Include="Protobuf\Tasks\Components\Processors.meta" />
+    <None Include="Protobuf\Tasks\Components\Processors\Proto.meta" />
+    <None Include="Protobuf\Tasks\Components\Processors\Proto\ClassifierOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Core.meta" />
+    <None Include="Protobuf\Tasks\Core\Proto.meta" />
+    <None Include="Protobuf\Tasks\Core\Proto\Acceleration.cs.meta" />
+    <None Include="Protobuf\Tasks\Core\Proto\BaseOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Core\Proto\ExternalFile.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceDetector.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceDetector\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceDetector\Proto\FaceDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry\GeometryPipelineCalculator.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\FaceGeometry.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\FaceGeometryGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceGeometry\Proto\Mesh3D.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceLandmarker.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceBlendshapesGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceLandmarkerGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\FaceLandmarker\Proto\FaceLandmarksDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandDetector.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandDetector\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandDetector\Proto\HandDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandLandmarker.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandLandmarker\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandLandmarker\Proto\HandLandmarkerGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\HandLandmarker\Proto\HandLandmarksDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseDetector.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseDetector\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseDetector\Proto\PoseDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseLandmarker.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseLandmarker\Proto.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseLandmarker\Proto\PoseLandmarkerGraphOptions.cs.meta" />
+    <None Include="Protobuf\Tasks\Vision\PoseLandmarker\Proto\PoseLandmarksDetectorGraphOptions.cs.meta" />
+    <None Include="Protobuf\Util\AudioDecoder.cs.meta" />
+    <None Include="Protobuf\Util\BoxDetector.cs.meta" />
+    <None Include="Protobuf\Util\BoxTracker.cs.meta" />
+    <None Include="Protobuf\Util\CameraMotion.cs.meta" />
+    <None Include="Protobuf\Util\Color.cs.meta" />
+    <None Include="Protobuf\Util\FlowPackager.cs.meta" />
+    <None Include="Protobuf\Util\FrameSelection.cs.meta" />
+    <None Include="Protobuf\Util\FrameSelectionSolutionEvaluator.cs.meta" />
+    <None Include="Protobuf\Util\LabelMap.cs.meta" />
+    <None Include="Protobuf\Util\MotionAnalysis.cs.meta" />
+    <None Include="Protobuf\Util\MotionEstimation.cs.meta" />
+    <None Include="Protobuf\Util\MotionModels.cs.meta" />
+    <None Include="Protobuf\Util\MotionSaliency.cs.meta" />
+    <None Include="Protobuf\Util\PushPullFiltering.cs.meta" />
+    <None Include="Protobuf\Util\RegionFlow.cs.meta" />
+    <None Include="Protobuf\Util\RegionFlowComputation.cs.meta" />
+    <None Include="Protobuf\Util\RenderData.cs.meta" />
+    <None Include="Protobuf\Util\ToneEstimation.cs.meta" />
+    <None Include="Protobuf\Util\ToneModels.cs.meta" />
+    <None Include="Protobuf\Util\TrackedDetectionManagerConfig.cs.meta" />
+    <None Include="Protobuf\Util\Tracking.cs.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mediapipe_c.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,105 +1,124 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.External
+namespace Mediapipe.External
 {
-    public static class Glog
+  public static class Glog
+  {
+    public enum Severity : int
     {
-        public enum Severity : int
-        {
-            Info = 0,
-            Warning = 1,
-            Error = 2,
-            Fatal = 3,
-        }
-
-        private static bool logToStderr = false;
-        public static bool LogToStderr
-        {
-            get => logToStderr;
-            set
-            {
-                UnsafeNativeMethods.glog_FLAGS_logtostderr(value);
-                logToStderr = value;
-            }
-        }
-
-        private static int stderrThreshold = 2;
-        public static int StderrThreshold
-        {
-            get => stderrThreshold;
-            set
-            {
-                UnsafeNativeMethods.glog_FLAGS_stderrthreshold(value);
-                stderrThreshold = value;
-            }
-        }
-
-        private static int minLogLevel = 0;
-        public static int MinLogLevel
-        {
-            get => minLogLevel;
-            set
-            {
-                UnsafeNativeMethods.glog_FLAGS_minloglevel(value);
-                minLogLevel = value;
-            }
-        }
-
-        private static string? logDir;
-        public static string? LogDir
-        {
-            get => logDir;
-            set
-            {
-                UnsafeNativeMethods.glog_FLAGS_log_dir(value ?? "");
-                logDir = value;
-            }
-        }
-
-        private static int v = 0;
-        public static int V
-        {
-            get => v;
-            set
-            {
-                UnsafeNativeMethods.glog_FLAGS_v(value);
-                v = value;
-            }
-        }
-
-        public static void Initialize(string name)
-            => UnsafeNativeMethods.google_InitGoogleLogging__PKc(name).Assert();
-
-        public static void Shutdown()
-            => UnsafeNativeMethods.google_ShutdownGoogleLogging().Assert();
-
-        public static void Log(Severity severity, string str)
-        {
-            switch (severity)
-            {
-                case Severity.Info:
-                    UnsafeNativeMethods.glog_LOG_INFO__PKc(str);
-                    break;
-                case Severity.Warning:
-                    UnsafeNativeMethods.glog_LOG_WARNING__PKc(str);
-                    break;
-                case Severity.Error:
-                    UnsafeNativeMethods.glog_LOG_ERROR__PKc(str);
-                    break;
-                case Severity.Fatal:
-                    UnsafeNativeMethods.glog_LOG_FATAL__PKc(str);
-                    break;
-                default:
-                    throw new ArgumentException($"Unknown Severity: {severity}");
-            }
-        }
-
-        public static void FlushLogFiles(Severity severity = Severity.Info)
-            => UnsafeNativeMethods.google_FlushLogFiles(severity);
+      INFO = 0,
+      WARNING = 1,
+      ERROR = 2,
+      FATAL = 3,
     }
+
+    private static bool _Logtostderr = false;
+    public static bool Logtostderr
+    {
+      get => _Logtostderr;
+      set
+      {
+        UnsafeNativeMethods.glog_FLAGS_logtostderr(value);
+        _Logtostderr = value;
+      }
+    }
+
+    private static int _Stderrthreshold = 2;
+    public static int Stderrthreshold
+    {
+      get => _Stderrthreshold;
+      set
+      {
+        UnsafeNativeMethods.glog_FLAGS_stderrthreshold(value);
+        _Stderrthreshold = value;
+      }
+    }
+
+    private static int _Minloglevel = 0;
+    public static int Minloglevel
+    {
+      get => _Minloglevel;
+      set
+      {
+        UnsafeNativeMethods.glog_FLAGS_minloglevel(value);
+        _Minloglevel = value;
+      }
+    }
+
+    private static string _LogDir;
+    public static string LogDir
+    {
+      get => _LogDir;
+      set
+      {
+        UnsafeNativeMethods.glog_FLAGS_log_dir(value ?? "");
+        _LogDir = value;
+      }
+    }
+
+    private static int _V = 0;
+    public static int V
+    {
+      get => _V;
+      set
+      {
+        UnsafeNativeMethods.glog_FLAGS_v(value);
+        _V = value;
+      }
+    }
+
+    public static void Initialize(string name)
+    {
+      UnsafeNativeMethods.google_InitGoogleLogging__PKc(name).Assert();
+    }
+
+    public static void Shutdown()
+    {
+      UnsafeNativeMethods.google_ShutdownGoogleLogging().Assert();
+    }
+
+    public static void Log(Severity severity, string str)
+    {
+      switch (severity)
+      {
+        case Severity.INFO:
+          {
+            UnsafeNativeMethods.glog_LOG_INFO__PKc(str);
+            break;
+          }
+        case Severity.WARNING:
+          {
+            UnsafeNativeMethods.glog_LOG_WARNING__PKc(str);
+            break;
+          }
+        case Severity.ERROR:
+          {
+            UnsafeNativeMethods.glog_LOG_ERROR__PKc(str);
+            break;
+          }
+        case Severity.FATAL:
+          {
+            UnsafeNativeMethods.glog_LOG_FATAL__PKc(str);
+            break;
+          }
+        default:
+          {
+            throw new ArgumentException($"Unknown Severity: {severity}");
+          }
+      }
+    }
+
+    public static void FlushLogFiles(Severity severity = Severity.INFO)
+    {
+      UnsafeNativeMethods.google_FlushLogFiles(severity);
+    }
+  }
 }

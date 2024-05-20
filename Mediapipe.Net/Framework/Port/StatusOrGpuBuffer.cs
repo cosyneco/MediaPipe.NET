@@ -3,8 +3,6 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using Mediapipe.Net.Gpu;
-using Mediapipe.Net.Native;
 
 namespace Mediapipe.Net.Framework.Port
 {

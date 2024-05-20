@@ -1,70 +1,123 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.External;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.External;
-using Mediapipe.Net.Native;
+using System.Collections;
+using System.IO;
 
-namespace Mediapipe.Net.Util
+namespace Mediapipe
 {
-    /// <summary>
-    /// Class to manage MediaPipe resources, such as `.tflite` and `.pbtxt` files that it requests.
-    /// </summary>
-    /// <remarks>
-    /// There must not be more than one instance at the same time.
-    /// </remarks>
-    public unsafe abstract class ResourceManager
+  /// <summary>
+  ///   Class to manage assets that MediaPipe accesses.
+  /// </summary>
+  /// <remarks>
+  ///   There must not be more than one instance at the same time.
+  /// </remarks>
+  public abstract class ResourceManager
+  {
+    public delegate string PathResolver(string path);
+    internal delegate bool NativeResourceProvider(string path, IntPtr dest);
+    public delegate byte[] ResourceProvider(string path);
+
+    private static readonly object _InitLock = new object();
+    private static ResourceManager _Instance;
+    private readonly PathResolver _pathResolver;
+    private readonly ResourceProvider _resourceProvider;
+
+    public ResourceManager(PathResolver pathResolver, ResourceProvider resourceProvider)
     {
-        public delegate string PathResolver(string path);
-
-        /// <summary>
-        /// Resolves a path to a resource name.
-        /// If the resource name returned is different from the path, the <see cref="ResourceProvider" /> delegate will receive the resource name instead of the file path.
-        /// </summary>
-        public abstract PathResolver ResolvePath { get; }
-
-        /// <summary>
-        /// Reads a resource that MediaPipe requests.
-        /// </summary>
-        /// <param name="path">File path or name of the resource.</param>
-        /// <returns>Content of the MediaPipe resource as a byte array.</returns>
-        public delegate byte[] ResourceProvider(string path);
-        public abstract ResourceProvider ProvideResource { get; }
-
-        private static readonly object initLock = new object();
-        private static bool isInitialized = false;
-
-        public ResourceManager()
+      lock (_InitLock)
+      {
+        if (_Instance != null)
         {
-            lock (initLock)
-            {
-                if (isInitialized)
-                    throw new InvalidOperationException("ResourceManager can be initialized only once");
-
-                SafeNativeMethods.mp__SetCustomGlobalPathResolver__P(ResolvePath);
-                SafeNativeMethods.mp__SetCustomGlobalResourceProvider__P(provideResource);
-                isInitialized = true;
-            }
+          throw new InvalidOperationException("ResourceManager can be initialized only once");
         }
-
-        private bool provideResource(string path, IntPtr output)
-        {
-            try
-            {
-                byte[] bytes = ProvideResource(path);
-
-                StdString strOutput = new StdString(output, isOwner: false);
-                StdString strSpan = new StdString(bytes);
-                strOutput.Swap(strSpan);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Glog.Log(Glog.Severity.Error, $"Error while trying to provide resource '{path}': {ex}");
-                return false;
-            }
-        }
+        _pathResolver = pathResolver;
+        _resourceProvider = resourceProvider;
+        SafeNativeMethods.mp__SetCustomGlobalPathResolver__P(PathToResourceAsFile);
+        SafeNativeMethods.mp__SetCustomGlobalResourceProvider__P(GetResourceContents);
+        _Instance = this;
+      }
     }
+
+    /// <param name="name">Asset name</param>
+    /// <returns>
+    ///   Returns true if <paramref name="name" /> is already prepared (saved locally on the device).
+    /// </returns>
+    public abstract bool IsPrepared(string name);
+
+    /// <summary>
+    ///   Saves <paramref name="name" /> as <paramref name="uniqueKey" /> asynchronously.
+    /// </summary>
+    /// <param name="overwrite">
+    ///   Specifies whether <paramref name="uniqueKey" /> will be overwritten if it already exists.
+    /// </param>
+    public abstract IEnumerator PrepareAssetAsync(string name, string uniqueKey, bool overwrite = true);
+
+    public IEnumerator PrepareAssetAsync(string name, bool overwrite = true)
+    {
+      return PrepareAssetAsync(name, name, overwrite);
+    }
+
+    //[AOT.MonoPInvokeCallback(typeof(PathResolver))]
+    private static string PathToResourceAsFile(string assetPath)
+    {
+      try
+      {
+        return _Instance._pathResolver(assetPath);
+      }
+      catch (Exception e)
+      {
+                Console.WriteLine(e);
+        return "";
+      }
+    }
+
+    //[AOT.MonoPInvokeCallback(typeof(ResourceProvider))]
+    private static bool GetResourceContents(string path, IntPtr dst)
+    {
+      try
+      {
+        var asset = _Instance._resourceProvider(path);
+        using (var srcStr = new StdString(asset))
+        {
+          srcStr.Swap(new StdString(dst, false));
+        }
+        return true;
+      }
+      catch (Exception e)
+      {
+                Console.WriteLine(e);
+        return false;
+      }
+    }
+
+    protected static string GetAssetNameFromPath(string assetPath)
+    {
+      var assetName = Path.GetFileNameWithoutExtension(assetPath);
+      var extension = Path.GetExtension(assetPath);
+
+      switch (extension)
+      {
+        case ".binarypb":
+        case ".tflite":
+          {
+            return $"{assetName}.bytes";
+          }
+        case ".pbtxt":
+          {
+            return $"{assetName}.txt";
+          }
+        default:
+          {
+            return $"{assetName}{extension}";
+          }
+      }
+    }
+  }
 }

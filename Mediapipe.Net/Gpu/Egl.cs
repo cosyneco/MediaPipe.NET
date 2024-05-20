@@ -1,15 +1,20 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
-using System.Runtime.Versioning;
-using Mediapipe.Net.Native;
+using System;
 
-namespace Mediapipe.Net.Gpu
+#if UNITY_STANDALONE_LINUX || UNITY_ANDROID
+namespace Mediapipe.Gpu
 {
-    [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-    public unsafe class Egl
+  public class Egl
+  {
+    public static IntPtr GetCurrentContext()
     {
-        public static void* GetCurrentContext() => SafeNativeMethods.eglGetCurrentContext();
+      return SafeNativeMethods.eglGetCurrentContext();
     }
+  }
 }
+#endif

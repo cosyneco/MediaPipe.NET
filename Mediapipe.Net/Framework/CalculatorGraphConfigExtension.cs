@@ -1,25 +1,26 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
-using Google.Protobuf;
-using Mediapipe.Net.Core;
-using Mediapipe.Net.Framework.Protobuf;
-using Mediapipe.Net.Native;
+using Mediapipe.Core;
+using Mediapipe.PInvoke.Native;
+using pb = Google.Protobuf;
 
-namespace Mediapipe.Net.Framework
+namespace Mediapipe.Framework
 {
-    public static class CalculatorGraphConfigExtension
+  public static class CalculatorGraphConfigExtension
+  {
+    public static CalculatorGraphConfig ParseFromTextFormat(this pb::MessageParser<CalculatorGraphConfig> _, string configText)
     {
-        public static CalculatorGraphConfig ParseFromTextFormat(this MessageParser<CalculatorGraphConfig> _, string configText)
-        {
-            if (UnsafeNativeMethods.mp_api__ConvertFromCalculatorGraphConfigTextFormat(configText, out var serializedProto))
-            {
-                var config = serializedProto.Deserialize(CalculatorGraphConfig.Parser);
-                serializedProto.Dispose();
-                return config;
-            }
-            throw new MediapipeException("Failed to parse config text. See error logs for more details");
-        }
+      if (UnsafeNativeMethods.mp_api__ConvertFromCalculatorGraphConfigTextFormat(configText, out var serializedProto))
+      {
+        var config = serializedProto.Deserialize(CalculatorGraphConfig.Parser);
+        serializedProto.Dispose();
+        return config;
+      }
+      throw new MediaPipeException("Failed to parse config text. See error logs for more details");
     }
+  }
 }

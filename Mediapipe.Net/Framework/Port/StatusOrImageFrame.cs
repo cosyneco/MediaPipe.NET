@@ -2,11 +2,12 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.Framework.Formats;
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Framework.Format;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework.Port
+namespace Mediapipe.Framework.Port
 {
     public unsafe class StatusOrImageFrame : StatusOr<ImageFrame>
     {
@@ -14,7 +15,7 @@ namespace Mediapipe.Net.Framework.Port
 
         protected override void DeleteMpPtr()
         {
-            UnsafeNativeMethods.mp_StatusOrImageFrame__delete(Ptr);
+            UnsafeNativeMethods.mp_StatusOrImageFrame__delete(ptr);
         }
 
         private Status? status;
@@ -22,9 +23,9 @@ namespace Mediapipe.Net.Framework.Port
         {
             get
             {
-                if (status == null || status.IsDisposed)
+                if (status == null || status.isDisposed)
                 {
-                    UnsafeNativeMethods.mp_StatusOrImageFrame__status(MpPtr, out var statusPtr).Assert();
+                    UnsafeNativeMethods.mp_StatusOrImageFrame__status(mpPtr, out var statusPtr).Assert();
 
                     GC.KeepAlive(this);
                     status = new Status(statusPtr);
@@ -33,11 +34,11 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(MpPtr);
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrImageFrame__ok(mpPtr);
 
         public override ImageFrame Value()
         {
-            UnsafeNativeMethods.mp_StatusOrImageFrame__value(MpPtr, out var imageFramePtr).Assert();
+            UnsafeNativeMethods.mp_StatusOrImageFrame__value(mpPtr, out var imageFramePtr).Assert();
             Dispose();
 
             return new ImageFrame(imageFramePtr);

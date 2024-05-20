@@ -3,9 +3,9 @@
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
 using System;
-using Mediapipe.Net.Core;
+using Mediapipe.Core;
 
-namespace Mediapipe.Net.Framework.Port
+namespace Mediapipe.Framework.Port
 {
     public unsafe abstract class StatusOr<T> : MpResourceHandle
     {
@@ -14,9 +14,9 @@ namespace Mediapipe.Net.Framework.Port
         public abstract Status Status { get; }
         public virtual bool Ok() => Status.Ok();
 
-        public virtual T? ValueOr(T? defaultValue = default) => Ok() ? Value() : defaultValue;
+        public virtual T ValueOr(T defaultValue = default) => Ok() ? Value() : defaultValue;
 
         /// <exception cref="MediapipeNetException">Thrown when status is not ok</exception>
-        public abstract T? Value();
+        public abstract T Value();
     }
 }

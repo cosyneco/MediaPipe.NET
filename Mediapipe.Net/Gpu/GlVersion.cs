@@ -1,13 +1,15 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
-namespace Mediapipe.Net.Gpu
+namespace Mediapipe.Gpu
 {
-    public enum GlVersion : uint
-    {
-        KGl = 1,
-        KGles2 = 2,
-        KGles3 = 3,
-    }
+  public enum GlVersion : uint
+  {
+    kGL = 1,
+    kGLES2 = 2,
+    kGLES3 = 3,
+  }
 }

@@ -1,47 +1,50 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2023 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.Core;
+using Mediapipe.Framework.Packet;
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Core;
-using Mediapipe.Net.Framework.Packets;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Framework
+namespace Mediapipe.Framework
 {
-    public class OutputStreamPoller<T> : MpResourceHandle
+  public class OutputStreamPoller<T> : MpResourceHandle
+  {
+    public OutputStreamPoller(IntPtr ptr) : base(ptr) { }
+
+    protected override void DeleteMpPtr()
     {
-        public OutputStreamPoller(IntPtr ptr) : base(ptr) { }
-
-        protected override void DeleteMpPtr()
-        {
-            UnsafeNativeMethods.mp_OutputStreamPoller__delete(Ptr);
-        }
-
-        public bool Next(Packet<T> packet)
-        {
-            UnsafeNativeMethods.mp_OutputStreamPoller__Next_Ppacket(MpPtr, packet.MpPtr, out var result).Assert();
-
-            GC.KeepAlive(this);
-            return result;
-        }
-
-        public void Reset()
-        {
-            UnsafeNativeMethods.mp_OutputStreamPoller__Reset(MpPtr).Assert();
-        }
-
-        public void SetMaxQueueSize(int queueSize)
-        {
-            UnsafeNativeMethods.mp_OutputStreamPoller__SetMaxQueueSize(MpPtr, queueSize).Assert();
-        }
-
-        public int QueueSize()
-        {
-            UnsafeNativeMethods.mp_OutputStreamPoller__QueueSize(MpPtr, out var result).Assert();
-
-            GC.KeepAlive(this);
-            return result;
-        }
+      UnsafeNativeMethods.mp_OutputStreamPoller__delete(ptr);
     }
+
+    public bool Next(Packet<T> packet)
+    {
+      UnsafeNativeMethods.mp_OutputStreamPoller__Next_Ppacket(mpPtr, packet.mpPtr, out var result).Assert();
+
+      GC.KeepAlive(this);
+      return result;
+    }
+
+    public void Reset()
+    {
+      UnsafeNativeMethods.mp_OutputStreamPoller__Reset(mpPtr).Assert();
+    }
+
+    public void SetMaxQueueSize(int queueSize)
+    {
+      UnsafeNativeMethods.mp_OutputStreamPoller__SetMaxQueueSize(mpPtr, queueSize).Assert();
+    }
+
+    public int QueueSize()
+    {
+      UnsafeNativeMethods.mp_OutputStreamPoller__QueueSize(mpPtr, out var result).Assert();
+
+      GC.KeepAlive(this);
+      return result;
+    }
+  }
 }

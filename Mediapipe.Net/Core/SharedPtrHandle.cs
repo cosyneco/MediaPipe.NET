@@ -1,19 +1,20 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
-
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 using System;
 
-namespace Mediapipe.Net.Core
+namespace Mediapipe.Core
 {
-    public unsafe abstract class SharedPtrHandle : MpResourceHandle
-    {
-        protected SharedPtrHandle(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+  public abstract class SharedPtrHandle : MpResourceHandle
+  {
+    protected SharedPtrHandle(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
 
-        /// <returns>The owning pointer</returns>
-        public abstract IntPtr Get();
+    /// <returns>The owning pointer</returns>
+    public abstract IntPtr Get();
 
-        /// <summary>Release the owning pointer</summary>
-        public abstract void Reset();
-    }
+    /// <summary>Release the owning pointer</summary>
+    public abstract void Reset();
+  }
 }

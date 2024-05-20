@@ -1,45 +1,51 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.Core;
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Core;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Gpu
+namespace Mediapipe.Gpu
 {
-    public unsafe class GlTexture : MpResourceHandle
+  public class GlTexture : MpResourceHandle
+  {
+    public GlTexture() : base()
     {
-        public GlTexture() : base()
-        {
-            UnsafeNativeMethods.mp_GlTexture__(out var ptr).Assert();
-            Ptr = ptr;
-        }
-
-        public GlTexture(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
-
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_GlTexture__delete(Ptr);
-
-        public int Width => SafeNativeMethods.mp_GlTexture__width(MpPtr);
-
-        public int Height => SafeNativeMethods.mp_GlTexture__height(MpPtr);
-
-        public uint Target => SafeNativeMethods.mp_GlTexture__target(MpPtr);
-
-        public uint Name => SafeNativeMethods.mp_GlTexture__name(MpPtr);
-
-        public void Release()
-        {
-            UnsafeNativeMethods.mp_GlTexture__Release(MpPtr).Assert();
-            GC.KeepAlive(this);
-        }
-
-        public GpuBuffer GetGpuBufferFrame()
-        {
-            UnsafeNativeMethods.mp_GlTexture__GetGpuBufferFrame(MpPtr, out var gpuBufferPtr).Assert();
-
-            GC.KeepAlive(this);
-            return new GpuBuffer(gpuBufferPtr);
-        }
+      UnsafeNativeMethods.mp_GlTexture__(out var ptr).Assert();
+      this.ptr = ptr;
     }
+
+    public GlTexture(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+    protected override void DeleteMpPtr()
+    {
+      UnsafeNativeMethods.mp_GlTexture__delete(ptr);
+    }
+
+    public int width => SafeNativeMethods.mp_GlTexture__width(mpPtr);
+
+    public int height => SafeNativeMethods.mp_GlTexture__height(mpPtr);
+
+    public uint target => SafeNativeMethods.mp_GlTexture__target(mpPtr);
+
+    public uint name => SafeNativeMethods.mp_GlTexture__name(mpPtr);
+
+    public void Release()
+    {
+      UnsafeNativeMethods.mp_GlTexture__Release(mpPtr).Assert();
+      GC.KeepAlive(this);
+    }
+
+    public GpuBuffer GetGpuBufferFrame()
+    {
+      UnsafeNativeMethods.mp_GlTexture__GetGpuBufferFrame(mpPtr, out var gpuBufferPtr).Assert();
+
+      GC.KeepAlive(this);
+      return new GpuBuffer(gpuBufferPtr);
+    }
+  }
 }

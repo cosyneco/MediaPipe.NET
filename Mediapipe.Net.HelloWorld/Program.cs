@@ -1,13 +1,9 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
-using Mediapipe.Net.Framework;
-using Mediapipe.Net.Framework.Packets;
+﻿using Mediapipe.Framework;
+using Mediapipe.Framework.Packet;
+using System;
 
-namespace Mediapipe.Net.HelloWorld
+namespace MediapipeNet2
 {
-    // This is the classic Hello world sample for MediaPipe, which is the same as the one in the MediaPipe repository.
-    // and also the same as the one in MediaPipeUnity.
     internal class Program
     {
         private static readonly string configTxt = @"
@@ -27,23 +23,24 @@ node {
         static void Main()
         {
             var graph = new CalculatorGraph(configTxt);
-            var poller = graph.AddOutputStreamPoller<string>("out").Value();
-            graph.StartRun().AssertOk();
+            var poller = graph.AddOutputStreamPoller<string>("out");
+            graph.StartRun();
 
             for (var i = 0; i < 10; i++)
             {
-                graph.AddPacketToInputStream("in", new StringPacket("Hello World!"));
+                graph.AddPacketToInputStream("in", Packet.CreateStringAt("Hello World!", i));
             }
 
-            graph.CloseInputStream("in").AssertOk();
-            var packet = new StringPacket();
+            graph.CloseInputStream("in");
+            var packet = new Packet<string>();
 
             while (poller.Next(packet))
             {
                 Console.WriteLine(packet.ToString());
             }
 
-            graph.WaitUntilDone().AssertOk();
+            graph.WaitUntilDone();
+            Console.ReadLine();
         }
     }
 }

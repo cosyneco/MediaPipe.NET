@@ -1,32 +1,46 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
+using Mediapipe.Core;
+using Mediapipe.PInvoke.Native;
 using System;
-using System.Runtime.Versioning;
-using Mediapipe.Net.Core;
-using Mediapipe.Net.Native;
 
-namespace Mediapipe.Net.Gpu
+namespace Mediapipe.Gpu
 {
-    public unsafe class GpuBuffer : MpResourceHandle
+  public class GpuBuffer : MpResourceHandle
+  {
+    public GpuBuffer(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
+
+#if UNITY_EDITOR_LINUX || UNITY_STANDALONE_LINUX || UNITY_ANDROID
+    public GpuBuffer(GlTextureBuffer glTextureBuffer) : base()
     {
-        public GpuBuffer(IntPtr ptr, bool isOwner = true) : base(ptr, isOwner) { }
-
-        [SupportedOSPlatform("Linux"), SupportedOSPlatform("Android")]
-        public GpuBuffer(GlTextureBuffer glTextureBuffer) : base()
-        {
-            UnsafeNativeMethods.mp_GpuBuffer__PSgtb(glTextureBuffer.SharedPtr, out var ptr).Assert();
-            glTextureBuffer.Dispose(); // respect move semantics
-            Ptr = ptr;
-        }
-
-        protected override void DeleteMpPtr() => UnsafeNativeMethods.mp_GpuBuffer__delete(Ptr);
-
-        public GpuBufferFormat Format => SafeNativeMethods.mp_GpuBuffer__format(MpPtr);
-
-        public int Width => SafeNativeMethods.mp_GpuBuffer__width(MpPtr);
-
-        public int Height => SafeNativeMethods.mp_GpuBuffer__height(MpPtr);
+      UnsafeNativeMethods.mp_GpuBuffer__PSgtb(glTextureBuffer.sharedPtr, out var ptr).Assert();
+      glTextureBuffer.Dispose(); // respect move semantics
+      this.ptr = ptr;
     }
+#endif
+
+    protected override void DeleteMpPtr()
+    {
+      UnsafeNativeMethods.mp_GpuBuffer__delete(ptr);
+    }
+
+    public GpuBufferFormat Format()
+    {
+      return SafeNativeMethods.mp_GpuBuffer__format(mpPtr);
+    }
+
+    public int Width()
+    {
+      return SafeNativeMethods.mp_GpuBuffer__width(mpPtr);
+    }
+
+    public int Height()
+    {
+      return SafeNativeMethods.mp_GpuBuffer__height(mpPtr);
+    }
+  }
 }

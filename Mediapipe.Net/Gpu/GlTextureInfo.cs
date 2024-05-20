@@ -1,17 +1,19 @@
-// Copyright (c) homuler and The Vignette Authors
-// This file is part of MediaPipe.NET.
-// MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
+// Copyright (c) 2021 homuler
+//
+// Use of this source code is governed by an MIT-style
+// license that can be found in the LICENSE file or at
+// https://opensource.org/licenses/MIT.
 
 using System.Runtime.InteropServices;
 
-namespace Mediapipe.Net.Gpu
+namespace Mediapipe.Gpu
 {
-    [StructLayout(LayoutKind.Sequential)]
-    public struct GlTextureInfo
-    {
-        public int GlInternalFormat;
-        public uint GlFormat;
-        public uint GlType;
-        public int Downscale;
-    }
+  [StructLayout(LayoutKind.Sequential)]
+  public struct GlTextureInfo
+  {
+    public int glInternalFormat;
+    public uint glFormat;
+    public uint glType;
+    public int downscale;
+  }
 }

@@ -2,11 +2,11 @@
 // This file is part of MediaPipe.NET.
 // MediaPipe.NET is licensed under the MIT License. See LICENSE for details.
 
+using Mediapipe.PInvoke;
+using Mediapipe.PInvoke.Native;
 using System;
-using Mediapipe.Net.Native;
-using Mediapipe.Net.Util;
 
-namespace Mediapipe.Net.Framework.Port
+namespace Mediapipe.Framework.Port
 {
     public unsafe class StatusOrString : StatusOr<string>
     {
@@ -14,7 +14,7 @@ namespace Mediapipe.Net.Framework.Port
 
         protected override void DeleteMpPtr()
         {
-            UnsafeNativeMethods.mp_StatusOrString__delete(Ptr);
+            UnsafeNativeMethods.mp_StatusOrString__delete(ptr);
         }
 
         private Status? status;
@@ -22,9 +22,9 @@ namespace Mediapipe.Net.Framework.Port
         {
             get
             {
-                if (status == null || status.IsDisposed)
+                if (status == null || status.isDisposed)
                 {
-                    UnsafeNativeMethods.mp_StatusOrString__status(MpPtr, out var statusPtr).Assert();
+                    UnsafeNativeMethods.mp_StatusOrString__status(mpPtr, out var statusPtr).Assert();
 
                     GC.KeepAlive(this);
                     status = new Status(statusPtr);
@@ -33,7 +33,7 @@ namespace Mediapipe.Net.Framework.Port
             }
         }
 
-        public override bool Ok() => SafeNativeMethods.mp_StatusOrString__ok(MpPtr) > 0;
+        public override bool Ok() => SafeNativeMethods.mp_StatusOrString__ok(mpPtr) > 0;
 
         public override string? Value()
         {
@@ -45,7 +45,7 @@ namespace Mediapipe.Net.Framework.Port
 
         public byte[] ValueAsByteArray()
         {
-            UnsafeNativeMethods.mp_StatusOrString__bytearray(MpPtr, out var strPtr, out var size).Assert();
+            UnsafeNativeMethods.mp_StatusOrString__bytearray(mpPtr, out var strPtr, out var size).Assert();
             GC.KeepAlive(this);
 
             byte[] bytes = UnsafeUtil.SafeArrayCopy((byte*)strPtr, size);
