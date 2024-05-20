@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.HelloWorld", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net", "Mediapipe.Net\Mediapipe.Net.csproj", "{53BBFBB7-AD22-44F6-95A4-6F338788AC92}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceMeshWebcamOpenCV", "FaceMeshWebcamOpenCV\FaceMeshWebcamOpenCV.csproj", "{6A723304-750D-49D7-8E34-7C68B6FE981C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A723304-750D-49D7-8E34-7C68B6FE981C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A723304-750D-49D7-8E34-7C68B6FE981C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A723304-750D-49D7-8E34-7C68B6FE981C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A723304-750D-49D7-8E34-7C68B6FE981C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
