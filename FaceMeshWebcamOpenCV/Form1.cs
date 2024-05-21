@@ -4,17 +4,8 @@ using Mediapipe.Framework.Formats;
 using Mediapipe.Framework.Packet;
 using OpenCvSharp;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -22,8 +13,9 @@ namespace FaceMeshWebcamOpenCV
 {
     public partial class Form1 : Form
     {
-        private VideoCapture _capture = new VideoCapture(5);
+        private VideoCapture _capture = new VideoCapture(0);
         Thread thread;
+        
         public Form1()
         {
             InitializeComponent();
@@ -34,74 +26,67 @@ namespace FaceMeshWebcamOpenCV
             thread = new Thread(new ThreadStart(CaptureCameraCallback));
             thread.Start();
         }
-        private int i =0;
 
         public void CaptureCameraCallback()
         {
-            var graph = new CalculatorGraph(File.ReadAllText(@"face_mesh_desktop_live.pbtxt"));
-            var poller = graph.AddOutputStreamPoller<ImageFrame>("output_video");
+            CalculatorGraph graph = new CalculatorGraph(File.ReadAllText(@"face_mesh_desktop_live.pbtxt"));
+            OutputStreamPoller<ImageFrame> poller = graph.AddOutputStreamPoller<ImageFrame>("output_video");
             graph.StartRun();
+
             while (true)
             {
-                         Mat _image = new Mat();
+                Mat mat = new Mat();
+                _capture.Read(mat);
 
-        _capture.Read(_image);
-                _image = _image.CvtColor(ColorConversionCodes.BGR2RGB);
-                if (!_image.Empty())
+                if (mat.Empty())
                 {
-                    _image = _image.Flip(FlipMode.Y);
+                    Console.WriteLine("Failed to capture a frame.");
+                    break;
                 }
 
-                //mediapipe::ImageFormat::SRGB, camera_frame.cols, camera_frame.rows,
-                //mediapipe::ImageFrame::kDefaultAlignmentBoundary
-                //
-                //cv::Mat input_frame_mat = mediapipe::formats::MatView(input_frame.get());
+                ReadOnlySpan<byte> imageData = MatToReadOnlySpan(mat);
+                ImageFrame imageFrame = new ImageFrame(
+                    ImageFormat.Types.Format.Srgb,
+                    mat.Width,
+                    mat.Height,
+                    mat.Width * mat.Channels(),
+                    imageData
+                );
 
-                // Wrap Mat into an ImageFrame.
-
-                int w = _image.Width;
-                int h = _image.Height;
-                int l = w * h;
-                byte[] output = new byte[l];
-                Marshal.Copy(_image.Data, output, 0, l);
-                ReadOnlySpan<byte> bytes = new ReadOnlySpan<byte>(output);
-
-
-                ImageFrame imageFrame = new ImageFrame(ImageFormat.Types.Format.Srgb, _image.Cols, _image.Rows, (int)_image.Step(), bytes);
-                long frame_timestamp_us = (long)(Cv2.GetTickCount() / Cv2.GetTickFrequency() * 1e6);
-                // Send image packet into the graph.
-
-                graph.AddPacketToInputStream("input_video", Packet.CreateImageFrameAt(imageFrame, frame_timestamp_us));
+                long frameTimestampUs = (long)(Cv2.GetTickCount() / Cv2.GetTickFrequency() * 1e6);
+                graph.AddPacketToInputStream("input_video", Packet.CreateImageFrameAt(imageFrame, frameTimestampUs));
 
                 Packet<ImageFrame> pOutputFrame = new Packet<ImageFrame>();
                 if (!poller.Next(pOutputFrame))
                 {
                     break;
                 }
-/*
-                ImageFrame outputFrame = pOutputFrame.Get();
-                List<int> sizes = new List<int>()
-                {
-                    outputFrame.Height(), outputFrame.Width()
-                };
-                List<long> steps = new List<long>() { outputFrame.WidthStep(), outputFrame.ByteDepth() };
-                Mat outputMat = new Mat(sizes, MatType.CV_8U, outputFrame.MutablePixelData(), steps);
 
-                Mat outputMat2 = outputMat.CvtColor(ColorConversionCodes.RGB2BGR);
+                ImageFrame outputFrame = pOutputFrame.Get();
+                Mat outputMat = new Mat(
+                    new int[] { outputFrame.Height(), outputFrame.Width() },
+                    MatType.CV_8UC3,
+                    outputFrame.MutablePixelData(),
+                    new long[] { outputFrame.WidthStep(), outputFrame.ByteDepth() }
+                );
+                System.Drawing.Bitmap outputBitmap = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(outputMat.Flip(FlipMode.Y));
 
                 if (this.InvokeRequired)
                 {
-                    this.Invoke(new MethodInvoker(() => pictureBox1.Image = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(outputMat2)));
+                    this.Invoke(new MethodInvoker(() => pictureBox1.Image = outputBitmap));
                 }
                 else
                 {
-                    pictureBox1.Image = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(outputMat2);
-                }*/
+                    pictureBox1.Image = outputBitmap;
+                }
 
             }
-        
+        }
 
-
+        private unsafe static ReadOnlySpan<byte> MatToReadOnlySpan(Mat mat)
+        {
+            byte* ptr = (byte*)mat.Data.ToPointer();
+            return new ReadOnlySpan<byte>(ptr, mat.Width * mat.Height * mat.Channels());
         }
     }
 }
