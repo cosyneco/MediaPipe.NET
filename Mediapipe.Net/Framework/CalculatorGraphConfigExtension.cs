@@ -5,6 +5,8 @@
 // https://opensource.org/licenses/MIT.
 
 using Mediapipe.Core;
+using Mediapipe.Framework.Port;
+using Mediapipe.Framework;
 using Mediapipe.PInvoke.Native;
 using pb = Google.Protobuf;
 

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.HelloWorld", "Mediapipe.Net.HelloWorld\Mediapipe.Net.HelloWorld.csproj", "{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net.FaceMesh", "Mediapipe.Net.FaceMesh\Mediapipe.Net.FaceMesh.csproj", "{AC436EB0-561B-4948-BD8B-EDB49BE9BCFB}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediapipe.Net", "Mediapipe.Net\Mediapipe.Net.csproj", "{53BBFBB7-AD22-44F6-95A4-6F338788AC92}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FaceMeshWebcamOpenCV", "FaceMeshWebcamOpenCV\FaceMeshWebcamOpenCV.csproj", "{6A723304-750D-49D7-8E34-7C68B6FE981C}"
@@ -19,6 +21,10 @@ Global
 		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D4CCF17-1B7F-44E5-B9CE-6C145017F8AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC436EB0-561B-4948-BD8B-EDB49BE9BCFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC436EB0-561B-4948-BD8B-EDB49BE9BCFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC436EB0-561B-4948-BD8B-EDB49BE9BCFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC436EB0-561B-4948-BD8B-EDB49BE9BCFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53BBFBB7-AD22-44F6-95A4-6F338788AC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
