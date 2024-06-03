@@ -1,28 +1,11 @@
-# MediaPipe graph that performs face mesh with TensorFlow Lite on CPU.
-
-# Input image. (ImageFrame)
 input_stream: "input_video"
-
-# Output image with rendered results. (ImageFrame)
 output_stream: "output_video"
-# Collection of detected/processed faces, each represented as a list of
-# landmarks. (std::vector<NormalizedLandmarkList>)
 output_stream: "multi_face_landmarks"
 
-# Throttles the images flowing downstream for flow control. It passes through
-# the very first incoming image unaltered, and waits for downstream nodes
-# (calculators and subgraphs) in the graph to finish their tasks before it
-# passes through another image. All images that come in while waiting are
-# dropped, limiting the number of in-flight images in most part of the graph to
-# 1. This prevents the downstream nodes from queuing up incoming images and data
-# excessively, which leads to increased latency and memory usage, unwanted in
-# real-time mobile applications. It also eliminates unnecessarily computation,
-# e.g., the output produced by a node may get dropped downstream if the
-# subsequent nodes are still busy processing previous inputs.
 node {
   calculator: "FlowLimiterCalculator"
   input_stream: "input_video"
-  input_stream: "FINISHED:output_video"
+  input_stream: "FINISHED:multi_face_landmarks"
   input_stream_info: {
     tag_index: "FINISHED"
     back_edge: true
@@ -30,37 +13,224 @@ node {
   output_stream: "throttled_input_video"
 }
 
-# Defines side packets for further use in the graph.
 node {
   calculator: "ConstantSidePacketCalculator"
   output_side_packet: "PACKET:0:num_faces"
   output_side_packet: "PACKET:1:with_attention"
   node_options: {
     [type.googleapis.com/mediapipe.ConstantSidePacketCalculatorOptions]: {
-      packet { int_value: 1 }
+      packet { int_value: 4 }
       packet { bool_value: true }
     }
   }
 }
 
-# Subgraph that detects faces and corresponding landmarks.
+# node {
+#   calculator: "FaceLandmarkFrontCpu"
+#   input_stream: "IMAGE:throttled_input_video"
+#   input_side_packet: "NUM_FACES:num_faces"
+#   input_side_packet: "WITH_ATTENTION:with_attention"
+#   output_stream: "LANDMARKS:multi_face_landmarks"
+#   output_stream: "ROIS_FROM_LANDMARKS:face_rects_from_landmarks"
+#   output_stream: "DETECTIONS:face_detections"
+#   output_stream: "ROIS_FROM_DETECTIONS:face_rects_from_detections"
+# }
+
 node {
-  calculator: "FaceLandmarkFrontCpu"
-  input_stream: "IMAGE:throttled_input_video"
-  input_side_packet: "NUM_FACES:num_faces"
-  input_side_packet: "WITH_ATTENTION:with_attention"
-  output_stream: "LANDMARKS:multi_face_landmarks"
-  output_stream: "ROIS_FROM_LANDMARKS:face_rects_from_landmarks"
-  output_stream: "DETECTIONS:face_detections"
-  output_stream: "ROIS_FROM_DETECTIONS:face_rects_from_detections"
+  calculator: "GateCalculator"
+  input_side_packet: "ALLOW:use_prev_landmarks"
+  input_stream: "prev_face_rects_from_landmarks"
+  output_stream: "gated_prev_face_rects_from_landmarks"
+  options: {
+    [mediapipe.GateCalculatorOptions.ext] {
+      allow: true
+    }
+  }
 }
 
-# Subgraph that renders face-landmark annotation onto the input image.
+# Determines if an input vector of NormalizedRect has a size greater than or
+# equal to the provided num_faces.
 node {
-  calculator: "FaceRendererCpu"
-  input_stream: "IMAGE:throttled_input_video"
-  input_stream: "LANDMARKS:multi_face_landmarks"
-  input_stream: "NORM_RECTS:face_rects_from_landmarks"
-  input_stream: "DETECTIONS:face_detections"
-  output_stream: "IMAGE:output_video"
+  calculator: "NormalizedRectVectorHasMinSizeCalculator"
+  input_stream: "ITERABLE:gated_prev_face_rects_from_landmarks"
+  input_side_packet: "num_faces"
+  output_stream: "prev_has_enough_faces"
 }
+
+# Drops the incoming image if enough faces have already been identified from the
+# previous image. Otherwise, passes the incoming image through to trigger a new
+# round of face detection.
+node {
+  calculator: "GateCalculator"
+  input_stream: "throttled_input_video"
+  input_stream: "DISALLOW:prev_has_enough_faces"
+  output_stream: "gated_image"
+  options: {
+    [mediapipe.GateCalculatorOptions.ext] {
+      empty_packets_as_allow: true
+    }
+  }
+}
+
+node {
+  calculator: "FaceDetectionFullRangeCpu"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "DETECTIONS:all_face_detections"
+  node_options: {
+    [type.googleapis.com/mediapipe.FaceDetectionOptions]: {
+      model_path: "mediapipe/modules/face_detection/face_detection_full_range.tflite"
+      # min_detection_confidence: 0.5
+      # min_suppression_threshold: 0.3
+    }
+  }
+}
+
+# Makes sure there are no more detections than the provided num_faces.
+node {
+  calculator: "ClipDetectionVectorSizeCalculator"
+  input_stream: "all_face_detections"
+  output_stream: "face_detections"
+  input_side_packet: "num_faces"
+}
+
+# Calculate size of the image.
+node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "SIZE:gated_image_size"
+}
+
+# Outputs each element of face_detections at a fake timestamp for the rest of
+# the graph to process. Clones the image size packet for each face_detection at
+# the fake timestamp. At the end of the loop, outputs the BATCH_END timestamp
+# for downstream calculators to inform them that all elements in the vector have
+# been processed.
+node {
+  calculator: "BeginLoopDetectionCalculator"
+  input_stream: "ITERABLE:face_detections"
+  input_stream: "CLONE:gated_image_size"
+  output_stream: "ITEM:face_detection"
+  output_stream: "CLONE:detections_loop_image_size"
+  output_stream: "BATCH_END:detections_loop_end_timestamp"
+}
+
+# Calculates region of interest based on face detections, so that can be used
+# to detect landmarks.
+node {
+  calculator: "FaceDetectionFrontDetectionToRoi"
+  input_stream: "DETECTION:face_detection"
+  input_stream: "IMAGE_SIZE:detections_loop_image_size"
+  output_stream: "ROI:face_rect_from_detection"
+}
+
+# Collects a NormalizedRect for each face into a vector. Upon receiving the
+# BATCH_END timestamp, outputs the vector of NormalizedRect at the BATCH_END
+# timestamp.
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_detection"
+  input_stream: "BATCH_END:detections_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_detections"
+}
+
+# Performs association between NormalizedRect vector elements from previous
+# image and rects based on face detections from the current image. This
+# calculator ensures that the output face_rects vector doesn't contain
+# overlapping regions based on the specified min_similarity_threshold.
+node {
+  calculator: "AssociationNormRectCalculator"
+  input_stream: "face_rects_from_detections"
+  input_stream: "gated_prev_face_rects_from_landmarks"
+  output_stream: "face_rects"
+  options: {
+    [mediapipe.AssociationCalculatorOptions.ext] {
+      min_similarity_threshold: 0.5
+    }
+  }
+}
+
+# Calculate size of the image.
+node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:throttled_input_video"
+  output_stream: "SIZE:image_size"
+}
+
+# Outputs each element of face_rects at a fake timestamp for the rest of the
+# graph to process. Clones image and image size packets for each
+# single_face_rect at the fake timestamp. At the end of the loop, outputs the
+# BATCH_END timestamp for downstream calculators to inform them that all
+# elements in the vector have been processed.
+node {
+  calculator: "BeginLoopNormalizedRectCalculator"
+  input_stream: "ITERABLE:face_rects"
+  input_stream: "CLONE:0:throttled_input_video"
+  input_stream: "CLONE:1:image_size"
+  output_stream: "ITEM:face_rect"
+  output_stream: "CLONE:0:landmarks_loop_image"
+  output_stream: "CLONE:1:landmarks_loop_image_size"
+  output_stream: "BATCH_END:landmarks_loop_end_timestamp"
+}
+
+# Detects face landmarks within specified region of interest of the image.
+node {
+  calculator: "FaceLandmarkCpu"
+  input_stream: "IMAGE:landmarks_loop_image"
+  input_stream: "ROI:face_rect"
+  input_side_packet: "WITH_ATTENTION:with_attention"
+  output_stream: "LANDMARKS:face_landmarks"
+}
+
+# Calculates region of interest based on face landmarks, so that can be reused
+# for subsequent image.
+node {
+  calculator: "FaceLandmarkLandmarksToRoi"
+  input_stream: "LANDMARKS:face_landmarks"
+  input_stream: "IMAGE_SIZE:landmarks_loop_image_size"
+  output_stream: "ROI:face_rect_from_landmarks"
+}
+
+# Collects a set of landmarks for each face into a vector. Upon receiving the
+# BATCH_END timestamp, outputs the vector of landmarks at the BATCH_END
+# timestamp.
+node {
+  calculator: "EndLoopNormalizedLandmarkListVectorCalculator"
+  input_stream: "ITEM:face_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:multi_face_landmarks"
+}
+
+# Collects a NormalizedRect for each face into a vector. Upon receiving the
+# BATCH_END timestamp, outputs the vector of NormalizedRect at the BATCH_END
+# timestamp.
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_landmarks"
+}
+
+# Caches face rects calculated from landmarks, and upon the arrival of the next
+# input image, sends out the cached rects with timestamps replaced by that of
+# the input image, essentially generating a packet that carries the previous
+# face rects. Note that upon the arrival of the very first input image, a
+# timestamp bound update occurs to jump start the feedback loop.
+node {
+  calculator: "PreviousLoopbackCalculator"
+  input_stream: "MAIN:throttled_input_video"
+  input_stream: "LOOP:face_rects_from_landmarks"
+  input_stream_info: {
+    tag_index: "LOOP"
+    back_edge: true
+  }
+  output_stream: "PREV_LOOP:prev_face_rects_from_landmarks"
+}
+
+ node {
+   calculator: "FaceRendererCpu"
+   input_stream: "IMAGE:throttled_input_video"
+   input_stream: "LANDMARKS:multi_face_landmarks"
+   input_stream: "NORM_RECTS:face_rects_from_landmarks"
+   input_stream: "DETECTIONS:face_detections"
+   output_stream: "IMAGE:output_video"
+ }

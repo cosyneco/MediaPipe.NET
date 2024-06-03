@@ -90,6 +90,7 @@
     <Compile Include="Framework\Formats\Image.cs" />
     <Compile Include="Framework\Formats\ImageFrame.cs" />
     <Compile Include="Framework\Formats\Matrix.cs" />
+    <Compile Include="Framework\OutputStream.cs" />
     <Compile Include="Framework\OutputStreamPoller.cs" />
     <Compile Include="Framework\Packet\Packet.cs" />
     <Compile Include="Framework\PacketGetterExtension.cs" />

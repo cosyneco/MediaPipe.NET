@@ -4,8 +4,10 @@ using Mediapipe.Framework.Formats;
 using Mediapipe.Framework.Packet;
 using OpenCvSharp;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
@@ -31,7 +33,9 @@ namespace FaceMeshWebcamOpenCV
         {
             CalculatorGraph graph = new CalculatorGraph(File.ReadAllText(@"face_mesh_desktop_live.pbtxt"));
             OutputStreamPoller<ImageFrame> poller = graph.AddOutputStreamPoller<ImageFrame>("output_video");
+            OutputStreamPoller<List<NormalizedLandmarkList>> landmarkPoller = graph.AddOutputStreamPoller<List<NormalizedLandmarkList>>("multi_face_landmarks");
             graph.StartRun();
+            Task myTask;
 
             while (true)
             {
@@ -61,6 +65,24 @@ namespace FaceMeshWebcamOpenCV
                 {
                     break;
                 }
+                myTask = Task.Run(() =>
+                {
+                    Packet<List<NormalizedLandmarkList>> pOutputLandmark = new Packet<List<NormalizedLandmarkList>>();
+                    if (landmarkPoller.Next(pOutputLandmark))
+                    {
+                        Console.WriteLine("DDDD");
+                    }
+                });
+                myTask.Dispose();
+
+
+                /*                var task = poller.WaitNextAsync();
+                                yield return new WaitUntil(() => task.IsCompleted);
+
+                                if (!task.Result.ok)
+                                {
+                                    throw new Exception("Something went wrong");
+                                }*/
 
                 ImageFrame outputFrame = pOutputFrame.Get();
                 Mat outputMat = new Mat(
