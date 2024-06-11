@@ -1,0 +1,191 @@
+input_stream: "input_video"
+output_stream: "landmark_presence"
+output_stream: "multi_face_landmarks"
+# output_stream: "output_video"
+
+node {
+  calculator: "FlowLimiterCalculator"
+  input_stream: "input_video"
+  input_stream: "FINISHED:multi_face_landmarks"
+  input_stream_info: {
+    tag_index: "FINISHED"
+    back_edge: true
+  }
+  output_stream: "throttled_input_video"
+}
+
+node {
+  calculator: "ConstantSidePacketCalculator"
+  output_side_packet: "PACKET:0:num_faces"
+  output_side_packet: "PACKET:1:with_attention"
+  node_options: {
+    [type.googleapis.com/mediapipe.ConstantSidePacketCalculatorOptions]: {
+      packet { int_value: 4 }
+      packet { bool_value: true }
+    }
+  }
+}
+
+node {
+  calculator: "GateCalculator"
+  input_side_packet: "ALLOW:use_prev_landmarks"
+  input_stream: "prev_face_rects_from_landmarks"
+  output_stream: "gated_prev_face_rects_from_landmarks"
+  options: {
+    [mediapipe.GateCalculatorOptions.ext] {
+      allow: true
+    }
+  }
+}
+
+node {
+  calculator: "NormalizedRectVectorHasMinSizeCalculator"
+  input_stream: "ITERABLE:gated_prev_face_rects_from_landmarks"
+  input_side_packet: "num_faces"
+  output_stream: "prev_has_enough_faces"
+}
+
+node {
+  calculator: "GateCalculator"
+  input_stream: "throttled_input_video"
+  input_stream: "DISALLOW:prev_has_enough_faces"
+  output_stream: "gated_image"
+  options: {
+    [mediapipe.GateCalculatorOptions.ext] {
+      empty_packets_as_allow: true
+    }
+  }
+}
+
+node {
+  calculator: "FaceDetectionFullRangeCpu"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "DETECTIONS:all_face_detections"
+  node_options: {
+    [type.googleapis.com/mediapipe.FaceDetectionOptions]: {
+      model_path: "mediapipe/modules/face_detection/face_detection_full_range.tflite"
+      # min_detection_confidence: 0.5
+      # min_suppression_threshold: 0.3
+    }
+  }
+}
+
+node {
+  calculator: "ClipDetectionVectorSizeCalculator"
+  input_stream: "all_face_detections"
+  output_stream: "face_detections"
+  input_side_packet: "num_faces"
+}
+
+node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "SIZE:gated_image_size"
+}
+
+node {
+  calculator: "BeginLoopDetectionCalculator"
+  input_stream: "ITERABLE:face_detections"
+  input_stream: "CLONE:gated_image_size"
+  output_stream: "ITEM:face_detection"
+  output_stream: "CLONE:detections_loop_image_size"
+  output_stream: "BATCH_END:detections_loop_end_timestamp"
+}
+
+node {
+  calculator: "FaceDetectionFrontDetectionToRoi"
+  input_stream: "DETECTION:face_detection"
+  input_stream: "IMAGE_SIZE:detections_loop_image_size"
+  output_stream: "ROI:face_rect_from_detection"
+}
+
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_detection"
+  input_stream: "BATCH_END:detections_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_detections"
+}
+
+node {
+  calculator: "AssociationNormRectCalculator"
+  input_stream: "face_rects_from_detections"
+  input_stream: "gated_prev_face_rects_from_landmarks"
+  output_stream: "face_rects"
+  options: {
+    [mediapipe.AssociationCalculatorOptions.ext] {
+      min_similarity_threshold: 0.5
+    }
+  }
+}
+
+node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:throttled_input_video"
+  output_stream: "SIZE:image_size"
+}
+
+node {
+  calculator: "BeginLoopNormalizedRectCalculator"
+  input_stream: "ITERABLE:face_rects"
+  input_stream: "CLONE:0:throttled_input_video"
+  input_stream: "CLONE:1:image_size"
+  output_stream: "ITEM:face_rect"
+  output_stream: "CLONE:0:landmarks_loop_image"
+  output_stream: "CLONE:1:landmarks_loop_image_size"
+  output_stream: "BATCH_END:landmarks_loop_end_timestamp"
+}
+
+node {
+  calculator: "FaceLandmarkCpu"
+  input_stream: "IMAGE:landmarks_loop_image"
+  input_stream: "ROI:face_rect"
+  input_side_packet: "WITH_ATTENTION:with_attention"
+  output_stream: "LANDMARKS:face_landmarks"
+}
+
+node {
+  calculator: "FaceLandmarkLandmarksToRoi"
+  input_stream: "LANDMARKS:face_landmarks"
+  input_stream: "IMAGE_SIZE:landmarks_loop_image_size"
+  output_stream: "ROI:face_rect_from_landmarks"
+}
+
+node {
+  calculator: "EndLoopNormalizedLandmarkListVectorCalculator"
+  input_stream: "ITEM:face_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:multi_face_landmarks"
+}
+
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_landmarks"
+}
+
+node {
+  calculator: "PreviousLoopbackCalculator"
+  input_stream: "MAIN:throttled_input_video"
+  input_stream: "LOOP:face_rects_from_landmarks"
+  input_stream_info: {
+    tag_index: "LOOP"
+    back_edge: true
+  }
+  output_stream: "PREV_LOOP:prev_face_rects_from_landmarks"
+}
+
+node {
+  calculator: "PacketPresenceCalculator"
+  input_stream: "PACKET:multi_face_landmarks"
+  output_stream: "PRESENCE:landmark_presence"
+}
+
+# node {
+#     calculator: "FaceRendererCpu"
+#     input_stream: "IMAGE:throttled_input_video"
+#     input_stream: "LANDMARKS:multi_face_landmarks"
+#     input_stream: "NORM_RECTS:face_rects_from_landmarks"
+#     input_stream: "DETECTIONS:face_detections"
+#     output_stream: "IMAGE:output_video"
+# }
